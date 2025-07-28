@@ -26,12 +26,12 @@
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/home">Secciones</a>
-                    <a class="collapse-item" href="/home">Contenido</a>
-                    <a class="collapse-item" href="/home">Carrusel</a>
-                    <a class="collapse-item" href="/home">Preguntas</a>
-                    <a class="collapse-item" href="/home">Casos</a>
-                    <a class="collapse-item" href="/home">Tips</a>
+                    <a class="collapse-item" href="/sections">Secciones</a>
+                    <a class="collapse-item" href="/content">Contenido</a>
+                    <a class="collapse-item" href="/carrusel">Carrusel</a>
+                    <a class="collapse-item" href="/questions">Preguntas</a>
+                    <a class="collapse-item" href="/cases">Casos</a>
+                    <a class="collapse-item" href="/tips">Tips</a>
                 </div>
             </div>
         </li>
@@ -79,9 +79,9 @@
         <hr class="sidebar-divider d-none d-md-block">
 
         <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
+       <!-- <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+        </div> -->
 
     </ul>
 </template>

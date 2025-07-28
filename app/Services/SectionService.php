@@ -8,8 +8,8 @@ class SectionService
 {
     public function __construct(private SectionRepositoryInterface $repo) {}
 
-    public function getSections()
+    public function getSection()
     {
-        return $this->repo->get_all_sections();
+        return $this->repo->get_all_section();
     }
 }

@@ -8,7 +8,7 @@ class SectionsController extends Controller
 {
     public function show(SectionService $sectionService)
     {
-       $sections = $sectionService->getSections();
+       $sections = $sectionService->getSection();
        return response()->json([
         'data' => $sections
        ]);

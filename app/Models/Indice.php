@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Indice extends Model
 {
+    protected $table = 'indice';
     protected $primaryKey = 'id';
     protected $fillable = [
         'document_id', 'action', 'model', 'id_entry',

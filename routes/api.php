@@ -17,6 +17,9 @@ use App\Http\Controllers\SectionsController;
 
 Route::get('/sections', [SectionsController::class, 'show']);
 
+//CASES
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

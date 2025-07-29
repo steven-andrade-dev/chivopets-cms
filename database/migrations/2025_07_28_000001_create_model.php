@@ -44,7 +44,7 @@ return new class extends Migration
         });
 
         Schema::create('sections', function (Blueprint $table) {
-            $table->id('id_section');
+            $table->id();
             $table->string('name');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
@@ -55,8 +55,8 @@ return new class extends Migration
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
-        Schema::create('content', function (Blueprint $table) {
-            $table->id('id_content');
+        Schema::create('contents', function (Blueprint $table) {
+            $table->id();
             $table->string('title');
             $table->string('description');
             $table->string('image');
@@ -76,7 +76,7 @@ return new class extends Migration
         });
 
         Schema::create('carrusel_item', function (Blueprint $table) {
-            $table->id('id_carrusel');
+            $table->id();
             $table->unsignedBigInteger('id_content');
             $table->string('title');
             $table->string('subtitle');
@@ -98,7 +98,7 @@ return new class extends Migration
         });
 
         Schema::create('FAQ', function (Blueprint $table) {
-            $table->id('id_faq');
+            $table->id();
             $table->unsignedBigInteger('id_content');
             $table->string('question');
             $table->string('answer');
@@ -114,7 +114,7 @@ return new class extends Migration
         });
 
         Schema::create('description_case', function (Blueprint $table) {
-            $table->id('id_descrition');
+            $table->id();
             $table->string('description');
             $table->string('etiqueta');
             $table->timestamps();
@@ -127,7 +127,7 @@ return new class extends Migration
         });
 
         Schema::create('case', function (Blueprint $table) {
-            $table->id('id_case');
+            $table->id();
             $table->string('image');
             $table->string('image_author');
             $table->string('author');
@@ -149,7 +149,7 @@ return new class extends Migration
         });
 
         Schema::create('main', function (Blueprint $table) {
-            $table->id('id_main');
+            $table->id();
             $table->string('name');
             $table->string('url');
             $table->timestamps();
@@ -162,7 +162,7 @@ return new class extends Migration
         });
 
         Schema::create('submain', function (Blueprint $table) {
-            $table->id('id_submain');
+            $table->id();
             $table->unsignedBigInteger('id_main');
             $table->string('name');
             $table->string('url');
@@ -178,7 +178,7 @@ return new class extends Migration
         });
 
         Schema::create('socialmedia_terms', function (Blueprint $table) {
-            $table->id('id_submain');
+            $table->id();
             $table->string('name');
             $table->string('url');
             $table->string('icon');

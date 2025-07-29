@@ -7,10 +7,17 @@ import Carrusel from '../views/Carrusel.vue';
 import Questions from '../views/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
+import Language from '../views/language.vue';
 const routes = [
     {
         path: '/',
         redirect: '/login',
+    },
+     {
+        path: '/lenguage',
+        name: 'lenguage',
+        component: Language,
+        meta: { hideNavbar: true },
     },
     {
         path: '/login',

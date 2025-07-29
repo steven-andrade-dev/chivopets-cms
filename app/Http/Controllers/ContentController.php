@@ -6,12 +6,21 @@ use Illuminate\Http\Request;
 
 class ContentController extends Controller
 {
-    public function show(ContentService $contentService)
+    public function show(ContentService $contentService, Request $request)
     {
-       $contents = $contentService->getContent();
+       $id = $request->id;
+       $contents = $contentService->getContent($id);
        return response()->json([
         'data' => $contents
        ]);
+    }
+    public function showById(ContentService $contentService, Request $request)
+    {
+        $id = $request->id;
+        $content = $contentService->getContentById($id);
+        return response()->json([
+            'data' => $content
+        ]);
     }
     
 }

@@ -1,0 +1,367 @@
+<script setup lang="ts">
+import Navbar from '../../components/Navbar.vue';
+import Sidebar from '../../components/Sidebar.vue';
+import { useRoute } from 'vue-router';
+import { httpRequest } from '../../utils/global-request';
+import { onMounted, ref } from 'vue';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
+const route = useRoute()
+const id = route.params.id
+const content = ref([])
+const getContentById = async () => {
+    try {
+        const response = await httpRequest({
+            url: `/content-by-id/${id}`,
+            method: 'GET',
+        })
+        content.value = response.data
+        console.log(response)
+        console.log(content.value)
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+onMounted(() => {
+    getContentById()
+})
+
+
+</script>
+
+<template>
+    <div id="wrapper">
+        <Sidebar />
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <Navbar />
+                <div class="container-fluid">
+                    
+                    
+                    <div class="container">
+
+
+        <div class="card m-3">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="status-dot"></div>
+                    Editor de Contenido
+                </div>
+            </div>
+            
+            <div class="card-content">
+                <form id="hospitalForm">
+                    <!-- Información Básica -->
+                    <div class="section">
+                        <div class="section-header">
+                            <span class="badge">Básico</span>
+                            <h3 class="section-title">Información Principal</h3>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Título Principal</label>
+                            <input type="text" id="name" placeholder="Titulo" v-model="content.title" >
+                        </div>
+
+                       
+
+                        <div class="form-group">
+                            <label for="description">Descripción</label>
+                            <div id="app">
+                            <quill-editor theme="snow"></quill-editor>
+                            </div>
+                            <div class="help-text">El HTML se generará automáticamente</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="url">Texto del Botón</label>
+                            <input type="text" id="url" placeholder="Texto del botón de acción">
+                        </div>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <!-- Configuración Técnica -->
+                    <div class="section">
+                        <div class="section-header">
+                            <span class="badge secondary">Técnico</span>
+                            <h3 class="section-title">Configuración</h3>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id">ID</label>
+                                <input type="number" id="id">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_section">ID Sección</label>
+                                <input type="number" id="id_section">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="image">URL de Imagen</label>
+                                <input type="url" id="image" placeholder="https://ejemplo.com/imagen.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label for="locale">Idioma</label>
+                                <input type="text" id="locale" placeholder="es, en, etc.">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="type_carrusel">Tipo de Carrusel</label>
+                            <input type="text" id="type_carrusel" placeholder="Tipo de carrusel (opcional)">
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                       
+                        <button type="button" class="btn btn-success" onclick="downloadJson()">
+                            💾 Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+                </div>
+
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Chivo Pets</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</template>
+
+<style>
+
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    color: #1f2937;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background: #f8fafc;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 20px;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #10b981;
+}
+
+.card-content {
+    padding: 30px;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+}
+
+.badge.secondary {
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-row.single {
+    grid-template-columns: 1fr;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.help-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.separator {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 24px 0;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+    background: #f9fafb;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>

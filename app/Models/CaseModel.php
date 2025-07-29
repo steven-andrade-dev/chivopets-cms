@@ -8,12 +8,12 @@ class CaseModel extends Model
 {
     protected $table = 'case';
     protected $fillable = [
-        'image', 'image_author', 'author', 'area', 'name', 'introduction', 'id_description',
+        'image', 'image_author', 'author', 'area', 'name', 'introduction',
         'date', 'text_button', 'published_at', 'created_by_id', 'updated_by_id', 'locale'
     ];
 
     public function description()
     {
-        return $this->belongsTo(DescriptionCase::class, 'id_description', 'id_descrition');
+        return $this->hasMany(DescriptionCase::class, 'id', 'id_descrition');
     }
 }

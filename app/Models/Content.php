@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Content extends Model
 {
     protected $table = 'content';
-    protected $primaryKey = 'id_content';
     protected $fillable = [
         'title', 'description', 'image', 'subtitle', 'url', 'id_section',
-        'tipe_carrusel', 'published_at', 'created_by_id', 'updated_by_id', 'locale'
+        'type_carrusel', // 1- dinamico 2- estatico
+        'published_at', 'created_by_id', 'updated_by_id', 'locale'
     ];
 
     public function section()
@@ -23,7 +23,7 @@ class Content extends Model
         return $this->hasMany(FAQ::class, 'id_content');
     }
 
-    public function carruselItems()  
+    public function carruselItems()
     {
         return $this->hasMany(CarruselItem::class, 'id_content');
     }

@@ -20,7 +20,7 @@ use App\Http\Controllers\ContentController;
 Route::get('/sections', [SectionsController::class, 'show']);
 
 // CONTENT
-Route::post('/content', [ContentController::class, 'show']);
+Route::get('/content', [ContentController::class, 'show']);
 
 //CASES
 Route::get('/cases', [CasesController::class, 'get']);

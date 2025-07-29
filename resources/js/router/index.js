@@ -29,7 +29,7 @@ const routes = [
         component: Sections,
     },
     {
-        path: '/content',
+        path: '/content/:id?',
         name: 'content',
         component: Content,
     },

@@ -1,7 +1,7 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import TableData from '../components/TableData.vue'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import TableData from '../../components/TableData.vue'
 import { ref } from 'vue'
 const cases = ref([
     {

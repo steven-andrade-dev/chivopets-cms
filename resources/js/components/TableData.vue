@@ -25,8 +25,8 @@ const redirect = (id) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="section in data" :key="section.id">
-                                <td>{{ section.id }}</td>
+                            <tr v-for="(section, index) in data" :key="section.id">
+                                <td>{{ index + 1 }}</td>
                                 <td>{{ section.name }}</td>
                                 <td>
                                     <button class="btn btn-primary" @click="redirect(section.id)">Editar</button>

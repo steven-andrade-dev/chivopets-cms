@@ -2,24 +2,30 @@
 import Sidebar from '../../components/Sidebar.vue'
 import Navbar from '../../components/Navbar.vue'
 import TableData from '../../components/TableData.vue'
-import { ref } from 'vue'
-const sections = ref([
-    {
-        id: 1,
-        name: 'Contenido 1',
-        slug: 'contenido-1',
-    },
-    {
-        id: 2,
-        name: 'Contenido 2',
-        slug: 'contenido-2',
-    },
-    {
-        id: 3,
-        name: 'Contenido 3',
-        slug: 'contenido-3',
-    },
-])
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { httpRequest } from '../../utils/global-request'
+
+const route = useRoute()
+const id = route.params.id
+const content = ref([])
+
+const getContent = async () => {
+  try {
+    const response = await httpRequest({
+      url: `/content/${id}`,
+      method: 'GET',
+    })
+    content.value = response.data
+    content.value.son = 'edit-content'
+  } catch (err) {
+    console.error(err)
+  }
+}
+onMounted(() => {
+  getContent()
+})
+
 
 </script>
 
@@ -31,7 +37,7 @@ const sections = ref([
                 <Navbar />
                 <div class="container-fluid">
                     <h1>Contenido</h1>
-                    <TableData :data="sections" />
+                    <TableData :data="content" />
 
 
                 </div>

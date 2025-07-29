@@ -8,6 +8,7 @@ import Questions from '../views/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
 import Language from '../views/language.vue';
+import EditContent from '../views/Content/EditContent.vue';
 const routes = [
     {
         path: '/',
@@ -59,6 +60,11 @@ const routes = [
         path: '/tips',
         name: 'tips',
         component: Tips,
+    },
+    {
+        path: '/edit-content/:id',
+        name: 'edit-content',
+        component: EditContent,
     },
 ];
 

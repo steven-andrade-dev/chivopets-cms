@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             LocaleTablesSeeder::class,
             SectionsTableSeeder::class,
             ContentTableSeeder::class,
-            // FAQTableSeeder::class,
+            FAQTableSeeder::class,
         ]);
     }
 }

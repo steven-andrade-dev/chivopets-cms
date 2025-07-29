@@ -1,26 +1,29 @@
 <script setup>
 import Sidebar from '../components/Sidebar.vue'
 import Navbar from '../components/Navbar.vue'
+import { httpRequest } from '../utils/global-request'
+import { ref, onMounted } from 'vue'
 import TableData from '../components/TableData.vue'
-import { ref } from 'vue'
-const cases = ref([
-    {
-        id: 1,
-        name: 'Caso 1',
-        slug: 'caso-1',
-    },
-    {
-        id: 2,
-        name: 'Caso 2',
-        slug: 'caso-2',
-    },
-    {
-        id: 3,
-        name: 'Caso 3',
-        slug: 'caso-3',
-    },
-])
+const sections = ref([])
+
+const getSections = async () => {
+  try {
+    const response = await httpRequest({
+      url: '/sections',
+      method: 'GET',
+    })
+    sections.value = response.data
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+
+onMounted(() => {
+  getSections()
+})
 </script>
+
 <template>
     <div id="wrapper">
         <Sidebar />
@@ -28,8 +31,8 @@ const cases = ref([
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Casos</h1>
-                    <TableData :data="cases" />
+                    <h1>lenguage</h1>
+                    <TableData :data="sections" />
 
 
                 </div>
@@ -45,3 +48,4 @@ const cases = ref([
         </div>
     </div>
 </template>
+<

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\CasesController;
+use App\Http\Controllers\ContentController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,7 +16,11 @@ use App\Http\Controllers\CasesController;
 |
 */
 
+//SECTIONS
 Route::get('/sections', [SectionsController::class, 'show']);
+
+// CONTENT
+Route::post('/content', [ContentController::class, 'show']);
 
 //CASES
 Route::get('/cases', [CasesController::class, 'get']);

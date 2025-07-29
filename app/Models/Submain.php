@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Submain extends Model
 {
     protected $table = 'submains';
-    protected $primaryKey = 'id_submain';
     protected $fillable = ['id_main', 'name', 'url', 'published_at', 'created_by_id', 'updated_by_id', 'locale'];
 
     public function main()

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
-    protected $table = 'content';
+    protected $table = 'contents';
     protected $fillable = [
         'title', 'description', 'image', 'subtitle', 'url', 'id_section',
         'type_carrusel', // 1- dinamico 2- estatico

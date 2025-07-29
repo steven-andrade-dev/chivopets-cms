@@ -101,7 +101,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_content');
             $table->string('question');
-            $table->string('answer');
+            $table->text('answer');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();

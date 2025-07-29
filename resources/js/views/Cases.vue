@@ -2,24 +2,24 @@
 import Sidebar from '../components/Sidebar.vue'
 import Navbar from '../components/Navbar.vue'
 import TableData from '../components/TableData.vue'
-import { ref } from 'vue'
-const cases = ref([
-    {
-        id: 1,
-        name: 'Caso 1',
-        slug: 'caso-1',
-    },
-    {
-        id: 2,
-        name: 'Caso 2',
-        slug: 'caso-2',
-    },
-    {
-        id: 3,
-        name: 'Caso 3',
-        slug: 'caso-3',
-    },
-])
+import { ref, onMounted } from 'vue'
+import { httpRequest } from '../utils/global-request'
+const cases = ref([])
+
+const getCases = async () => {
+  try {
+    const response = await httpRequest({
+      url: '/cases',
+      method: 'GET',
+    })
+    cases.value = response.data
+  } catch (err) {
+    console.error(err)
+  }
+}
+onMounted(() => {
+  getCases()
+})
 </script>
 <template>
     <div id="wrapper">

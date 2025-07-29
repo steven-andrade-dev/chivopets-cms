@@ -1,28 +1,26 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import TableData from '../components/TableData.vue'
-import { ref } from 'vue'
-const sections = ref([
-    {
-        id: 1,
-        name: 'Contenido 1',
-        slug: 'contenido-1',
-    },
-    {
-        id: 2,
-        name: 'Contenido 2',
-        slug: 'contenido-2',
-    },
-    {
-        id: 3,
-        name: 'Contenido 3',
-        slug: 'contenido-3',
-    },
-])
+import Sidebar from '../../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import TableData from '../../components/TableData.vue'
+import { ref, onMounted } from 'vue'
+import { httpRequest } from '../../utils/global-request'
+const cases = ref([])
 
+const getCases = async () => {
+  try {
+    const response = await httpRequest({
+      url: '/cases',
+      method: 'GET',
+    })
+    cases.value = response.data
+  } catch (err) {
+    console.error(err)
+  }
+}
+onMounted(() => {
+  getCases()
+})
 </script>
-
 <template>
     <div id="wrapper">
         <Sidebar />
@@ -30,8 +28,8 @@ const sections = ref([
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Contenido</h1>
-                    <TableData :data="sections" />
+                    <h1>Casos</h1>
+                    <TableData :data="cases" />
 
 
                 </div>

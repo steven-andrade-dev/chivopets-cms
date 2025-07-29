@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Sections from '../views/Sections.vue';
-import Content from '../views/Content.vue';
+import Content from '../views/Content/Content.vue';
 import Carrusel from '../views/Carrusel.vue';
 import Questions from '../views/Questions.vue';
-import Cases from '../views/Cases.vue';
+import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
 const routes = [
     {

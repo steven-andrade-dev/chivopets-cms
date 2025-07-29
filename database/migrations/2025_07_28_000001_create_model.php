@@ -30,14 +30,29 @@ return new class extends Migration
             $table->foreign('id_rol')->references('rol_id')->on('rol')->onDelete('cascade');
         });
 
-        Schema::create('section', function (Blueprint $table) {
+
+
+        Schema::create('locals', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('code');
+            $table->timestamps();
+            $table->datetime('published_at')->nullable();
+            $table->integer('created_by_id')->nullable();
+            $table->integer('updated_by_id')->nullable();
+            $table->string('locale')->nullable();
+        });
+
+        Schema::create('sections', function (Blueprint $table) {
             $table->id('id_section');
             $table->string('name');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
         Schema::create('content', function (Blueprint $table) {
@@ -53,9 +68,11 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
 
-            $table->foreign('id_section')->references('id_section')->on('section')->onDelete('cascade');
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
+
+            $table->foreign('id_section')->references('id_section')->on('sections')->onDelete('cascade');
         });
 
         Schema::create('carrusel_item', function (Blueprint $table) {
@@ -73,7 +90,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
             $table->foreign('id_content')->references('id_content')->on('content')->onDelete('cascade');
         });
@@ -87,7 +106,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
             $table->foreign('id_content')->references('id_content')->on('content')->onDelete('cascade');
         });
@@ -100,7 +121,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
         Schema::create('case', function (Blueprint $table) {
@@ -118,7 +141,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
             $table->foreign('id_description')->references('id_descrition')->on('description_case')->onDelete('cascade');
         });
@@ -131,7 +156,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
         Schema::create('submain', function (Blueprint $table) {
@@ -143,7 +170,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
             $table->foreign('id_main')->references('id_main')->on('main')->onDelete('cascade');
         });
@@ -157,19 +186,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
-        });
+            $table->unsignedBigInteger('id_locale');
 
-        Schema::create('locale', function (Blueprint $table) {
-            $table->id();
-            $table->string('document_id');
-            $table->string('name');
-            $table->string('code');
-            $table->timestamps();
-            $table->datetime('published_at')->nullable();
-            $table->integer('created_by_id')->nullable();
-            $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
         Schema::create('indice', function (Blueprint $table) {
@@ -184,7 +203,9 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
     }
 

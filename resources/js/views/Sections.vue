@@ -13,6 +13,7 @@ const getSections = async () => {
       method: 'GET',
     })
     sections.value = response.data
+    sections.value.son = 'content'
   } catch (err) {
     console.error(err)
   }

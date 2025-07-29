@@ -21,8 +21,8 @@ use App\Http\Controllers\LocaleController;
 Route::get('/sections', [SectionsController::class, 'show']);
 
 // CONTENT
-Route::post('/content', [ContentController::class, 'show']);
-
+Route::get('/content/{id?}', [ContentController::class, 'show']);
+Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
 //CASES
 Route::get('/cases', [CasesController::class, 'get']);
 Route::post('/create-case', [CasesController::class, 'createCase']);

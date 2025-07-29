@@ -1,10 +1,19 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const props = defineProps({
     data: {
         type: Array,
+        son: String,
         required: true
     }
 })
+
+const redirect = (id) => {
+    router.push(`/${props.data.son}/${id}`)
+}
 </script>
 <template>
       <table class="table">
@@ -12,17 +21,15 @@ const props = defineProps({
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Slug</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="section in data" :key="section.id">
-                                <td>{{ section.id }}</td>
+                            <tr v-for="(section, index) in data" :key="section.id">
+                                <td>{{ index + 1 }}</td>
                                 <td>{{ section.name }}</td>
-                                <td>{{ section.slug }}</td>
                                 <td>
-                                    <button class="btn btn-primary">Editar</button>
+                                    <button class="btn btn-primary" @click="redirect(section.id)">Editar</button>
                                 </td>
                             </tr>
                         </tbody>

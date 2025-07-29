@@ -8,8 +8,12 @@ class ContentService
 {
     public function __construct(private ContentRepositoryInterface $repo) {}
 
-    public function getContent()
+    public function getContent($id)
     {
-        return $this->repo->get_all_content();
+        return $this->repo->get_all_content($id);
+    }
+    public function getContentById($id)
+    {
+        return $this->repo->get_content_by_id($id);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
-    protected $table = 'content';
+    protected $table = 'contents';
     protected $fillable = [
         'title', 'description', 'image', 'subtitle', 'url', 'id_section',
         'type_carrusel', // 1- dinamico 2- estatico
@@ -26,5 +26,10 @@ class Content extends Model
     public function carruselItems()
     {
         return $this->hasMany(CarruselItem::class, 'id_content');
+    }
+
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class, 'id_locale');
     }
 }

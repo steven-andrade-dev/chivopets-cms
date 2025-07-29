@@ -8,7 +8,11 @@ class LocaleRepository implements LocaleRepositoryInterface
 {
     public function get_all_locale()
     {
-        return Locale::all();
+    $locales = Locale::withCount('contents')->get();
+    foreach ($locales as $locale) {
+        $locale->can_delete = $locale->contents_count === 0;
+    }
+    return $locales;
     }
 
     public function get_locale_by_id($id)

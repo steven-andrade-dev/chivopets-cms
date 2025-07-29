@@ -75,7 +75,7 @@ return new class extends Migration
             $table->foreign('id_section')->references('id')->on('sections')->onDelete('cascade');
         });
 
-        Schema::create('carrusel_item', function (Blueprint $table) {
+        Schema::create('carrusel_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_content');
             $table->string('title');
@@ -97,7 +97,7 @@ return new class extends Migration
             $table->foreign('id_content')->references('id')->on('contents')->onDelete('cascade');
         });
 
-        Schema::create('FAQ', function (Blueprint $table) {
+        Schema::create('FAQs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_content');
             $table->string('question');
@@ -113,19 +113,6 @@ return new class extends Migration
             $table->foreign('id_content')->references('id')->on('contents')->onDelete('cascade');
         });
 
-        Schema::create('description_case', function (Blueprint $table) {
-            $table->id();
-            $table->string('description');
-            $table->string('etiqueta');
-            $table->timestamps();
-            $table->datetime('published_at')->nullable();
-            $table->integer('created_by_id')->nullable();
-            $table->integer('updated_by_id')->nullable();
-            $table->unsignedBigInteger('id_locale');
-
-            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
-        });
-
         Schema::create('case', function (Blueprint $table) {
             $table->id();
             $table->string('image');
@@ -134,7 +121,6 @@ return new class extends Migration
             $table->string('area');
             $table->string('name');
             $table->string('introduction');
-            $table->unsignedBigInteger('id_description');
             $table->datetime('date');
             $table->string('text_button');
             $table->timestamps();
@@ -144,7 +130,20 @@ return new class extends Migration
             $table->unsignedBigInteger('id_locale');
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
+        });
 
+        Schema::create('description_case', function (Blueprint $table) {
+            $table->id();
+            $table->string('description');
+            $table->string('etiqueta');
+            $table->timestamps();
+            $table->datetime('published_at')->nullable();
+            $table->integer('created_by_id')->nullable();
+            $table->integer('updated_by_id')->nullable();
+            $table->unsignedBigInteger('id_locale');
+            $table->unsignedBigInteger('id_description');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
             $table->foreign('id_description')->references('id')->on('description_case')->onDelete('cascade');
         });
 
@@ -218,8 +217,8 @@ return new class extends Migration
         Schema::dropIfExists('main');
         Schema::dropIfExists('case');
         Schema::dropIfExists('description_case');
-        Schema::dropIfExists('FAQ');
-        Schema::dropIfExists('carrusel_item');
+        Schema::dropIfExists('FAQs');
+        Schema::dropIfExists('carrusel_items');
         Schema::dropIfExists('contents');
         Schema::dropIfExists('sections');
         Schema::dropIfExists('user');

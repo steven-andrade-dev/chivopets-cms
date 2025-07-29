@@ -13,7 +13,8 @@ class MainTablaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('main')->insert([[
+        DB::table('main')->insert([
+            [
                 'name' => 'Quiénes Somos',
                 'url' => 'iz65e21qcql5xe119arsd99j',
                 'created_at' => '2025-07-10 20:41:48.014000',

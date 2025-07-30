@@ -7,6 +7,7 @@ use App\Http\Controllers\CasesController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +18,9 @@ use App\Http\Controllers\LocaleController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+//Authentication
+Route::post('/login', [AuthController::class, 'login']);
 
 //SECTIONS
 Route::get('/sections', [SectionsController::class, 'show']);

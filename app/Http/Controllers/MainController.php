@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\MainService;
 use App\Http\Controllers\BaseController;
-
 use App\Helpers\ResponseMessages;
 
 class MainController extends BaseController

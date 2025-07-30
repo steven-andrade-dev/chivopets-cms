@@ -3,26 +3,27 @@ import Sidebar from '../components/Sidebar.vue'
 import Navbar from '../components/Navbar.vue'
 import { httpRequest } from '../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/TableData.vue'
-const sections = ref([])
+import TableData from '../components/Lenguage/TableLenguage.vue'
 
-const getSections = async () => {
+const locales = ref([])
+
+const getLocales = async () => {
   try {
     const response = await httpRequest({
-      url: '/sections',
+      url: '/locales',
       method: 'GET',
     })
-    sections.value = response.data
+    locales.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
 
-
 onMounted(() => {
-  getSections()
+  getLocales()
 })
 </script>
+
 
 <template>
     <div id="wrapper">
@@ -31,10 +32,8 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>lenguage</h1>
-                    <TableData :data="sections" />
-
-
+                    <h1>Idioma</h1>
+                    <TableData :data="locales" @refresh="getLocales" />
                 </div>
 
             </div>
@@ -48,4 +47,4 @@ onMounted(() => {
         </div>
     </div>
 </template>
-<
+

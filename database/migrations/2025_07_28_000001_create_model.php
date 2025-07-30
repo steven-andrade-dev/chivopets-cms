@@ -58,7 +58,8 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
+            $table->text('bloque_principal')->nullable();
+            $table->text('bloque_secundario')->nullable();
             $table->string('image')->nullable();
             $table->string('subtitle')->nullable();
             $table->string('url')->nullable();
@@ -101,7 +102,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_content');
             $table->string('question');
-            $table->string('answer');
+            $table->text('answer');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Navbar from "../../components/Navbar.vue";
 import Sidebar from "../../components/Sidebar.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { httpRequest } from "../../utils/global-request";
 import { onMounted, ref } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
@@ -10,6 +10,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 const contenidoHtml = ref('');
 const route = useRoute();
+const router = useRouter();
 const id = route.params.id;
 const content = ref([]);
 
@@ -72,7 +73,7 @@ const getContentById = async () => {
             method: "GET",
         });
         content.value = response.data;
-        contenidoHtml.value = response.data.description;
+        contenidoHtml.value = response.data.bloque_principal;
         console.log(response);
         console.log(content.value);
     } catch (err) {
@@ -82,6 +83,10 @@ const getContentById = async () => {
 
 const guardarContent = async () => {
     console.log(contenidoHtml.value);
+}
+
+const regresar = () => {
+    router.go(-1);
 }
 
 onMounted(() => {
@@ -118,7 +123,7 @@ onMounted(() => {
 
                                         <div class="form-group">
                                             <label for="name">Título Principal</label>
-                                            <input type="text" id="name" placeholder="Titulo" v-model="content.title" />
+                                            <input type="text" id="name" placeholder="Titulo" v-model="content.name" />
                                         </div>
 
                                         <div class="form-group">
@@ -193,16 +198,7 @@ onMounted(() => {
                                             </h3>
                                         </div>
 
-                                        <div class="form-row">
-                                            <div class="form-group">
-                                                <label for="id">ID</label>
-                                                <input type="number" id="id" v-model="content.id" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="id_section">ID Sección</label>
-                                                <input type="number" id="id_section" v-model="content.id_section" />
-                                            </div>
-                                        </div>
+
 
                                         <div class="form-row">
                                             <div class="form-group">
@@ -227,6 +223,9 @@ onMounted(() => {
                                     </div>
 
                                     <div class="actions">
+                                        <button type="button" class="btn btn-secondary" @click="regresar">
+                                            ← Regresar
+                                        </button>
                                         <button type="button" class="btn btn-success" @click="guardarContent">
                                             💾 Guardar
                                         </button>

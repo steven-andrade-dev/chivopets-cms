@@ -27,6 +27,7 @@ class ContentController extends Controller
     public function updateContent(StoreSectionRequest $request)
     {
         $validated = $request->validated();
+        
         $content = $this->contentService->updateContent($validated);
         return response()->json([
             'data' => $content

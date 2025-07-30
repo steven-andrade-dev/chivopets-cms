@@ -11,7 +11,7 @@ class StoreSectionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,9 +24,9 @@ class StoreSectionRequest extends FormRequest
         return [
             "id" => "required|integer",
             "title" => "required|string",
-            "description" => "required|string",
+            "bloque_principal" => "required|string",
+            "bloque_secundario" => "required|string",
             "url" => "required|string",
-            "locale" => "required|string",
         ];
     }
 }

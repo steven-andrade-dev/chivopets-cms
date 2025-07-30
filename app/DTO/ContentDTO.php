@@ -7,7 +7,8 @@ class ContentDTO
     public function __construct(
         public readonly int $id,
         public readonly ?string $name,
-        public readonly ?string $description,
+        public readonly ?string $bloque_principal,
+        public readonly ?string $bloque_secundario,
         public readonly ?string  $image,
         public readonly ?string $subtitle,
         public readonly ?string $url,
@@ -21,7 +22,8 @@ class ContentDTO
         return new self(
             id: $content->id_content ?? $content->id ?? 0,
             name: $content->title,
-            description: $content->description,
+            bloque_principal: $content->bloque_principal,
+            bloque_secundario: $content->bloque_secundario,
             image: $content->image,
             subtitle: $content->subtitle,
             url: $content->url,

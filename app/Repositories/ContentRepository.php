@@ -24,10 +24,7 @@ class ContentRepository implements ContentRepositoryInterface
     public function update_content($validated)
     {
         $content = Content::find($validated['id']);
-        $content->title = $validated['title'];
-        $content->description = $validated['description'];
-        $content->url = $validated['url'];
-        $content->locale = $validated['locale'];
+        $content->fill($validated);
         $content->save();
         return $content;
     }

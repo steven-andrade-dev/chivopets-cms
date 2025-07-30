@@ -6,4 +6,5 @@ interface ContentRepositoryInterface
 {
     public function get_all_content($id);
     public function get_content_by_id($id);
+    public function update_content($validated);
 }

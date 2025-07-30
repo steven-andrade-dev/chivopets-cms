@@ -17,8 +17,9 @@ class ContentRepository implements ContentRepositoryInterface
 
     public function get_content_by_id($id)
     {
-        $content = Content::find($id);
-        return $content ? ContentDTO::fromModel($content) : null;
+        $content = Content::with('carruselItems')->find($id);
+        //return $content ? ContentDTO::fromModel($content) : null;
+        return $content;
     }
 
     public function update_content($validated)

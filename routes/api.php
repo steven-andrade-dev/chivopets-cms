@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\CasesController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,12 +21,16 @@ use App\Http\Controllers\RolController;
 |
 */
 
+//Authentication
+Route::post('/login', [AuthController::class, 'login']);
+
 //SECTIONS
 Route::get('/sections', [SectionsController::class, 'show']);
 
 // CONTENT
 Route::get('/content/{id?}', [ContentController::class, 'show']);
 Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
+Route::post('/content/update-content', [ContentController::class, 'updateContent']);
 //CASES
 Route::get('/cases', [CasesController::class, 'get']);
 Route::post('/create-case', [CasesController::class, 'createCase']);
@@ -52,3 +58,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 */
+Route::prefix('astro/main')->group(function () {
+    Route::get('/getAllMain', [MainController::class, 'getAllMain']);
+});

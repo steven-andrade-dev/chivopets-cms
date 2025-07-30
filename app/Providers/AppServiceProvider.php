@@ -15,6 +15,9 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Interfaces\RolRepositoryInterface;
 use App\Repositories\RolRepository;
+use App\Interfaces\MainRepositoryInterface;
+use App\Repositories\MainRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ContentRepositoryInterface::class, ContentRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RolRepositoryInterface::class, RolRepository::class);
+        $this->app->bind(MainRepositoryInterface::class, MainRepository::class);
+
     }
 
     /**

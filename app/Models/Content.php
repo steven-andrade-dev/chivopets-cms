@@ -8,7 +8,7 @@ class Content extends Model
 {
     protected $table = 'contents';
     protected $fillable = [
-        'title', 'description', 'image', 'subtitle', 'url', 'id_section',
+        'title', 'bloque_principal','bloque_secundario', 'image', 'subtitle', 'url', 'id_section',
         'type_carrusel', // 1- dinamico 2- estatico
         'published_at', 'created_by_id', 'updated_by_id', 'locale'
     ];

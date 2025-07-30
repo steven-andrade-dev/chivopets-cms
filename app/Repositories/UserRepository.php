@@ -9,12 +9,12 @@ class UserRepository implements UserRepositoryInterface
 {
     public function get_all_user()
     {
-        return User::all();
+        return User::with('rol')->get();
     }
 
     public function get_user_by_id($id)
     {
-        return User::find($id);
+        return User::with('rol')->find($id); 
     }
 
     public function create_user(array $data)

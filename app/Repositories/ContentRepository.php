@@ -17,6 +17,15 @@ class ContentRepository implements ContentRepositoryInterface
 
     public function get_content_by_id($id)
     {
-        return Content::find($id);
+        $content = Content::find($id);
+        return $content ? ContentDTO::fromModel($content) : null;
+    }
+
+    public function update_content($validated)
+    {
+        $content = Content::find($validated['id']);
+        $content->fill($validated);
+        $content->save();
+        return $content;
     }
 }

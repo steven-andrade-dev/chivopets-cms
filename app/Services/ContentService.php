@@ -16,4 +16,9 @@ class ContentService
     {
         return $this->repo->get_content_by_id($id);
     }
+
+    public function updateContent($validated)
+    {
+        return $this->repo->update_content($validated);
+    }
 }

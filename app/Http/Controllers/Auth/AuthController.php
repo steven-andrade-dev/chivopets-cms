@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\ResponseMessages;
+use App\Http\Controllers\BaseController;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     public function login(Request $request){
         $request->validate([
@@ -24,10 +26,12 @@ class AuthController extends Controller
         // Crea token
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
+        $data = [
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => $user,
-        ]);
+        ];
+
+        return $this->sendReponse($data, ResponseMessages::successLogin(), 200);
     }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\CasesController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\LocaleController;
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +38,8 @@ Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('astro/main')->group(function () {
+    Route::get('/getAllMain', [MainController::class, 'getAllMain']);
 });

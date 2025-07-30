@@ -7,8 +7,11 @@ import Carrusel from '../views/Carrusel.vue';
 import Questions from '../views/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
-import Language from '../views/language.vue';
+import Language from '../views/lenguage.vue';
 import EditContent from '../views/Content/EditContent.vue';
+import User from '../views/User.vue';
+import Rol from '../views/Rol.vue';
+
 const routes = [
     {
         path: '/',
@@ -18,7 +21,6 @@ const routes = [
         path: '/lenguage',
         name: 'lenguage',
         component: Language,
-        meta: { hideNavbar: true },
     },
     {
         path: '/login',
@@ -27,9 +29,20 @@ const routes = [
         meta: { hideNavbar: true },
     },
     {
+        path: '/roles',
+        name: 'roles',
+        component: Rol,
+    },
+    
+    {
         path: '/home',
         name: 'home',
         component: Home,
+    },
+    {
+        path: '/user',
+        name: 'user',
+        component: User,
     },
     {
         path: '/sections',

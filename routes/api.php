@@ -7,6 +7,8 @@ use App\Http\Controllers\CasesController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
@@ -39,12 +41,23 @@ Route::post('/locales', [LocaleController::class, 'add']);
 Route::put('/locales/{id}', [LocaleController::class, 'update']);
 Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
+// USERS
+Route::get('/users', [UserController::class, 'show']);
+Route::post('/users', [UserController::class, 'add']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
+// ROL
+Route::get('/rol', [RolController::class, 'show']);
+Route::post('/rol', [RolController::class, 'add']);
+Route::put('/rol/{id}', [RolController::class, 'update']);
+Route::delete('/rol/{id}', [RolController::class, 'destroy']);
 
+/*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+*/
 Route::prefix('astro/main')->group(function () {
     Route::get('/getAllMain', [MainController::class, 'getAllMain']);
 });

@@ -11,29 +11,29 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['refresh'])
-const selectedLocale = ref(null)
+const selecteduser = ref(null)
 const showModal = ref(false)
 
-const openModal = (locale) => {
-  selectedLocale.value = { ...locale }
+const openModal = (user) => {
+  selecteduser.value = { ...user }
   showModal.value = true
   document.body.classList.add('modal-open')
 }
 
 const closeModal = () => {
   showModal.value = false
-  selectedLocale.value = null
+  selecteduser.value = null
   document.body.classList.remove('modal-open')
 }
 
 
 // Crear
-const createLocale = async () => {
+const createUser = async () => {
   try {
     const response = await httpRequest({
-      url: '/locales',
+      url: '/users',
       method: 'POST',
-      data: selectedLocale.value
+      data: selecteduser.value
     })
     emit('refresh')
     closeModal()
@@ -44,12 +44,12 @@ const createLocale = async () => {
 }
 
 // Editar
-const updateLocale = async () => {
+const updateUser = async () => {
   try {
     const response = await httpRequest({
-      url: `/locales/${selectedLocale.value.id}`,
+      url: `/users/${selecteduser.value.id}`,
       method: 'PUT',
-      data: selectedLocale.value
+      data: selecteduser.value
     })
     emit('refresh')
     closeModal()
@@ -60,7 +60,7 @@ const updateLocale = async () => {
 }
 
 // Eliminar
-const deleteLocale = async () => {
+const deleteUser = async () => {
   const result = await Swal.fire({
     title: '¿Estás seguro?',
     text: 'Esta acción no se puede deshacer.',
@@ -73,7 +73,7 @@ const deleteLocale = async () => {
 
   try {
     await httpRequest({
-      url: `/locales/${selectedLocale.value.id}`,
+      url: `/users/${selecteduser.value.id}`,
       method: 'DELETE'
     })
     emit('refresh')
@@ -84,11 +84,11 @@ const deleteLocale = async () => {
 }
 
 
-const saveLocale = async () => {
-  if (selectedLocale.value.id) {
-    await updateLocale()
+const saveUser = async () => {
+  if (selecteduser.value.id) {
+    await updateUser()
   } else {
-    await createLocale()
+    await createUser()
   }
 }
 
@@ -112,12 +112,12 @@ const saveLocale = async () => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="locale in data" :key="locale.id">
-        <td>{{ locale.id }}</td>
-        <td>{{ locale.name }}</td>
-        <td>{{ locale.code }}</td>
+      <tr v-for="user in data" :key="user.id">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
         <td>
-          <button class="btn btn-primary btn-sm" @click="openModal(locale)">Editar</button>
+          <button class="btn btn-primary btn-sm" @click="openModal(user)">Editar</button>
         </td>
       </tr>
     </tbody>
@@ -128,7 +128,7 @@ const saveLocale = async () => {
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ selectedLocale.id ? 'Editar Idioma' : 'Agregar Idioma' }}</h5>
+          <h5 class="modal-title">{{ selecteduser.id ? 'Editar Usuario' : 'Agregar Usuario' }}</h5>
           <button type="button" class="close" @click="closeModal">
             <span>&times;</span>
           </button>
@@ -137,21 +137,27 @@ const saveLocale = async () => {
           <form>
             <div class="form-group mb-3">
               <label>Nombre</label>
-              <input v-model="selectedLocale.name" type="text" class="form-control" />
+              <input v-model="selecteduser.name" type="text" class="form-control" />
             </div>
             <div class="form-group mb-3">
-              <label>Código</label>
-              <input v-model="selectedLocale.code" type="text" class="form-control" />
+              <label>Email</label>
+              <input v-model="selecteduser.email" type="text" class="form-control" />
+            </div>
+            <div class="form-group mb-3">
+              <label>Password</label>
+              <input type="password" class="form-control" />
             </div>
           </form>
         </div>
         <div class="modal-footer d-flex justify-content-between">
-          <button class="btn btn-danger" v-if="selectedLocale.id" @click="deleteLocale">
-            Eliminar
-          </button>
-          <div class="">
-             <button class="btn btn-secondary me-2" @click="closeModal">Cancelar</button>
-            <button class="btn btn-primary" @click="saveLocale">Guardar</button>
+          <div>
+            <button class="btn btn-danger w-auto  " v-if="selecteduser.id" @click="deleteUser">
+              Eliminar
+            </button>
+          </div>
+          <div>
+            <button class="btn btn-secondary me-2" @click="closeModal">Cancelar</button>
+            <button class="btn btn-primary" @click="saveUser">Guardar</button>
           </div>
         </div>
       </div>

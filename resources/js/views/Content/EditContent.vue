@@ -1,34 +1,92 @@
 <script setup lang="ts">
-import Navbar from '../../components/Navbar.vue';
-import Sidebar from '../../components/Sidebar.vue';
-import { useRoute } from 'vue-router';
-import { httpRequest } from '../../utils/global-request';
-import { onMounted, ref } from 'vue';
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import Navbar from "../../components/Navbar.vue";
+import Sidebar from "../../components/Sidebar.vue";
+import { useRoute } from "vue-router";
+import { httpRequest } from "../../utils/global-request";
+import { onMounted, ref } from "vue";
+import { QuillEditor } from "@vueup/vue-quill";
+import Quill from "quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
-const route = useRoute()
-const id = route.params.id
-const content = ref([])
+const contenidoHtml = ref('');
+const route = useRoute();
+const id = route.params.id;
+const content = ref([]);
+
+const SizeStyle = Quill.import("attributors/style/size");
+SizeStyle.whitelist = [
+    "12px",
+    "14px",
+    "16px",
+    "18px",
+    "24px",
+    "32px",
+    "48px",
+    "53px",
+];
+Quill.register(SizeStyle, true);
+
+const globalOptions = {
+    debug: "",
+    modules: {
+        toolbar: "#custom-toolbar",
+        // Otros módulos disponibles:
+        history: {
+            delay: 2000,
+            maxStack: 500,
+            userOnly: true,
+        },
+        clipboard: {
+            matchVisual: false,
+        },
+        keyboard: {
+            bindings: {},
+        },
+
+        syntax: true, // true para resaltar código (necesita highlight.js)
+    },
+    formats: [
+        "size",
+        "color",
+        "bold",
+        "italic",
+        "underline",
+        "strike",
+        "blockquote",
+        "code-block",
+        "list",
+        "bullet",
+        "link",
+        "image",
+        "video",
+    ],
+    theme: "snow",
+};
+// set default globalOptions prop
+QuillEditor.props.globalOptions.default = () => globalOptions;
+
 const getContentById = async () => {
     try {
         const response = await httpRequest({
             url: `/content-by-id/${id}`,
-            method: 'GET',
-        })
-        content.value = response.data
-        console.log(response)
-        console.log(content.value)
+            method: "GET",
+        });
+        content.value = response.data;
+        contenidoHtml.value = response.data.description;
+        console.log(response);
+        console.log(content.value);
     } catch (err) {
-        console.error(err)
+        console.error(err);
     }
+};
+
+const guardarContent = async () => {
+    console.log(contenidoHtml.value);
 }
 
 onMounted(() => {
-    getContentById()
-})
-
-
+    getContentById();
+});
 </script>
 
 <template>
@@ -38,99 +96,146 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    
-                    
                     <div class="container">
+                        <div class="card m-3">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <div class="status-dot"></div>
+                                    Editor de Contenido
+                                </div>
+                            </div>
 
+                            <div class="card-content">
+                                <form id="hospitalForm">
+                                    <!-- Información Básica -->
+                                    <div class="section">
+                                        <div class="section-header">
+                                            <span class="badge">Básico</span>
+                                            <h3 class="section-title">
+                                                Información Principal
+                                            </h3>
+                                        </div>
 
-        <div class="card m-3">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="status-dot"></div>
-                    Editor de Contenido
+                                        <div class="form-group">
+                                            <label for="name">Título Principal</label>
+                                            <input type="text" id="name" placeholder="Titulo" v-model="content.title" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="description">Descripción</label>
+                                            <div id="custom-toolbar">
+                                                <select class="ql-size">
+                                                    <option value="12px">
+                                                        12 px
+                                                    </option>
+                                                    <option value="14px">
+                                                        14 px
+                                                    </option>
+                                                    <option value="16px">
+                                                        16 px
+                                                    </option>
+                                                    <option value="18px">
+                                                        18 px
+                                                    </option>
+                                                    <option value="24px">
+                                                        24 px
+                                                    </option>
+                                                    <option value="32px">
+                                                        32 px
+                                                    </option>
+                                                    <option value="48px">
+                                                        48 px
+                                                    </option>
+                                                    <option value="53px">
+                                                        53 px
+                                                    </option>
+                                                </select>
+                                                <button class="ql-bold"></button>
+                                                <button class="ql-italic"></button>
+                                                <button class="ql-underline"></button>
+                                                <select class="ql-color"></select>
+                                                <button class="ql-list" value="ordered"></button>
+                                                <button class="ql-list" value="bullet"></button>
+                                                <button class="ql-link"></button>
+                                                <button class="ql-clean"></button>
+                                            </div>
+                                            <quill-editor ref="editorRef" 
+                                            theme="snow" 
+                                            toolbar="#custom-toolbar"
+                                            contentType="html"
+                                            :global-options="globalOptions" 
+                                            v-model:content="contenidoHtml" />
+                                            <div class="help-text">
+                                                El HTML se generará
+                                                automáticamente
+                                            </div>
+                                            <div style="margin-top:20px;">
+                                            <strong>Vista previa HTML:</strong>
+                                            <div v-html="contenidoHtml" style="border:1px solid #eee;padding:12px;"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="url">Texto del Botón</label>
+                                            <input type="text" id="url" placeholder="Texto del botón de acción"
+                                            v-model="content.url" />
+                                        </div>
+                                    </div>
+
+                                    <div class="separator"></div>
+
+                                    <!-- Configuración Técnica -->
+                                    <div class="section">
+                                        <div class="section-header">
+                                            <span class="badge secondary">Técnico</span>
+                                            <h3 class="section-title">
+                                                Configuración
+                                            </h3>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="id">ID</label>
+                                                <input type="number" id="id" v-model="content.id" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id_section">ID Sección</label>
+                                                <input type="number" id="id_section" v-model="content.id_section" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="image">URL de Imagen</label>
+                                                <input type="url" id="image"
+                                                    placeholder="https://ejemplo.com/imagen.jpg"
+                                                    v-model="content.image" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="locale">Idioma</label>
+                                                <input type="text" id="locale" placeholder="es, en, etc."
+                                                    v-model="content.locale" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="type_carrusel">Tipo de Carrusel</label>
+                                            <input type="text" id="type_carrusel"
+                                                placeholder="Tipo de carrusel (opcional)"
+                                                v-model="content.type_carrusel" />
+                                        </div>
+                                    </div>
+
+                                    <div class="actions">
+                                        <button type="button" class="btn btn-success" @click="guardarContent">
+                                            💾 Guardar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="card-content">
-                <form id="hospitalForm">
-                    <!-- Información Básica -->
-                    <div class="section">
-                        <div class="section-header">
-                            <span class="badge">Básico</span>
-                            <h3 class="section-title">Información Principal</h3>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">Título Principal</label>
-                            <input type="text" id="name" placeholder="Titulo" v-model="content.title" >
-                        </div>
-
-                       
-
-                        <div class="form-group">
-                            <label for="description">Descripción</label>
-                            <div id="app">
-                            <quill-editor theme="snow"></quill-editor>
-                            </div>
-                            <div class="help-text">El HTML se generará automáticamente</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="url">Texto del Botón</label>
-                            <input type="text" id="url" placeholder="Texto del botón de acción">
-                        </div>
-                    </div>
-
-                    <div class="separator"></div>
-
-                    <!-- Configuración Técnica -->
-                    <div class="section">
-                        <div class="section-header">
-                            <span class="badge secondary">Técnico</span>
-                            <h3 class="section-title">Configuración</h3>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="id">ID</label>
-                                <input type="number" id="id">
-                            </div>
-                            <div class="form-group">
-                                <label for="id_section">ID Sección</label>
-                                <input type="number" id="id_section">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="image">URL de Imagen</label>
-                                <input type="url" id="image" placeholder="https://ejemplo.com/imagen.jpg">
-                            </div>
-                            <div class="form-group">
-                                <label for="locale">Idioma</label>
-                                <input type="text" id="locale" placeholder="es, en, etc.">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="type_carrusel">Tipo de Carrusel</label>
-                            <input type="text" id="type_carrusel" placeholder="Tipo de carrusel (opcional)">
-                        </div>
-                    </div>
-
-                    <div class="actions">
-                       
-                        <button type="button" class="btn btn-success" onclick="downloadJson()">
-                            💾 Guardar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-                </div>
-
             </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -144,8 +249,6 @@ onMounted(() => {
 </template>
 
 <style>
-
-
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -259,7 +362,8 @@ label {
     margin-bottom: 6px;
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
     padding: 12px 16px;
     border: 1px solid #d1d5db;
@@ -269,7 +373,8 @@ input, textarea {
     background: white;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -355,11 +460,11 @@ textarea {
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .actions {
         flex-direction: column;
     }
-    
+
     .header h1 {
         font-size: 1.5rem;
     }

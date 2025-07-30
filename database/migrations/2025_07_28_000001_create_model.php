@@ -8,30 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('rol', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-            $table->datetime('published_at')->nullable();
-            $table->integer('created_by_id')->nullable();
-            $table->integer('updated_by_id')->nullable();
-        });
-
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('lastname');
-            $table->unsignedBigInteger('id_rol');
-            $table->timestamps();
-            $table->datetime('published_at')->nullable();
-            $table->integer('created_by_id')->nullable();
-            $table->integer('updated_by_id')->nullable();
-
-            $table->foreign('id_rol')->references('id')->on('rol')->onDelete('cascade');
-        });
-
-
-
         Schema::create('locals', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -161,7 +137,7 @@ return new class extends Migration
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
-        Schema::create('submain', function (Blueprint $table) {
+        Schema::create('submains', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_main');
             $table->string('name');
@@ -214,7 +190,7 @@ return new class extends Migration
         Schema::dropIfExists('indice');
         Schema::dropIfExists('locale');
         Schema::dropIfExists('socialmedia_terms');
-        Schema::dropIfExists('submain');
+        Schema::dropIfExists('submains');
         Schema::dropIfExists('main');
         Schema::dropIfExists('case');
         Schema::dropIfExists('description_case');

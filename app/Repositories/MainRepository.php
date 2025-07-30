@@ -10,6 +10,6 @@ class MainRepository implements MainRepositoryInterface
 {
     public function get_all_main()
     {
-        return Main::all()->map(fn($main) => MainDTO::fromModel($main));
+        return Main::with('submains')->get()->map(fn($main) => MainDTO::fromModel($main));
     }
 }

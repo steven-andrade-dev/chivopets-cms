@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Services\ContentService;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSectionRequest;
+use App\Http\Controllers\BaseController;
+
 class ContentController extends Controller
 {
     public function __construct(private ContentService $contentService) {}
@@ -33,5 +35,5 @@ class ContentController extends Controller
             'data' => $content
         ]);
     }
-    
+
 }

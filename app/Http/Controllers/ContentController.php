@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Services\ContentService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
 
 class ContentController extends Controller
 {
@@ -14,6 +15,7 @@ class ContentController extends Controller
         'data' => $contents
        ]);
     }
+
     public function showById(ContentService $contentService, Request $request)
     {
         $id = $request->id;
@@ -22,5 +24,5 @@ class ContentController extends Controller
             'data' => $content
         ]);
     }
-    
+
 }

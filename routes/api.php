@@ -24,7 +24,7 @@ Route::get('/sections', [SectionsController::class, 'show']);
 // CONTENT
 Route::get('/content/{id?}', [ContentController::class, 'show']);
 Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
-Route::post('/update-content', [ContentController::class, 'updateContent']);
+Route::post('/content/update-content', [ContentController::class, 'updateContent']);
 //CASES
 Route::get('/cases', [CasesController::class, 'get']);
 Route::post('/create-case', [CasesController::class, 'createCase']);

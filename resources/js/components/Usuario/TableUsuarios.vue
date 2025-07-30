@@ -15,7 +15,7 @@ const selecteduser = ref(null)
 const showModal = ref(false)
 
 const openModal = (user) => {
-  selecteduser.value = { ...user }
+  selecteduser.value = { ...user, password: '' }  
   showModal.value = true
   document.body.classList.add('modal-open')
 }
@@ -141,11 +141,11 @@ const saveUser = async () => {
             </div>
             <div class="form-group mb-3">
               <label>Email</label>
-              <input v-model="selecteduser.email" type="text" class="form-control" />
+              <input v-model="selecteduser.email" type="email" class="form-control" />
             </div>
             <div class="form-group mb-3">
               <label>Password</label>
-              <input type="password" class="form-control" />
+              <input v-model="selecteduser.password" type="password" class="form-control" />
             </div>
           </form>
         </div>

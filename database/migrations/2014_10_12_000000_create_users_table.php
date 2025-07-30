@@ -11,6 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('rol', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+            $table->datetime('published_at')->nullable();
+            $table->integer('created_by_id')->nullable();
+            $table->integer('updated_by_id')->nullable();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -19,6 +28,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->unsignedBigInteger('id_rol');
+
+            $table->foreign('id_rol')->references('id')->on('rol')->onDelete('cascade');
         });
     }
 

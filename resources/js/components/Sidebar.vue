@@ -54,7 +54,7 @@
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                 data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="/home">Roles</a>
+                    <a class="collapse-item" href="/roles">Roles</a>
                     <a class="collapse-item" href="/home">Permisos</a>
                     <a class="collapse-item" href="/home">Menus</a>
                     <a class="collapse-item" href="/lenguage">Idioma</a>
@@ -64,7 +64,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="/user">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Usuarios</span></a>
         </li>

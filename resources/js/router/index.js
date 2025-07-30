@@ -9,6 +9,8 @@ import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
 import Language from '../views/language.vue';
 import EditContent from '../views/Content/EditContent.vue';
+import User from '../views/User.vue';
+
 const routes = [
     {
         path: '/',
@@ -30,6 +32,11 @@ const routes = [
         path: '/home',
         name: 'home',
         component: Home,
+    },
+    {
+        path: '/user',
+        name: 'user',
+        component: User,
     },
     {
         path: '/sections',

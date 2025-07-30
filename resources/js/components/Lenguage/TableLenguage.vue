@@ -145,10 +145,12 @@ const saveLocale = async () => {
             </div>
           </form>
         </div>
-        <div class="modal-footer d-flex justify-content-between">
-          <button class="btn btn-danger" v-if="selectedLocale.id && selectedLocale.can_delete" @click="deleteLocale">
+        <div class="modal-footer d-flex justify-content-between align-items-center">
+          <div class="flex-shrink-0">
+            <button class="btn btn-danger w-auto" v-if="selectedLocale.id && selectedLocale.can_delete" @click="deleteLocale">
             Eliminar
             </button>
+          </div>
           <div class="">
              <button class="btn btn-secondary me-2" @click="closeModal">Cancelar</button>
             <button class="btn btn-primary" @click="saveLocale">Guardar</button>

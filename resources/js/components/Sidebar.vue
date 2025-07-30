@@ -64,7 +64,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="/user">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Usuarios</span></a>
         </li>

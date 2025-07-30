@@ -6,6 +6,7 @@ use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\CasesController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,8 +34,14 @@ Route::post('/locales', [LocaleController::class, 'add']);
 Route::put('/locales/{id}', [LocaleController::class, 'update']);
 Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
+// USERS
+Route::get('/users', [UserController::class, 'show']);
+Route::post('/users', [UserController::class, 'add']);
+Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-
+/*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+*/

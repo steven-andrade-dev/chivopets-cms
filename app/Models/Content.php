@@ -23,9 +23,9 @@ class Content extends Model
         return $this->hasMany(FAQ::class, 'id_content');
     }
 
-    public function carruselItems()
+    public function contentCarousel()
     {
-        return $this->hasMany(CarruselItem::class, 'id_content');
+        return $this->hasMany(ContentCarousel::class, 'id_content');
     }
 
     public function locale()

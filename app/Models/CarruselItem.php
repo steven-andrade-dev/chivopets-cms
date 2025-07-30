@@ -8,12 +8,12 @@ class CarruselItem extends Model
 {
     protected $table = 'carrusel_items';
     protected $fillable = [
-        'id_content', 'title', 'subtitle', 'image', 'href', 'introduction', 'description', 'value',
+         'title', 'subtitle', 'image', 'href', 'introduction', 'description', 'value',
         'title_info_aditional', 'published_at', 'created_by_id', 'updated_by_id', 'locale'
     ];
 
     public function content()
     {
-        return $this->belongsTo(Content::class, 'id_content');
+        return $this->belongsTo(ContentCarousel::class, 'id_carousel');
     }
 }

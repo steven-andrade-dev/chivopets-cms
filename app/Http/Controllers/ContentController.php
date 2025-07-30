@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Services\ContentService;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSectionRequest;
+use App\Helpers\ResponseMessages;
 
 class ContentController extends BaseController
 {
@@ -25,16 +26,17 @@ class ContentController extends BaseController
         ]);
     }
 
-    public function updateContent(StoreSectionRequest $request)
+    public function update(StoreSectionRequest $request)
     {
        try {
-        $validated = $request->validated();
-        $content = $this->contentService->updateContent($validated);
+        $content = $this->contentService->updateContent($request->all());
         return $this->sendResponse("Content updated successfully", ResponseMessages::successList(), 200);
 
        } catch (\Exception $e) {
-        return $this->sendError(ResponseMessages::errorUpdate(), [], 400);
+        return $this->sendError(ResponseMessages::errorEception(),$e->getMessage(), 400);
        }
+       
+      
     }
 
 }

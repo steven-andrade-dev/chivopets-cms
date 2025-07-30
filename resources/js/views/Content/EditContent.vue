@@ -82,7 +82,27 @@ const getContentById = async () => {
 };
 
 const guardarContent = async () => {
-    console.log(contenidoHtml.value);
+    const data = {
+        id: id,
+        title: content.value.name,
+        bloque_principal: contenidoHtml.value,
+        bloque_secundario: content.value.bloque_secundario,
+        url: content.value.url,
+    }
+   try {
+    const response = await httpRequest({
+        url: '/contenido/update',
+        method: 'PUT',
+        data: data
+    });
+    if(response.success){
+       alert(response.msg);
+    }else{
+        alert(response.msg);
+    }
+   }catch(err){
+    console.error(err);
+   }
 }
 
 const regresar = () => {

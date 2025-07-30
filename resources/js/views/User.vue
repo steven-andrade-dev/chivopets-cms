@@ -18,10 +18,26 @@ const getUsers = async () => {
     console.error(err)
   }
 }
+const roles = ref([])
+
+const getRoles = async () => {
+  try {
+    const response = await httpRequest({
+      url: '/rol',
+      method: 'GET',
+    })
+    roles.value = response.data
+  } catch (err) {
+    console.error(err)
+  }
+}
 
 onMounted(() => {
   getUsers()
+  getRoles()
 })
+
+
 </script>
 
 
@@ -33,7 +49,7 @@ onMounted(() => {
                 <Navbar />
                 <div class="container-fluid">
                     <h1>Usuarios</h1>
-                    <TableData :data="users" @refresh="getUsers" />
+                    <TableData :data="users" :roles="roles" @refresh="getUsers" />
                 </div>
 
             </div>

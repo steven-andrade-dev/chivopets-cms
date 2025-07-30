@@ -8,6 +8,10 @@ const props = defineProps({
   data: {
     type: Array,
     required: true
+  },
+  roles: {
+    type: Array,
+    required: true
   }
 })
 const emit = defineEmits(['refresh'])
@@ -108,6 +112,7 @@ const saveUser = async () => {
         <th scope="col">#</th>
         <th scope="col">Nombre</th>
         <th scope="col">Email</th>
+        <th scope="col">Rol</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -116,6 +121,7 @@ const saveUser = async () => {
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
+        <td>{{ user.rol.name }}</td>
         <td>
           <button class="btn btn-primary btn-sm" @click="openModal(user)">Editar</button>
         </td>
@@ -146,6 +152,13 @@ const saveUser = async () => {
             <div class="form-group mb-3">
               <label>Password</label>
               <input v-model="selecteduser.password" type="password" class="form-control" />
+            </div>
+            <div class="form-group mb-3">
+              <label>Rol</label>
+              <select v-model="selecteduser.id_rol" class="form-control">
+                <option disabled value="">Selecciona un rol</option>
+                <option v-for="rol in roles" :key="rol.id" :value="rol.id">{{ rol.name }}</option>
+              </select>
             </div>
           </form>
         </div>

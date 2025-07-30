@@ -54,7 +54,6 @@ return new class extends Migration
 
         Schema::create('carrusel_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_content');
             $table->string('title');
             $table->string('subtitle');
             $table->string('image');
@@ -70,8 +69,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_locale');
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
-
-            $table->foreign('id_content')->references('id')->on('contents')->onDelete('cascade');
         });
 
         Schema::create('FAQs', function (Blueprint $table) {
@@ -118,10 +115,10 @@ return new class extends Migration
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
             $table->unsignedBigInteger('id_locale');
-            $table->unsignedBigInteger('id_description');
+            $table->unsignedBigInteger('id_case');
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
-            $table->foreign('id_description')->references('id')->on('description_case')->onDelete('cascade');
+            $table->foreign('id_case')->references('id')->on('case')->onDelete('cascade');
         });
 
         Schema::create('main', function (Blueprint $table) {

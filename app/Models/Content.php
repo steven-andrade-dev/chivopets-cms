@@ -27,4 +27,9 @@ class Content extends Model
     {
         return $this->hasMany(CarruselItem::class, 'id_content');
     }
+
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class, 'id_locale');
+    }
 }

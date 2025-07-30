@@ -58,7 +58,8 @@ return new class extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
+            $table->text('bloque_principal')->nullable();
+            $table->text('bloque_secundario')->nullable();
             $table->string('image')->nullable();
             $table->string('subtitle')->nullable();
             $table->string('url')->nullable();

@@ -28,7 +28,6 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="/sections">Secciones</a>
                     <a class="collapse-item" href="/content">Contenido</a>
-                    <a class="collapse-item" href="/carrusel">Carrusel</a>
                     <a class="collapse-item" href="/questions">Preguntas</a>
                     <a class="collapse-item" href="/cases">Casos</a>
                     <a class="collapse-item" href="/tips">Tips</a>

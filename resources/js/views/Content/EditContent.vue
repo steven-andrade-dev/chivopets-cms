@@ -260,7 +260,7 @@ onMounted(() => {
                                             ← Regresar
                                         </button>
                                         <button type="button" class="btn btn-success" @click="guardarContent">
-                                            💾 Guardar
+                                             Guardar
                                         </button>
                                     </div>
                                 </form>

@@ -3,7 +3,6 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Sections from '../views/Sections.vue';
 import Content from '../views/Content/Content.vue';
-import Carrusel from '../views/Carrusel.vue';
 import Questions from '../views/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
@@ -12,6 +11,7 @@ import EditContent from '../views/Content/EditContent.vue';
 import User from '../views/User.vue';
 import Rol from '../views/Rol.vue';
 import Main from '../views/Main.vue';
+import NotFound from '../views/NotFound.vue';
 
 const routes = [
     {
@@ -62,11 +62,6 @@ const routes = [
         component: Content,
     },
     {
-        path: '/carrusel',
-        name: 'carrusel',
-        component: Carrusel,
-    },
-    {
         path: '/questions',
         name: 'questions',
         component: Questions,
@@ -85,6 +80,11 @@ const routes = [
         path: '/edit-content/:id',
         name: 'edit-content',
         component: EditContent,
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: NotFound,
     },
 ];
 

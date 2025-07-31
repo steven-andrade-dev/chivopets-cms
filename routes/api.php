@@ -25,6 +25,9 @@ use App\Http\Controllers\Auth\AuthController;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    //Auth
+    Route::post('/logout', [AuthController::class, 'logout']);
+
    //SECTIONS
     Route::get('/sections', [SectionsController::class, 'show']);
 

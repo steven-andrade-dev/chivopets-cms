@@ -34,4 +34,9 @@ class AuthController extends BaseController
 
         return $this->sendResponse($data, ResponseMessages::successLogin(), 200);
     }
+
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+        return $this->sendResponse([], ResponseMessages::successLogout(), 200);
+    }
 }

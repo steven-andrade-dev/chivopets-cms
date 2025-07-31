@@ -13,6 +13,11 @@ class MainRepository implements MainRepositoryInterface
         return Main::with('submains')->get()->map(fn($main) => MainDTO::fromModel($main));
     }
 
+    public function get_Main_with_locale()
+    {
+        return Main::with('locale')->get();
+    }
+
      public function get_main_by_id($id)
     {
         return Main::find($id);

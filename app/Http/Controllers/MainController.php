@@ -15,6 +15,12 @@ class MainController extends BaseController
        return $this->sendResponse($mainList, ResponseMessages::successList(), 200);
     }
 
+     public function show(MainService $mainService)
+    {
+       $main = $mainService->getMainWithLocale();
+       return $this->sendResponse($main, ResponseMessages::successList(), 200);
+    }
+    
     public function store(Request $request, MainService $mainService)
     {
         $data = $request->all();

@@ -53,4 +53,9 @@ class ResponseMessages
     {
         return 'Credenciales incorrectas';
     }
+
+    public static function successLogout(): string
+    {
+        return 'Sesión cerrada exitosamente';
+    }
 }

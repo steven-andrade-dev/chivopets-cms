@@ -9,7 +9,7 @@
                     <router-link to="/home" class="nav-link text-white">🏠 Inicio</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/login" class="nav-link text-white">🚪 Logout</router-link>
+                    <button class="nav-link text-white" @click="logout">🚪 Logout</button>
                 </li>
             </ul>
         </div>
@@ -30,7 +30,11 @@
 </template>
 
 <script>
-export default {
-    name: 'DashboardLayout',
-};
+    import { useRouter } from 'vue-router'
+    const router = useRouter()
+
+    const logout = () => {
+        localStorage.removeItem("auth_token")
+        router.push('/login')
+    }
 </script>

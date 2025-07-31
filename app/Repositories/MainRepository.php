@@ -12,4 +12,28 @@ class MainRepository implements MainRepositoryInterface
     {
         return Main::with('submains')->get()->map(fn($main) => MainDTO::fromModel($main));
     }
+
+     public function get_main_by_id($id)
+    {
+        return Main::find($id);
+    }
+    
+        public function create_main(array $data)
+    {
+        return Main::create($data);
+    }
+
+    public function update_main($id, array $data)
+    {
+        $main = Main::findOrFail($id);
+        $main->update($data);
+        return $main;
+    }
+
+    public function delete_main($id)
+    {
+        $main = Main::findOrFail($id);
+        $main->delete();
+        return true;
+    }
 }

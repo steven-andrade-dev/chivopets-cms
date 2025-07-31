@@ -11,6 +11,7 @@ import Language from '../views/lenguage.vue';
 import EditContent from '../views/Content/EditContent.vue';
 import User from '../views/User.vue';
 import Rol from '../views/Rol.vue';
+import Main from '../views/Main.vue';
 
 const routes = [
     {
@@ -29,15 +30,21 @@ const routes = [
         meta: { hideNavbar: true },
     },
     {
+        path: '/main',
+        name: 'main',
+        component: Main,
+    },
+    {
         path: '/roles',
         name: 'roles',
         component: Rol,
     },
-    
+
     {
         path: '/home',
         name: 'home',
         component: Home,
+        meta: { requiresAuth: true }
     },
     {
         path: '/user',
@@ -85,5 +92,17 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("auth_token")
+
+  if ((to.path === '/' || to.path === '/login') && token) {
+    next('/home')
+  } else if (to.meta.requiresAuth && !token) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default router;

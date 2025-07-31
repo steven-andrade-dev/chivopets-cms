@@ -8,7 +8,11 @@ class RolRepository implements RolRepositoryInterface
 {
     public function get_all_rol()
     {
-        return Rol::all();
+        $roles = Rol::withCount('users')->get();
+        foreach ($roles as $role) {
+            $role->can_delete = $role->users_count === 0;
+        }
+        return $roles;
     }
 
     public function get_rol_by_id($id)

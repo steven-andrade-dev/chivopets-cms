@@ -3,40 +3,39 @@ import Sidebar from '../components/Sidebar.vue'
 import Navbar from '../components/Navbar.vue'
 import { httpRequest } from '../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Usuario/TableUsuarios.vue'
+import TableData from '../components/Main/TableMain.vue'
 
-const users = ref([])
+const main = ref([])
 
-const getUsers = async () => {
+const getMain = async () => {
   try {
     const response = await httpRequest({
-      url: '/users',
+      url: '/main',
       method: 'GET',
     })
-    users.value = response.data
+    main.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
-const roles = ref([])
+const locales = ref([])
 
-const getRoles = async () => {
+const getLocales = async () => {
   try {
     const response = await httpRequest({
-      url: '/rol',
+      url: '/locales',
       method: 'GET',
     })
-    roles.value = response.data
+    locales.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
 
 onMounted(() => {
-  getUsers()
-  getRoles()
+  getMain()
+  getLocales()
 })
-
 
 </script>
 
@@ -48,8 +47,8 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Usuarios</h1>
-                    <TableData :data="users" :roles="roles" @refresh="getUsers" />
+                    <h1>Menu</h1>
+                    <TableData :data="main" :locales="locales" @refresh="getMain" />
                 </div>
 
             </div>

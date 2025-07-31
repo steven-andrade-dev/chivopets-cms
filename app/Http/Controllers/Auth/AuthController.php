@@ -20,7 +20,7 @@ class AuthController extends BaseController
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Credenciales incorrectas'], 401);
+            return $this->sendResponse([], ResponseMessages::incorrectCredentialLogin(), 401);
         }
 
         // Crea token
@@ -32,6 +32,6 @@ class AuthController extends BaseController
             'user' => $user,
         ];
 
-        return $this->sendReponse($data, ResponseMessages::successLogin(), 200);
+        return $this->sendResponse($data, ResponseMessages::successLogin(), 200);
     }
 }

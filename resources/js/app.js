@@ -13,4 +13,6 @@ import './sb-admin-2.min.js';
 import '../css/sb-admin-2.min.css';
 import '../css/font/all.min.css';
 
-createApp(App).use(router).mount('#app');
+const app = createApp(App);
+
+app.use(router).mount('#app');

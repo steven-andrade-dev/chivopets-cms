@@ -51,36 +51,27 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/">Logout</a>
+                    <button class="btn btn-primary" @click="logout">Logout</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-import Sidebar from '../components/Sidebar.vue';
-import Navbar from '../components/Navbar.vue';
-import BreadCrumb from '../components/Breadcrumb.vue';
+<script setup>
+    import { ref } from 'vue'
+    import { useRouter } from 'vue-router'
+    import Sidebar from '../components/Sidebar.vue'
+    import Navbar from '../components/Navbar.vue'
+    import BreadCrumb from '../components/Breadcrumb.vue'
 
-export default {
-    name: 'Home',
-    components: { Sidebar, Navbar, BreadCrumb },
-    data(){
-        return {
-            edad: 0
-        }
-    },
-    watch(){
+    // Router
+    const router = useRouter()
 
-    },
-    computed() {
-
-    },
-    methods: {
-        calcularEdad(){
-            this.edad = 27;
-        }
+    // Métodos
+    function logout() {
+         $('#logoutModal').modal('hide')
+        localStorage.removeItem("auth_token")
+        router.push('/login')
     }
-};
 </script>

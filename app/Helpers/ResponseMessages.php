@@ -48,4 +48,9 @@ class ResponseMessages
     {
         return 'Inicio de sesión exitoso.';
     }
+
+    public static function incorrectCredentialLogin(): string
+    {
+        return 'Credenciales incorrectas';
+    }
 }

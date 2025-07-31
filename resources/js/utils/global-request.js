@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
-  timeout: 10000
+  withCredentials: true,
 })
 
 export async function httpRequest({
@@ -23,7 +23,7 @@ export async function httpRequest({
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? `Bearer ${token}` : '',
-        ...headers
+        ...headers,
       }
     })
     return response.data

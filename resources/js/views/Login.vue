@@ -1,3 +1,36 @@
+<script setup>
+    import { ref, onMounted } from 'vue'
+    import { httpRequest } from '../utils/global-request'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
+    const user = ref([])
+
+    const login = async () => {
+        if (!user.value.email || !user.value.password) {
+            alert('Por favor completa todos los campos');
+            return;
+        }
+        const data = {
+            email: user.value.email,
+            password: user.value.password,
+        }
+        try {
+            const response = await httpRequest({
+                data: data,
+                url: `/login`,
+                method: 'POST',
+            })
+
+            console.log(response)
+
+            router.push('/home')
+        } catch (err) {
+            console.error(err)
+        }
+    }
+</script>
+
 <template>
   <div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
     <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
@@ -11,7 +44,7 @@
           <input
             type="email"
             id="email"
-            v-model="email"
+            v-model="user.email"
             class="form-control"
             placeholder="usuario@ejemplo.com"
             required
@@ -22,7 +55,7 @@
           <input
             type="password"
             id="password"
-            v-model="password"
+            v-model="user.password"
             class="form-control"
             placeholder="********"
             required
@@ -35,28 +68,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'Login',
-  data() {
-    return {
-      email: '',
-      password: '',
-    };
-  },
-  methods: {
-    login() {
-      if (!this.email || !this.password) {
-        alert('Por favor completa todos los campos');
-        return;
-      }
-
-      console.log('Login con:', this.email, this.password);
-
-
-      this.$router.push('/home'); // Simula login exitoso
-    },
-  },
-};
-</script>

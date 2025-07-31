@@ -2,6 +2,7 @@
     import { ref, onMounted } from 'vue'
     import { httpRequest } from '../utils/global-request'
     import { useRouter } from 'vue-router'
+    import Swal from 'sweetalert2'
 
     const router = useRouter()
     const user = ref([])
@@ -22,10 +23,25 @@
                 method: 'POST',
             })
 
-            console.log(response)
+            localStorage.setItem("auth_token", response.data.access_token)
 
             router.push('/home')
         } catch (err) {
+            console.log(err.status)
+            if (err.status == 401) {
+                Swal.fire({
+                    title: 'Error',
+                    text: err.response.data.msg,
+                    icon: 'error',
+                })
+
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al procesar la solicitud, Intenta nuevamente',
+                    icon: 'error',
+                })
+            }
             console.error(err)
         }
     }

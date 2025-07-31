@@ -32,6 +32,6 @@ class AuthController extends BaseController
             'user' => $user,
         ];
 
-        return $this->sendReponse($data, ResponseMessages::successLogin(), 200);
+        return $this->sendResponse($data, ResponseMessages::successLogin(), 200);
     }
 }

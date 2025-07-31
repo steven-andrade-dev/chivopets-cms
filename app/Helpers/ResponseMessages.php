@@ -43,4 +43,19 @@ class ResponseMessages
     {
         return 'Ocurrió un error, intente nuevamente.';
     }
+
+    public static function successLogin(): string
+    {
+        return 'Inicio de sesión exitoso.';
+    }
+
+    public static function incorrectCredentialLogin(): string
+    {
+        return 'Credenciales incorrectas';
+    }
+
+    public static function successLogout(): string
+    {
+        return 'Sesión cerrada exitosamente';
+    }
 }

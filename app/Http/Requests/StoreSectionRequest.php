@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreSectionRequest extends FormRequest
 {
@@ -25,8 +27,18 @@ class StoreSectionRequest extends FormRequest
             "id" => "required|integer",
             "title" => "required|string",
             "bloque_principal" => "required|string",
-            "bloque_secundario" => "required|string",
-            "url" => "required|string",
+            "bloque_secundario" => "nullable|string",
+            "url" => "nullable|string",
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'errorCode' => 2,
+            'errors' => $validator->errors(),
+            'msg' => 'Revisar campos obligatorios.'
+        ], 422));
     }
 }

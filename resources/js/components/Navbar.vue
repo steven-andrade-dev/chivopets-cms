@@ -55,7 +55,66 @@
                     </a>
                 </div>
             </li>
-
+            <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cerrar Sesión</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Selecciona "Cerrar Sesión" si esta listo para terminar su sesión actual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-primary" @click="logout">Cerrar Sesión</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </ul>
     </nav>
 </template>
+
+<script setup>
+    import { useRouter } from 'vue-router'
+    import Swal from 'sweetalert2'
+    import { httpRequest } from '../utils/global-request'
+
+    // Router
+    const router = useRouter()
+
+    // Métodos
+    const logout = async () => {
+        try {
+            const response = await httpRequest({
+                url: `/logout`,
+                method: 'POST',
+            })
+
+            $('#logoutModal').modal('hide')
+
+            localStorage.removeItem("auth_token")
+            router.push('/login')
+        } catch (err) {
+            console.log(err.status)
+            if (err.status == 401) {
+                Swal.fire({
+                    title: 'Error',
+                    text: err.response.data.msg,
+                    icon: 'error',
+                })
+
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error al procesar la solicitud, Intenta nuevamente',
+                    icon: 'error',
+                })
+            }
+            console.error(err)
+        }
+    }
+</script>

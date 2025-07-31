@@ -24,47 +24,47 @@ use App\Http\Controllers\Auth\AuthController;
 //Authentication
 Route::post('/login', [AuthController::class, 'login']);
 
-//SECTIONS
-Route::get('/sections', [SectionsController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function () {
+    //Auth
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-// CONTENT
-Route::get('/content/{id?}', [ContentController::class, 'show']);
-Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
-Route::post('/content/update-content', [ContentController::class, 'updateContent']);
-//CASES
-Route::get('/cases', [CasesController::class, 'get']);
-Route::post('/create-case', [CasesController::class, 'createCase']);
+   //SECTIONS
+    Route::get('/sections', [SectionsController::class, 'show']);
 
-// LOCALES
-Route::get('/locales', [LocaleController::class, 'show']);
-Route::post('/locales', [LocaleController::class, 'add']);
-Route::put('/locales/{id}', [LocaleController::class, 'update']);
-Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
+    // CONTENT
+    Route::get('/content/{id?}', [ContentController::class, 'show']);
+    Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
+    Route::put('/contenido/update', [ContentController::class, 'update']);
+    //CASES
+    Route::get('/cases', [CasesController::class, 'get']);
+    Route::post('/create-case', [CasesController::class, 'createCase']);
 
-// USERS
-Route::get('/users', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    // LOCALES
+    Route::get('/locales', [LocaleController::class, 'show']);
+    Route::post('/locales', [LocaleController::class, 'add']);
+    Route::put('/locales/{id}', [LocaleController::class, 'update']);
+    Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
-// ROL
-Route::get('/rol', [RolController::class, 'show']);
-Route::post('/rol', [RolController::class, 'add']);
-Route::put('/rol/{id}', [RolController::class, 'update']);
-Route::delete('/rol/{id}', [RolController::class, 'destroy']);
+    // USERS
+    Route::get('/users', [UserController::class, 'show']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-// MAIN
-Route::get('/mainlocale', [MainController::class, 'show']);
-Route::get('/main', [MainController::class, 'getAllMain']);
-Route::post('/main', [MainController::class, 'store']);
-Route::put('/main/{id}', [MainController::class, 'update']);
-Route::delete('/main/{id}', [MainController::class, 'destroy']);
+    // ROL
+    Route::get('/rol', [RolController::class, 'show']);
+    Route::post('/rol', [RolController::class, 'add']);
+    Route::put('/rol/{id}', [RolController::class, 'update']);
+    Route::delete('/rol/{id}', [RolController::class, 'destroy']);
 
-/*
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // MAIN
+    Route::get('/mainlocale', [MainController::class, 'show']);
+    Route::get('/main', [MainController::class, 'getAllMain']);
+    Route::post('/main', [MainController::class, 'store']);
+    Route::put('/main/{id}', [MainController::class, 'update']);
+    Route::delete('/main/{id}', [MainController::class, 'destroy']);
 });
-*/
+
 Route::prefix('astro/main')->group(function () {
     Route::get('/locale', [MainController::class, 'show']);
     Route::get('/getAllMain', [MainController::class, 'getAllMain']);

@@ -57,7 +57,6 @@
                     <a class="collapse-item" href="/roles">Roles</a>
                     <a class="collapse-item" href="/home">Permisos</a>
                     <a class="collapse-item" href="/main">Menus</a>
-                    <a class="collapse-item" href="/main">Submenus</a>
                     <a class="collapse-item" href="/lenguage">Idioma</a>
                 </div>
             </div>

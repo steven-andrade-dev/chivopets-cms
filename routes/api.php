@@ -54,6 +54,7 @@ Route::put('/rol/{id}', [RolController::class, 'update']);
 Route::delete('/rol/{id}', [RolController::class, 'destroy']);
 
 // MAIN
+Route::get('/mainlocale', [MainController::class, 'show']);
 Route::get('/main', [MainController::class, 'getAllMain']);
 Route::post('/main', [MainController::class, 'store']);
 Route::put('/main/{id}', [MainController::class, 'update']);
@@ -65,5 +66,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 */
 Route::prefix('astro/main')->group(function () {
+    Route::get('/locale', [MainController::class, 'show']);
     Route::get('/getAllMain', [MainController::class, 'getAllMain']);
 });

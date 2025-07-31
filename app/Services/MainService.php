@@ -12,6 +12,11 @@ class MainService
     {
         return $this->repo->get_all_main();
     }
+
+    public function getMainWithLocale()
+    {
+        return $this->repo->get_Main_with_locale();
+    }
      public function createMain(array $data)
     {
         return $this->repo->create_main($data);

@@ -7,6 +7,7 @@ import { onMounted, ref } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import Quill from "quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import CarruselItem from "../../components/Content/CarruselItem.vue";
 
 const contenidoHtml = ref('');
 const route = useRoute();
@@ -74,8 +75,12 @@ const getContentById = async () => {
         });
         content.value = response.data;
         contenidoHtml.value = response.data.bloque_principal;
-        console.log(response);
-        console.log(content.value);
+        
+        // Asegurar que carruselItems existe
+        if (!content.value.carruselItems) {
+            content.value.carruselItems = [];
+        }
+
     } catch (err) {
         console.error(err);
     }
@@ -88,6 +93,9 @@ const guardarContent = async () => {
         bloque_principal: contenidoHtml.value,
         bloque_secundario: content.value.bloque_secundario,
         url: content.value.url,
+        carruselItems: content.value.carruselItems,
+        image: content.value.image,
+        id_locale: content.value.id_locale,
     }
    try {
     const response = await httpRequest({
@@ -101,7 +109,7 @@ const guardarContent = async () => {
         alert(response.msg);
     }
    }catch(err){
-    console.error(err);
+    alert("Error al guardar el contenido");
    }
 }
 
@@ -135,19 +143,19 @@ onMounted(() => {
                                     <!-- Información Básica -->
                                     <div class="section">
                                         <div class="section-header">
-                                            <span class="badge">Básico</span>
+                                            <span class="badge badge-pill badge-primary">Básico</span>
                                             <h3 class="section-title">
                                                 Información Principal
                                             </h3>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="name">Título Principal</label>
+                                            <label for="name">Nombre del contenido</label>
                                             <input type="text" id="name" placeholder="Titulo" v-model="content.name" />
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="description">Descripción</label>
+                                            <label for="description">Bloque Principal</label>
                                             <div id="custom-toolbar">
                                                 <select class="ql-size">
                                                     <option value="12px">
@@ -195,7 +203,7 @@ onMounted(() => {
                                                 automáticamente
                                             </div>
                                             <div style="margin-top:20px;">
-                                            <strong>Vista previa HTML:</strong>
+                                                <label>Vista previa HTML:</label>
                                             <div v-html="contenidoHtml" style="border:1px solid #eee;padding:12px;"></div>
                                             </div>
                                         </div>
@@ -204,6 +212,15 @@ onMounted(() => {
                                             <label for="url">Texto del Botón</label>
                                             <input type="text" id="url" placeholder="Texto del botón de acción"
                                             v-model="content.url" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="type_carrusel">Ediicion de contenido del carrusel</label>
+                                            <CarruselItem 
+                                                :items="content.carruselItems || []" 
+                                                :type_carrusel="content.type_carrusel"
+                                                @update:items="content.carruselItems = $event" 
+                                            />
+                                            
                                         </div>
                                     </div>
 
@@ -220,7 +237,7 @@ onMounted(() => {
 
 
 
-                                        <div class="form-row">
+                                       
                                             <div class="form-group">
                                                 <label for="image">URL de Imagen</label>
                                                 <input type="url" id="image"
@@ -229,17 +246,13 @@ onMounted(() => {
                                             </div>
                                             <div class="form-group">
                                                 <label for="locale">Idioma</label>
-                                                <input type="text" id="locale" placeholder="es, en, etc."
-                                                    v-model="content.locale" />
+                                                <select id="locale" class="form-select" v-model="content.id_locale">
+                                                    <option value="1">Español</option>
+                                                    <option value="2">Inglés</option>
+                                                </select>
                                             </div>
-                                        </div>
+                                        
 
-                                        <div class="form-group">
-                                            <label for="type_carrusel">Tipo de Carrusel</label>
-                                            <input type="text" id="type_carrusel"
-                                                placeholder="Tipo de carrusel (opcional)"
-                                                v-model="content.type_carrusel" />
-                                        </div>
                                     </div>
 
                                     <div class="actions">
@@ -247,7 +260,7 @@ onMounted(() => {
                                             ← Regresar
                                         </button>
                                         <button type="button" class="btn btn-success" @click="guardarContent">
-                                            💾 Guardar
+                                             Guardar
                                         </button>
                                     </div>
                                 </form>

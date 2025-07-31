@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             ContentTableSeeder::class,
             FAQTableSeeder::class,
             MainTablaSeeder::class,
+            RolTableSeeder::class,
+            UserTableSeeder::class,
           //  SubMainTablaSeeder::class
         ]);
     }

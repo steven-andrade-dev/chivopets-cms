@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContentCarousel extends Model
 {
-   
+    public $timestamps = false;
+    
     protected $fillable = [
         'id_content', 'id_carousel'
     ];

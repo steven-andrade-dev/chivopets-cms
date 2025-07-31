@@ -63,6 +63,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/main', [MainController::class, 'store']);
     Route::put('/main/{id}', [MainController::class, 'update']);
     Route::delete('/main/{id}', [MainController::class, 'destroy']);
+
+    //FAQ
+    Route::resource('faq', FAQController::class);
 });
 
 Route::prefix('astro/main')->group(function () {

@@ -16,6 +16,7 @@ class ContentDTO
         public readonly ?int $type_carrusel,
         /** @var CarruselItemDTO[] */
         public readonly array $carruselItems = [],
+        public readonly ?int $id_locale,
     ) {}
 
     public static function fromModel(\App\Models\Content $content): self
@@ -31,6 +32,7 @@ class ContentDTO
             id_section: $content->id_section,
             type_carrusel: $content->type_carrusel ?? null,
             carruselItems: $content->contentCarousel->map(fn($item) => CarruselItemDTO::fromModel($item->carruselItem))->all(),
+            id_locale: $content->id_locale,
         );
     }
 }

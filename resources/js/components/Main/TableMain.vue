@@ -19,10 +19,17 @@ const selectedmain = ref(null)
 const showModal = ref(false)
 
 const openModal = (main) => {
-  selectedmain.value = { ...main }
+  console.log(main)
+  
+  selectedmain.value = {
+    ...main,
+    id_locale: main.id_locale ?? "", 
+  }
+
   showModal.value = true
   document.body.classList.add('modal-open')
 }
+
 
 const closeModal = () => {
   showModal.value = false

@@ -10,7 +10,7 @@ const main = ref([])
 const getMain = async () => {
   try {
     const response = await httpRequest({
-      url: '/main',
+      url: '/mainlocale',
       method: 'GET',
     })
     main.value = response.data

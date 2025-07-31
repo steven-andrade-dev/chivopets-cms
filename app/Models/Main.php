@@ -13,4 +13,9 @@ class Main extends Model
     {
         return $this->hasMany(Submain::class, 'id_main');
     }
+
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class, 'id_locale');
+    }
 }

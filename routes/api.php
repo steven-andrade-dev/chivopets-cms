@@ -25,6 +25,9 @@ use App\Http\Controllers\Auth\AuthController;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    //Auth
+    Route::post('/logout', [AuthController::class, 'logout']);
+
    //SECTIONS
     Route::get('/sections', [SectionsController::class, 'show']);
 
@@ -42,8 +45,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/locales/{id}', [LocaleController::class, 'update']);
     Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
-    Route::resource('prueba', LocaleController::class);
-
     // USERS
     Route::get('/users', [UserController::class, 'show']);
     Route::post('/users', [UserController::class, 'store']);
@@ -57,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/rol/{id}', [RolController::class, 'destroy']);
 
     // MAIN
+    Route::get('/mainlocale', [MainController::class, 'show']);
     Route::get('/main', [MainController::class, 'getAllMain']);
     Route::post('/main', [MainController::class, 'store']);
     Route::put('/main/{id}', [MainController::class, 'update']);
@@ -64,5 +66,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('astro/main')->group(function () {
+    Route::get('/locale', [MainController::class, 'show']);
     Route::get('/getAllMain', [MainController::class, 'getAllMain']);
 });

@@ -42,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/locales/{id}', [LocaleController::class, 'update']);
     Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
+    Route::resource('prueba', LocaleController::class);
+
     // USERS
     Route::get('/users', [UserController::class, 'show']);
     Route::post('/users', [UserController::class, 'store']);

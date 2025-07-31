@@ -43,7 +43,7 @@ Route::delete('/locales/{id}', [LocaleController::class, 'destroy']);
 
 // USERS
 Route::get('/users', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'add']);
+Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
@@ -52,6 +52,12 @@ Route::get('/rol', [RolController::class, 'show']);
 Route::post('/rol', [RolController::class, 'add']);
 Route::put('/rol/{id}', [RolController::class, 'update']);
 Route::delete('/rol/{id}', [RolController::class, 'destroy']);
+
+// MAIN
+Route::get('/main', [MainController::class, 'getAllMain']);
+Route::post('/main', [MainController::class, 'store']);
+Route::put('/main/{id}', [MainController::class, 'update']);
+Route::delete('/main/{id}', [MainController::class, 'destroy']);
 
 /*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

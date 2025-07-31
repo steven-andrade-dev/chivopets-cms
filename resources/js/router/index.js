@@ -11,6 +11,7 @@ import Language from '../views/lenguage.vue';
 import EditContent from '../views/Content/EditContent.vue';
 import User from '../views/User.vue';
 import Rol from '../views/Rol.vue';
+import Main from '../views/Main.vue';
 
 const routes = [
     {
@@ -27,6 +28,11 @@ const routes = [
         name: 'login',
         component: Login,
         meta: { hideNavbar: true },
+    },
+    {
+        path: '/main',
+        name: 'main',
+        component: Main,
     },
     {
         path: '/roles',

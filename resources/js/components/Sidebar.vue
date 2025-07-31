@@ -3,7 +3,7 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-            <div class="sidebar-brand-text mx-3"> CHIVO PETS <sup>CMS</sup></div>
+            <div class="sidebar-brand-text mx-3"> CHIVO PETS</div>
         </a>
 
         <!-- Divider -->
@@ -56,7 +56,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="/roles">Roles</a>
                     <a class="collapse-item" href="/home">Permisos</a>
-                    <a class="collapse-item" href="/home">Menus</a>
+                    <a class="collapse-item" href="/main">Menus</a>
+                    <a class="collapse-item" href="/main">Submenus</a>
                     <a class="collapse-item" href="/lenguage">Idioma</a>
                 </div>
             </div>
@@ -71,7 +72,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="/sections">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Log de actividades</span></a>
         </li>

@@ -9,35 +9,35 @@ const props = defineProps({
     type: Array,
     required: true
   },
-  roles: {
-    type: Array,
-    required: true
-  }
+    locales: {
+        type: Array,
+        required: true
+    }
 })
 const emit = defineEmits(['refresh'])
-const selecteduser = ref(null)
+const selectedmain = ref(null)
 const showModal = ref(false)
 
-const openModal = (user) => {
-  selecteduser.value = { ...user, password: '' }  
+const openModal = (main) => {
+  selectedmain.value = { ...main }
   showModal.value = true
   document.body.classList.add('modal-open')
 }
 
 const closeModal = () => {
   showModal.value = false
-  selecteduser.value = null
+  selectedmain.value = null
   document.body.classList.remove('modal-open')
 }
 
 
 // Crear
-const createUser = async () => {
+const createMain = async () => {
   try {
     const response = await httpRequest({
-      url: '/users',
+      url: '/main',
       method: 'POST',
-      data: selecteduser.value
+      data: selectedmain.value
     })
     emit('refresh')
     closeModal()
@@ -48,12 +48,12 @@ const createUser = async () => {
 }
 
 // Editar
-const updateUser = async () => {
+const updateMain = async () => {
   try {
     const response = await httpRequest({
-      url: `/users/${selecteduser.value.id}`,
+      url: `/main/${selectedmain.value.id}`,
       method: 'PUT',
-      data: selecteduser.value
+      data: selectedmain.value
     })
     emit('refresh')
     closeModal()
@@ -64,7 +64,7 @@ const updateUser = async () => {
 }
 
 // Eliminar
-const deleteUser = async () => {
+const deleteMain = async () => {
   const result = await Swal.fire({
     title: '¿Estás seguro?',
     text: 'Esta acción no se puede deshacer.',
@@ -77,7 +77,7 @@ const deleteUser = async () => {
 
   try {
     await httpRequest({
-      url: `/users/${selecteduser.value.id}`,
+      url: `/main/${selectedmain.value.id}`,
       method: 'DELETE'
     })
     emit('refresh')
@@ -88,11 +88,11 @@ const deleteUser = async () => {
 }
 
 
-const saveUser = async () => {
-  if (selecteduser.value.id) {
-    await updateUser()
+const saveMain = async () => {
+  if (selectedmain.value.id) {
+    await updateMain()
   } else {
-    await createUser()
+    await createMain()
   }
 }
 
@@ -101,7 +101,7 @@ const saveUser = async () => {
 
 <template>
   <div class="mb-3">
-    <button class="btn btn-success" @click="openModal({ id: null, name: '', email: '', password: '', id_rol: '' })">
+    <button class="btn btn-success" @click="openModal({ id: null, name: '', code: '' })">
       <i class="bi bi-plus"></i> Agregar
     </button>
   </div>
@@ -109,21 +109,23 @@ const saveUser = async () => {
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Rol</th>
-        <th>Acciones</th>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">URL</th>
+        <th scope="col">Acciones</th>
+        <th scope="col">Submenus</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="user in data" :key="user.id">
-        <td>{{ user.id }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.rol.name }}</td>
+      <tr v-for="main in data" :key="main.id">
+        <td>{{ main.id }}</td>
+        <td>{{ main.name }}</td>
+        <td>{{ main.url }}</td>
         <td>
-          <button class="btn btn-primary btn-sm" @click="openModal(user)">Editar</button>
+          <button class="btn btn-primary btn-sm" @click="openModal(main)">Editar</button>
+        </td>
+        <td>
+          <button class="btn btn-secondary btn-sm" @click="openSubmenuModal(main)">Submenus</button>
         </td>
       </tr>
     </tbody>
@@ -134,7 +136,7 @@ const saveUser = async () => {
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ selecteduser.id ? 'Editar Usuario' : 'Agregar Usuario' }}</h5>
+          <h5 class="modal-title">{{ selectedmain.id ? 'Editar Main' : 'Agregar Main' }}</h5>
           <button type="button" class="close" @click="closeModal">
             <span>&times;</span>
           </button>
@@ -147,53 +149,48 @@ const saveUser = async () => {
                 <span class="input-group-text bg-dark text-white border-0">
                   <i class="bi bi-person-fill"></i>
                 </span>
-                <input v-model="selecteduser.name" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Nombre completo" />
+                <input v-model="selectedmain.name" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Nombre del main" />
               </div>
             </div>
 
             <div class="form-group mb-4 position-relative">
-              <label class="form-label">Email</label>
+              <label class="form-label">url</label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-white border-0">
-                  <i class="bi bi-envelope-fill"></i>
+                  <i class="bi bi-code-slash"></i>
                 </span>
-                <input v-model="selecteduser.email" type="email" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Correo electrónico" />
+                <input v-model="selectedmain.url" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Ej: ES, EN" />
               </div>
             </div>
-
             <div class="form-group mb-4 position-relative">
-              <label class="form-label">Password</label>
-              <div class="input-group">
-                <span class="input-group-text bg-dark text-white border-0">
-                  <i class="bi bi-lock-fill"></i>
-                </span>
-                <input v-model="selecteduser.password" type="password" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Contraseña" />
-              </div>
-            </div>
-
-            <div class="form-group mb-4 position-relative">
-              <label class="form-label">Rol</label>
-              <div class="input-group">
-                <span class="input-group-text bg-dark text-white border-0">
-                  <i class="bi bi-person-badge-fill"></i>
-                </span>
-                <select v-model="selecteduser.id_rol" class="form-select form-select-lg rounded-end border-0 shadow-sm" required>
-                  <option disabled value="">🔒 Selecciona un rol</option>
-                  <option v-for="rol in roles" :key="rol.id" :value="rol.id">{{ rol.name }}</option>
-                </select>
-              </div>
+                <label class="form-label">Idioma</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-dark text-white border-0">
+                    <i class="bi bi-translate"></i>
+                    </span>
+                     <select
+                        v-model="selectedmain.id_locale"
+                        class="form-select form-select-lg rounded-end border-0 shadow-sm"
+                        required
+                        >
+                        <option disabled value="">🌐 Selecciona un idioma</option>
+                        <option v-for="locale in locales" :key="locale.id" :value="locale.id">
+                            {{ locale.name }}
+                        </option>
+                        </select>
+                </div>
             </div>
           </form>
         </div>
         <div class="modal-footer d-flex justify-content-between align-items-center">
-          <div>
-            <button class="btn btn-danger w-auto" v-if="selecteduser.id" @click="deleteUser">
-              Eliminar
+          <div class="flex-shrink-0">
+            <button class="btn btn-danger w-auto" v-if="selectedmain.id && selectedmain.can_delete" @click="deleteMain">
+            Eliminar
             </button>
           </div>
-          <div>
-            <button class="btn btn-secondary me-2" @click="closeModal">Cancelar</button>
-            <button class="btn btn-primary btn-glow" @click="saveUser">Guardar</button>
+          <div class="">
+             <button class="btn  me-2" @click="closeModal">Cancelar</button>
+            <button class="btn btn-primary btn-glow" @click="saveMain">Guardar</button>
           </div>
         </div>
       </div>
@@ -201,11 +198,18 @@ const saveUser = async () => {
   </div>
 </template>
 
+
+
+
 <style scoped>
 .modal {
   display: block;
   background-color: rgba(0, 0, 0, 0.5);
   overflow-y: auto;
+}
+
+.btncancel{
+  border:#aaa
 }
 
 .modal-dialog {
@@ -224,9 +228,12 @@ body.modal-open {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header,
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .modal-footer {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 input.form-control {
@@ -237,4 +244,5 @@ input.form-control {
 input::placeholder {
   color: #aaa;
 }
+
 </style>

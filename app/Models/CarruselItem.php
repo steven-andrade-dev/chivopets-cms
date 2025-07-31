@@ -9,7 +9,7 @@ class CarruselItem extends Model
     protected $table = 'carrusel_items';
     protected $fillable = [
          'title', 'subtitle', 'image', 'href', 'introduction', 'description', 'value',
-        'title_info_aditional', 'published_at', 'created_by_id', 'updated_by_id', 'locale'
+        'title_info_aditional', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'
     ];
 
     public function content()

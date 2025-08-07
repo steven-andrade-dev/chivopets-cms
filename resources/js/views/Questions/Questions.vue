@@ -1,25 +1,29 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import TableData from '../components/TableData.vue'
-import { ref } from 'vue'
-const questions = ref([
-    {
-        id: 1,
-        name: 'Pregunta 1',
-        slug: 'pregunta-1',
-    },
-    {
-        id: 2,  
-        name: 'Pregunta 2',
-        slug: 'pregunta-2',
-    },
-    {
-        id: 3,
-        name: 'Pregunta 3',
-        slug: 'pregunta-3',
-    },
-])
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import TableData from '../../components/TableData.vue'
+import { ref, onMounted } from 'vue'
+import { httpRequest } from '../../utils/global-request'
+
+const questions = ref([])
+
+const getQuestions = async () => {
+  try {
+    const response = await httpRequest({
+      url: `/faq`,
+      method: 'GET',
+    })
+    console.log(response.data)
+    questions.value = response.data
+    questions.value.son = 'edit-question'
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+onMounted(() => {
+  getQuestions()
+})
 </script>
 <template>
     <div id="wrapper">

@@ -10,6 +10,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\FAQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

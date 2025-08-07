@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Sections from '../views/Sections.vue';
 import Content from '../views/Content/Content.vue';
-import Questions from '../views/Questions.vue';
+import Questions from '../views/Questions/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
 import Language from '../views/lenguage.vue';
@@ -12,7 +11,7 @@ import User from '../views/User.vue';
 import Rol from '../views/Rol.vue';
 import Main from '../views/Main.vue';
 import NotFound from '../views/NotFound.vue';
-
+import EditQuestion from '../views/Questions/Edit-question.vue';
 const routes = [
     {
         path: '/',
@@ -38,13 +37,6 @@ const routes = [
         path: '/roles',
         name: 'roles',
         component: Rol,
-    },
-
-    {
-        path: '/home',
-        name: 'home',
-        component: Home,
-        meta: { requiresAuth: true }
     },
     {
         path: '/user',
@@ -82,6 +74,11 @@ const routes = [
         component: EditContent,
     },
     {
+        path: '/edit-question/:id',
+        name: 'edit-question',
+        component: EditQuestion,
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
         component: NotFound,
@@ -97,7 +94,7 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("auth_token")
 
   if ((to.path === '/' || to.path === '/login') && token) {
-    next('/home')
+    next('/sections')
   } else if (to.meta.requiresAuth && !token) {
     next('/login')
   } else {

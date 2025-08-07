@@ -214,7 +214,7 @@ onMounted(() => {
                                             v-model="content.url" />
                                         </div>
                                         <div class="form-group">
-                                            <label for="type_carrusel">Ediicion de contenido del carrusel</label>
+                                            <label for="type_carrusel">Edición de contenido del carrusel</label>
                                             <CarruselItem 
                                                 :items="content.carruselItems || []" 
                                                 :type_carrusel="content.type_carrusel"

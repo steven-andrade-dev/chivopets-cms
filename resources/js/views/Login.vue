@@ -25,7 +25,7 @@
 
             localStorage.setItem("auth_token", response.data.access_token)
 
-            router.push('/home')
+            router.push('/sections')
         } catch (err) {
             console.log(err.status)
             if (err.status == 401) {

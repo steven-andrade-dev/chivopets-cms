@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController;
 use App\Services\FAQService;
+use App\Helpers\ResponseMessages;
 
 class FAQController extends BaseController
 {

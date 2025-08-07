@@ -14,8 +14,8 @@ class Locale extends Model
         return $this->hasMany(Content::class, 'id_locale');
     }
 
-    public function mains()
+    public function menus()
     {
-        return $this->hasMany(Main::class, 'id_locale');
+        return $this->hasMany(Menu::class, 'id_locale');
     }
 }

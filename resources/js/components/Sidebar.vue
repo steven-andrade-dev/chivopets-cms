@@ -56,7 +56,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="/roles">Roles</a>
                     <a class="collapse-item" href="/home">Permisos</a>
-                    <a class="collapse-item" href="/main">Menus</a>
+                    <a class="collapse-item" href="/menu">Menus</a>
                     <a class="collapse-item" href="/lenguage">Idioma</a>
                 </div>
             </div>

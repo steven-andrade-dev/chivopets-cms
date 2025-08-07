@@ -3,17 +3,17 @@ import Sidebar from '../components/Sidebar.vue'
 import Navbar from '../components/Navbar.vue'
 import { httpRequest } from '../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Main/TableMain.vue'
+import TableData from '../components/Menu/TableMenu.vue'
 
-const main = ref([])
+const menu = ref([])
 
-const getMain = async () => {
+const getMenu = async () => {
   try {
     const response = await httpRequest({
-      url: '/mainlocale',
+      url: '/menulocale',
       method: 'GET',
     })
-    main.value = response.data
+    menu.value = response.data
   } catch (err) {
     console.error(err)
   }
@@ -33,7 +33,7 @@ const getLocales = async () => {
 }
 
 onMounted(() => {
-  getMain()
+  getMenu()
   getLocales()
 })
 
@@ -48,7 +48,7 @@ onMounted(() => {
                 <Navbar />
                 <div class="container-fluid">
                     <h1>Menu</h1>
-                    <TableData :data="main" :locales="locales" @refresh="getMain" />
+                    <TableData :data="menu" :locales="locales" @refresh="getMenu" />
                 </div>
 
             </div>

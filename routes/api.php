@@ -5,11 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\CasesController;
 use App\Http\Controllers\ContentController;
-use App\Http\Controllers\MainController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\SubmenuController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,15 +58,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/rol/{id}', [RolController::class, 'update']);
     Route::delete('/rol/{id}', [RolController::class, 'destroy']);
 
-    // MAIN
-    Route::get('/mainlocale', [MainController::class, 'show']);
-    Route::get('/main', [MainController::class, 'getAllMain']);
-    Route::post('/main', [MainController::class, 'store']);
-    Route::put('/main/{id}', [MainController::class, 'update']);
-    Route::delete('/main/{id}', [MainController::class, 'destroy']);
+    // MENU
+    Route::get('/menulocale', [MenuController::class, 'show']);
+    Route::get('/menu', [MenuController::class, 'getAllMenu']);
+    Route::post('/menu', [MenuController::class, 'store']);
+    Route::put('/menu/{id}', [MenuController::class, 'update']);
+    Route::delete('/menu/{id}', [MenuController::class, 'destroy']);
+
+    //SUBMENU
+    Route::get('/submenu', [SubmenuController::class, 'show']);
+    Route::post('/submenu', [SubmenuController::class, 'store']);
+    Route::put('/submenu/{id}', [SubmenuController::class, 'update']);
+    Route::delete('/submenu/{id}', [SubmenuController::class, 'destroy']);
+
 });
 
-Route::prefix('astro/main')->group(function () {
-    Route::get('/locale', [MainController::class, 'show']);
-    Route::get('/getAllMain', [MainController::class, 'getAllMain']);
+Route::prefix('astro/menun')->group(function () {
+    Route::get('/locale', [MenuController::class, 'show']);
+    Route::get('/getAllMenun', [MenuController::class, 'getAllMenu']);
 });

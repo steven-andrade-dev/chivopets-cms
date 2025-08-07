@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Main extends Model
+class Menu extends Model
 {
-    protected $table = 'main';
+    protected $table = 'menu';
     protected $fillable = ['name', 'url', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'];
 
-    public function submains()
+    public function submenus()
     {
-        return $this->hasMany(Submain::class, 'id_main');
+        return $this->hasMany(Submenu::class, 'id_menu');
     }
 
     public function locale()

@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
             SectionsTableSeeder::class,
             ContentTableSeeder::class,
             FAQTableSeeder::class,
-            MainTablaSeeder::class,
-          //  SubMainTablaSeeder::class
+            MenuTablaSeeder::class,
+            SubMenuTablaSeeder::class
         ]);
     }
 }

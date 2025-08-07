@@ -29,7 +29,8 @@ class FAQController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $faq = $this->faqService->create_faq($request);
+        return $this->sendResponse($faq, ResponseMessages::successList(), 200);
     }
 
     /**
@@ -37,7 +38,8 @@ class FAQController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        $faq = $this->faqService->get_faq_by_id($id);
+        return $this->sendResponse($faq, ResponseMessages::successList(), 200);
     }
 
     /**
@@ -53,7 +55,8 @@ class FAQController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $faq = $this->faqService->update_faq($request, $id);
+        return $this->sendResponse($faq, ResponseMessages::successList(), 200);
     }
 
     /**

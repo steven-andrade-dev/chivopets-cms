@@ -1,7 +1,7 @@
 // src/utils/httpClient.js
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
+import router from '../router/index'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
@@ -38,7 +38,7 @@ export async function httpRequest({
   } catch (error) {
     if (error.response.status == 401) {
         localStorage.removeItem("auth_token")
-        location.href = '/login'
+        router.push('/login')
   } else {
      Swal.fire({
           title: 'Error',

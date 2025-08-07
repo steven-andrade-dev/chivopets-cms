@@ -6,8 +6,10 @@
 
     const router = useRouter()
     const user = ref([])
+    const isLoading = ref(false)
 
     const login = async () => {
+        isLoading.value = true;
         if (!user.value.email || !user.value.password) {
             alert('Por favor completa todos los campos');
             return;
@@ -24,10 +26,10 @@
             })
 
             localStorage.setItem("auth_token", response.data.access_token)
-
+            isLoading.value = false
             router.push('/sections')
         } catch (err) {
-            console.log(err.status)
+            isLoading.value = false
             if (err.status == 401) {
                 Swal.fire({
                     title: 'Error',
@@ -78,7 +80,15 @@
           />
         </div>
         <div class="d-grid">
-          <button type="submit" class="btn btn-primary">Ingresar</button>
+            <button class="btn btn-primary" type="submit" :disabled="isLoading">
+                <div v-if="!isLoading">
+                    Ingresar
+                </div>
+                <div v-else>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Ingresando...
+                </div>
+            </button>
         </div>
       </form>
     </div>

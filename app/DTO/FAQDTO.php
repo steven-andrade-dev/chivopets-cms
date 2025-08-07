@@ -6,7 +6,7 @@ class FAQDTO
 {
     public function __construct(
         public readonly int $id,
-        public readonly ?string $question,
+        public readonly ?string $name,
         public readonly ?string $answer,
     ) {}
 
@@ -14,7 +14,7 @@ class FAQDTO
     {
         return new self(
             id: $faq->id,
-            question: $faq->question,
+            name: $faq->question,
             answer: $faq->answer,
         );
     }

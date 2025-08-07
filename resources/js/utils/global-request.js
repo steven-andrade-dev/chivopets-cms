@@ -1,5 +1,7 @@
 // src/utils/httpClient.js
 import axios from 'axios'
+import Swal from 'sweetalert2'
+
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
@@ -34,7 +36,16 @@ export async function httpRequest({
     })
     return response.data
   } catch (error) {
-    console.error('Error en HTTP:', error.response || error)
+    if (error.response.status == 401) {
+        localStorage.removeItem("auth_token")
+        location.href = '/login'
+  } else {
+     Swal.fire({
+          title: 'Error',
+          text: 'Error al procesar la solicitud, Intenta nuevamente',
+          icon: 'error',
+      })
+  }
     throw error
   }
 }

@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, computed } from 'vue'
     import { httpRequest } from '../utils/global-request'
     import { useRouter } from 'vue-router'
     import Swal from 'sweetalert2'
@@ -7,6 +7,13 @@
     const router = useRouter()
     const user = ref([])
     const isLoading = ref(false)
+    const showPassword  = ref(false)
+
+   const passwordFieldType = computed(() => (showPassword.value ? 'text' : 'password'))
+
+    function togglePasswordVisibility() {
+        showPassword.value = !showPassword.value
+    }
 
     const login = async () => {
         isLoading.value = true;
@@ -69,15 +76,19 @@
           />
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">Contraseña</label>
+          <label for="password" class="form-label">Contraseña </label>
           <input
-            type="password"
-            id="password"
-            v-model="user.password"
-            class="form-control"
-            placeholder="********"
-            required
+          :type="passwordFieldType"
+          id="password"
+          v-model="user.password"
+          class="form-control"
+          placeholder="********"
+          required
           />
+          <span style="position: absolute; right: 40px; bottom: 85px;">
+              <i class="fa fa-eye ml-0" @click="togglePasswordVisibility" v-if="showPassword"></i>
+              <i class="fa fa-eye-slash ml-0" @click="togglePasswordVisibility" v-else></i>
+          </span>
         </div>
         <div class="d-grid">
             <button class="btn btn-primary" type="submit" :disabled="isLoading">

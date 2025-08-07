@@ -73,7 +73,6 @@ return new class extends Migration
 
         Schema::create('FAQs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_content');
             $table->string('question');
             $table->text('answer');
             $table->timestamps();
@@ -84,7 +83,7 @@ return new class extends Migration
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
-            $table->foreign('id_content')->references('id')->on('contents')->onDelete('cascade');
+           
         });
 
         Schema::create('case', function (Blueprint $table) {

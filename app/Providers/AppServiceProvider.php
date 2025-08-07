@@ -15,8 +15,8 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Interfaces\RolRepositoryInterface;
 use App\Repositories\RolRepository;
-use App\Interfaces\MainRepositoryInterface;
-use App\Repositories\MainRepository;
+use App\Interfaces\MenuRepositoryInterface;
+use App\Repositories\MenuRepository;
 use App\Interfaces\FAQRepositoryInterface;
 use App\Repositories\FAQRepository;
 
@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ContentRepositoryInterface::class, ContentRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RolRepositoryInterface::class, RolRepository::class);
-        $this->app->bind(MainRepositoryInterface::class, MainRepository::class);
+        $this->app->bind(MenuRepositoryInterface::class, MenuRepository::class);
         $this->app->bind(FAQRepositoryInterface::class, FAQRepository::class);
     }
 

@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
             SectionsTableSeeder::class,
             ContentTableSeeder::class,
             FAQTableSeeder::class,
-            MainTablaSeeder::class,
+            MenuTablaSeeder::class,
+            SubMenuTablaSeeder::class,
             RolTableSeeder::class,
             UserTableSeeder::class,
-          //  SubMainTablaSeeder::class
         ]);
     }
 }

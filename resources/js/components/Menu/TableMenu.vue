@@ -15,15 +15,13 @@ const props = defineProps({
     }
 })
 const emit = defineEmits(['refresh'])
-const selectedmain = ref(null)
+const selectedmenu = ref(null)
 const showModal = ref(false)
 
-const openModal = (main) => {
-  console.log(main)
-  
-  selectedmain.value = {
-    ...main,
-    id_locale: main.id_locale ?? "", 
+const openModal = (menu) => {  
+  selectedmenu.value = {
+    ...menu,
+    id_locale: menu.id_locale ?? "", 
   }
 
   showModal.value = true
@@ -33,18 +31,18 @@ const openModal = (main) => {
 
 const closeModal = () => {
   showModal.value = false
-  selectedmain.value = null
+  selectedmenu.value = null
   document.body.classList.remove('modal-open')
 }
 
 
 // Crear
-const createMain = async () => {
+const createMenu = async () => {
   try {
     const response = await httpRequest({
-      url: '/main',
+      url: '/menu',
       method: 'POST',
-      data: selectedmain.value
+      data: selectedmenu.value
     })
     emit('refresh')
     closeModal()
@@ -55,12 +53,12 @@ const createMain = async () => {
 }
 
 // Editar
-const updateMain = async () => {
+const updateMenu = async () => {
   try {
     const response = await httpRequest({
-      url: `/main/${selectedmain.value.id}`,
+      url: `/menu/${selectedmenu.value.id}`,
       method: 'PUT',
-      data: selectedmain.value
+      data: selectedmenu.value
     })
     emit('refresh')
     closeModal()
@@ -71,7 +69,7 @@ const updateMain = async () => {
 }
 
 // Eliminar
-const deleteMain = async () => {
+const deleteMenu = async () => {
   const result = await Swal.fire({
     title: '¿Estás seguro?',
     text: 'Esta acción no se puede deshacer.',
@@ -84,7 +82,7 @@ const deleteMain = async () => {
 
   try {
     await httpRequest({
-      url: `/main/${selectedmain.value.id}`,
+      url: `/menu/${selectedmenu.value.id}`,
       method: 'DELETE'
     })
     emit('refresh')
@@ -95,11 +93,11 @@ const deleteMain = async () => {
 }
 
 
-const saveMain = async () => {
-  if (selectedmain.value.id) {
-    await updateMain()
+const saveMenu = async () => {
+  if (selectedmenu.value.id) {
+    await updateMenu()
   } else {
-    await createMain()
+    await createMenu()
   }
 }
 
@@ -124,15 +122,15 @@ const saveMain = async () => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="main in data" :key="main.id">
-        <td>{{ main.id }}</td>
-        <td>{{ main.name }}</td>
-        <td>{{ main.url }}</td>
+      <tr v-for="menu in data" :key="menu.id">
+        <td>{{ menu.id }}</td>
+        <td>{{ menu.name }}</td>
+        <td>{{ menu.url }}</td>
         <td>
-          <button class="btn btn-primary btn-sm" @click="openModal(main)">Editar</button>
+          <button class="btn btn-primary btn-sm" @click="openModal(menu)">Editar</button>
         </td>
         <td>
-          <button class="btn btn-secondary btn-sm" @click="openSubmenuModal(main)">Submenus</button>
+          <button class="btn btn-secondary btn-sm" @click="openSubmenuModal(menu)">Submenus</button>
         </td>
       </tr>
     </tbody>
@@ -143,7 +141,7 @@ const saveMain = async () => {
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ selectedmain.id ? 'Editar Main' : 'Agregar Main' }}</h5>
+          <h5 class="modal-title">{{ selectedmenu.id ? 'Editar Menu' : 'Agregar Menu' }}</h5>
           <button type="button" class="close" @click="closeModal">
             <span>&times;</span>
           </button>
@@ -156,7 +154,7 @@ const saveMain = async () => {
                 <span class="input-group-text bg-dark text-white border-0">
                   <i class="bi bi-person-fill"></i>
                 </span>
-                <input v-model="selectedmain.name" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Nombre del main" />
+                <input v-model="selectedmenu.name" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="" />
               </div>
             </div>
 
@@ -166,7 +164,7 @@ const saveMain = async () => {
                 <span class="input-group-text bg-dark text-white border-0">
                   <i class="bi bi-code-slash"></i>
                 </span>
-                <input v-model="selectedmain.url" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="Ej: ES, EN" />
+                <input v-model="selectedmenu.url" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="" />
               </div>
             </div>
             <div class="form-group mb-4 position-relative">
@@ -176,7 +174,7 @@ const saveMain = async () => {
                     <i class="bi bi-translate"></i>
                     </span>
                      <select
-                        v-model="selectedmain.id_locale"
+                        v-model="selectedmenu.id_locale"
                         class="form-select form-select-lg rounded-end border-0 shadow-sm"
                         required
                         >
@@ -191,13 +189,13 @@ const saveMain = async () => {
         </div>
         <div class="modal-footer d-flex justify-content-between align-items-center">
           <div class="flex-shrink-0">
-            <button class="btn btn-danger w-auto" v-if="selectedmain.id && selectedmain.can_delete" @click="deleteMain">
+            <button class="btn btn-danger w-auto" v-if="selectedmenu.id && selectedmenu.can_delete" @click="deleteMenu">
             Eliminar
             </button>
           </div>
           <div class="">
              <button class="btn  me-2" @click="closeModal">Cancelar</button>
-            <button class="btn btn-primary btn-glow" @click="saveMain">Guardar</button>
+            <button class="btn btn-primary btn-glow" @click="saveMenu">Guardar</button>
           </div>
         </div>
       </div>

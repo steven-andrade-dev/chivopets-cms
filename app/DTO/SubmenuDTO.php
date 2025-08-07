@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class SubmainDTO
+class SubmenuDTO
 {
     public function __construct(
         public readonly int $id,
@@ -10,12 +10,12 @@ class SubmainDTO
         public readonly ?string $url,
     ) {}
 
-    public static function fromModel(\App\Models\Submain $main): self
+    public static function fromModel(\App\Models\Submenu $submenu): self
     {
         return new self(
-            id: $main->id,
-            name: $main->name,
-            url: $main->url,
+            id: $submenu->id,
+            name: $submenu->name,
+            url: $submenu->url,
         );
     }
 }

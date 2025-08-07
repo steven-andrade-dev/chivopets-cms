@@ -9,7 +9,7 @@ import Language from '../views/lenguage.vue';
 import EditContent from '../views/Content/EditContent.vue';
 import User from '../views/User.vue';
 import Rol from '../views/Rol.vue';
-import Main from '../views/Main.vue';
+import Menu from '../views/Menu.vue';
 import NotFound from '../views/NotFound.vue';
 import EditQuestion from '../views/Questions/Edit-question.vue';
 const routes = [
@@ -29,9 +29,9 @@ const routes = [
         meta: { hideNavbar: true },
     },
     {
-        path: '/main',
-        name: 'main',
-        component: Main,
+        path: '/menu',
+        name: 'menu',
+        component: Menu,
     },
     {
         path: '/roles',

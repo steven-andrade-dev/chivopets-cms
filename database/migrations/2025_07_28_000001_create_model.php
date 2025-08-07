@@ -120,7 +120,7 @@ return new class extends Migration
             $table->foreign('id_case')->references('id')->on('case')->onDelete('cascade');
         });
 
-        Schema::create('main', function (Blueprint $table) {
+        Schema::create('menu', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('url');
@@ -133,9 +133,9 @@ return new class extends Migration
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
         });
 
-        Schema::create('submains', function (Blueprint $table) {
+        Schema::create('submenus', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_main');
+            $table->unsignedBigInteger('id_menu');
             $table->string('name');
             $table->string('url');
             $table->timestamps();
@@ -146,7 +146,7 @@ return new class extends Migration
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
-            $table->foreign('id_main')->references('id')->on('main')->onDelete('cascade');
+            $table->foreign('id_menu')->references('id')->on('menu')->onDelete('cascade');
         });
 
         Schema::create('socialmedia_terms', function (Blueprint $table) {
@@ -186,8 +186,8 @@ return new class extends Migration
         Schema::dropIfExists('indice');
         Schema::dropIfExists('locale');
         Schema::dropIfExists('socialmedia_terms');
-        Schema::dropIfExists('submains');
-        Schema::dropIfExists('main');
+        Schema::dropIfExists('submenus');
+        Schema::dropIfExists('menu');
         Schema::dropIfExists('case');
         Schema::dropIfExists('description_case');
         Schema::dropIfExists('FAQs');

@@ -6,14 +6,14 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class MainTablaSeeder extends Seeder
+class MenuTablaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('main')->insert([
+        DB::table('menu')->insert([
             [
                 'name' => 'Quiénes Somos',
                 'url' => 'iz65e21qcql5xe119arsd99j',

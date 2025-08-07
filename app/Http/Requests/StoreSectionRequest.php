@@ -29,6 +29,14 @@ class StoreSectionRequest extends FormRequest
             "bloque_principal" => "required|string",
             "bloque_secundario" => "nullable|string",
             "url" => "nullable|string",
+            "id_locale" => "nullable|integer",
+            "carruselItems" => "nullable|array",
+            "carruselItems.*.id" => "nullable|integer",
+            "carruselItems.*.title" => "nullable|string",
+            "carruselItems.*.description" => "nullable|string",
+            "carruselItems.*.image" => "nullable|string",
+            "carruselItems.*.url" => "nullable|string",
+            "carruselItems.*.id_locale" => "nullable|string",
         ];
     }
 

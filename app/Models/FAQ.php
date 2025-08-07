@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FAQ extends Model
 {
     protected $table = 'FAQs';
-    protected $fillable = ['id_content', 'question', 'answer', 'published_at', 'created_by_id', 'updated_by_id', 'locale'];
+    protected $fillable = [ 'question', 'answer', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'];
 
-    public function content()
-    {
-        return $this->belongsTo(Content::class, 'id_content');
-    }
+   
 }

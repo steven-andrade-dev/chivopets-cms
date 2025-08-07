@@ -101,7 +101,9 @@
                     text: err.response.data.msg,
                     icon: 'error',
                 })
-
+                $('#logoutModal').modal('hide')
+                localStorage.removeItem("auth_token")
+                router.push('/login')
             } else {
                 Swal.fire({
                     title: 'Error',

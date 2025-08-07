@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContentCarousel extends Model
+class ContentFAQ extends Model
 {
-    public $timestamps = false;
-    
+    use HasFactory;
+
     protected $fillable = [
-        'id_content', 'id_carousel'
+        'id_content', 'id_faq'
     ];
 
-    public function carruselItem()
+    public function faq()
     {
-        return $this->belongsTo(CarruselItem::class, 'id_carousel');
+        return $this->belongsTo(FAQ::class, 'id_carousel');
     }
+
     public function content()
     {
         return $this->belongsTo(Content::class, 'id_content');

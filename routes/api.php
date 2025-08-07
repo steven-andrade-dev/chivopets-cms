@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SubmenuController;
+use App\Http\Controllers\FAQController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -71,6 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/submenu/{id}', [SubmenuController::class, 'update']);
     Route::delete('/submenu/{id}', [SubmenuController::class, 'destroy']);
 
+
+    //FAQ
+    Route::resource('faq', FAQController::class);
 });
 
 Route::prefix('astro/menun')->group(function () {

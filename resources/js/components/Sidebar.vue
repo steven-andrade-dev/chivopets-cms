@@ -2,7 +2,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/sections">
             <div class="sidebar-brand-text mx-3"> CHIVO PETS</div>
         </a>
 
@@ -28,7 +28,6 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="/sections">Secciones</a>
                     <a class="collapse-item" href="/content">Contenido</a>
-                    <a class="collapse-item" href="/carrusel">Carrusel</a>
                     <a class="collapse-item" href="/questions">Preguntas</a>
                     <a class="collapse-item" href="/cases">Casos</a>
                     <a class="collapse-item" href="/tips">Tips</a>

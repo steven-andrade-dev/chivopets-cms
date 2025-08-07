@@ -31,4 +31,12 @@ class FAQRepository implements FAQRepositoryInterface
         return FAQDTO::fromModel($faq);
     }
 
+    public function delete_faq($id)
+    {
+        $faq = FAQ::where('id', $id)->first();
+        if ($faq) {
+            $faq->delete();
+        }
+        return true;
+    }
 }

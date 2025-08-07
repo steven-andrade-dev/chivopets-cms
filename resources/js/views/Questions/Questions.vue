@@ -11,7 +11,7 @@ const questions = ref([])
 const showModal = ref(false)
 const question = ref("")
 const answer = ref("")
-
+const locale = ref("")
 const getQuestions = async () => {
   try {
     const response = await httpRequest({
@@ -25,23 +25,55 @@ const getQuestions = async () => {
   }
 }
 
+const deleteQuestion = async (id) => {
+  const result = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Esta acción eliminará la pregunta de forma permanente.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  })
+
+  if (!result.isConfirmed) return
+
+  try {
+    const response = await httpRequest({
+      url: `/faq/${id}`,
+      method: 'DELETE',
+    })
+    if (response.success) {
+      Swal.fire('Eliminado', 'La pregunta ha sido eliminada.', 'success')
+      getQuestions()
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const saveQuestion = async () => {
   const data = {
     question: question.value,
     answer: answer.value,
+    id_locale: locale.value,
   }
   const response = await httpRequest({
     url: `/faq`,
     method: 'POST',
     data: data,
   })
-  console.log(response)
   if(response.success){
     Swal.fire({
       title: 'Pregunta agregada',
       text: 'La pregunta ha sido agregada correctamente',
       icon: 'success',
+      showConfirmButton: false,
+      timer: 1500
     })
+    showModal.value = false
+    getQuestions()
   }else{
     Swal.fire({
       title: 'Error',
@@ -71,7 +103,7 @@ onMounted(() => {
           </div>
 
           <h1>Preguntas</h1>
-          <TableData :data="questions" />
+          <TableData :data="questions" :hasDelete="true" @delete="deleteQuestion" />
 
 
         </div>
@@ -115,6 +147,14 @@ onMounted(() => {
                             contentType="html"
                             placeholder="Ingrese la respuesta"
                             v-model:content="answer" />
+            </div>
+            <div class="form-group">
+              <label for="locale" class="label">Idioma</label>
+              <select v-model="locale" class="form-control form-control-lg rounded-end border-0 shadow-sm">
+                <option value="" disabled selected>Seleccione un idioma</option>
+                <option value="1">Español</option>
+                <option value="2">Inglés</option>
+              </select>
             </div>
 
 

@@ -29,6 +29,7 @@ class FAQController extends BaseController
      */
     public function store(Request $request)
     {
+        //echo $request;
         $faq = $this->faqService->create_faq($request);
         return $this->sendResponse($faq, ResponseMessages::successList(), 200);
     }
@@ -64,6 +65,7 @@ class FAQController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $this->faqService->delete_faq($id);
+        return $this->sendResponse([], ResponseMessages::successDelete(), 200);
     }
 }

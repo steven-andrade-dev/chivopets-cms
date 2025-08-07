@@ -8,4 +8,5 @@ interface FAQRepositoryInterface
     public function get_faq_by_id($id);
     public function update_faq($request, $id);
     public function create_faq($request);
+    public function delete_faq($id);
 }

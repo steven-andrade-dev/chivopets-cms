@@ -28,4 +28,8 @@ class FAQService
         return $this->repo->create_faq($request);
     }
 
+    public function delete_faq($id)
+    {
+        return $this->repo->delete_faq($id);
+    }
 }

@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar.vue'
 import { httpRequest } from '../utils/global-request'
 import { ref, onMounted } from 'vue'
 import TableData from '../components/TableData.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
 const sections = ref([])
 
 const getSections = async () => {
@@ -19,6 +21,10 @@ const getSections = async () => {
   }
 }
 
+const breadcrumbItems = ref([
+  { label: "Secciones", href: "/sections" }
+]);
+
 
 onMounted(() => {
   getSections()
@@ -32,6 +38,7 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
+                    <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
                     <TableData :data="sections" />
 

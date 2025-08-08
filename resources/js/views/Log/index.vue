@@ -4,8 +4,13 @@ import Navbar from '../../components/Navbar.vue'
 import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
 import TableData from './component/table.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const logs = ref([])
+
+const breadcrumbItems = ref([
+  { label: "Log de actividades", href: "/" }
+]);
 
 const getLogs = async () => {
   try {
@@ -34,7 +39,7 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Log de actividades</h1>
+                    <Breadcrumb :items="breadcrumbItems" />
                     <TableData :data="logs" @refresh="getLogs" />
                 </div>
 

@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.vue'
 import { httpRequest } from '../utils/global-request'
 import { ref, onMounted } from 'vue'
 import TableData from '../components/Usuario/TableUsuarios.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const users = ref([])
 
@@ -37,6 +38,10 @@ onMounted(() => {
   getRoles()
 })
 
+const breadcrumbItems = ref([
+  { label: "Usuarios", href: "/user" }
+]);
+
 
 </script>
 
@@ -48,6 +53,7 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
+                    <Breadcrumb :items="breadcrumbItems" />
                     <h1>Usuarios</h1>
                     <TableData :data="users" :roles="roles" @refresh="getUsers" />
                 </div>

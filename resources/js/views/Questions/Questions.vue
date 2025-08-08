@@ -6,7 +6,13 @@ import { ref, onMounted } from 'vue'
 import { httpRequest } from '../../utils/global-request'
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import Swal from 'sweetalert2';
+
+const breadcrumbItems = ref([
+  { label: "Preguntas", href: "/questions" }
+]);
+
 const questions = ref([])
 const showModal = ref(false)
 const question = ref("")
@@ -95,6 +101,7 @@ onMounted(() => {
         <Navbar />
 
         <div class="container-fluid">
+            <Breadcrumb :items="breadcrumbItems" />
 
           <div class="mb-3">
             <button class="btn btn-success" @click="showModal = true">
@@ -142,8 +149,8 @@ onMounted(() => {
             </div>
             <div class="form-group">
                         <label for="answer" class="label">Respuesta</label>
-                        <quill-editor ref="editorRef" 
-                            theme="snow" 
+                        <quill-editor ref="editorRef"
+                            theme="snow"
                             contentType="html"
                             placeholder="Ingrese la respuesta"
                             v-model:content="answer" />

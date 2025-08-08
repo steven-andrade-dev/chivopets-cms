@@ -5,6 +5,12 @@ import TableData from '../../components/TableData.vue'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { httpRequest } from '../../utils/global-request'
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
+const breadcrumbItems = ref([
+  { label: "Secciones", href: "/sections" },
+  { label: "Contenido", href: "/content" }
+]);
 
 const route = useRoute()
 const id = route.params.id
@@ -36,10 +42,9 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
+                    <Breadcrumb :items="breadcrumbItems" />
                     <h1>Contenido</h1>
                     <TableData :data="content" />
-
-
                 </div>
 
             </div>

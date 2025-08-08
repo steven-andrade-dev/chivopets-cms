@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActions;
 
 class CarruselItem extends Model
 {
+    use LogsActions;
+
     protected $table = 'carrusel_items';
     protected $fillable = [
          'title', 'subtitle', 'image', 'href', 'introduction', 'description', 'value',

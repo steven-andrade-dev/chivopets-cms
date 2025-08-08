@@ -1,9 +1,9 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import { httpRequest } from '../utils/global-request'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Usuario/TableUsuarios.vue'
+import TableData from './Component/TableUsuarios.vue'
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const users = ref([])

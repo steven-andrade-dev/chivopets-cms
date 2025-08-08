@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { httpRequest } from '../../utils/global-request' 
+import { httpRequest } from '../../../utils/global-request' 
 import Swal from 'sweetalert2'
 
 

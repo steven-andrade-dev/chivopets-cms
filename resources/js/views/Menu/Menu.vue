@@ -4,6 +4,11 @@ import Navbar from '../../components/Navbar.vue'
 import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
 import TableData from '../../components/Menu/TableMenu.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
+const breadcrumbItems = ref([
+  { label: "Menú", href: "/menu" },
+]);
 
 const menu = ref([])
 
@@ -48,7 +53,8 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Menu</h1>
+                    <Breadcrumb :items="breadcrumbItems" />
+                    <h1>Menú</h1>
                     <TableData :data="menu" :locales="locales" @refresh="getMenu" />
                 </div>
 

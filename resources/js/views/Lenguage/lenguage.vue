@@ -1,9 +1,14 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import { httpRequest } from '../utils/global-request'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Lenguage/TableLenguage.vue'
+import TableData from './Components/TableLenguage.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
+const breadcrumbItems = ref([
+  { label: "Idioma", href: "/lenguage" }
+]);
 
 const locales = ref([])
 
@@ -32,6 +37,7 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
+                    <Breadcrumb :items="breadcrumbItems" />
                     <h1>Idioma</h1>
                     <TableData :data="locales" @refresh="getLocales" />
                 </div>

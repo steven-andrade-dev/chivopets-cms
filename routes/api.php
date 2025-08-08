@@ -71,11 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/menu/{id}', [MenuController::class, 'destroy']);
 
     //SUBMENU
-    Route::get('/submenu/{id}', [SubmenuController::class, 'show']);
-    Route::post('/submenu', [SubmenuController::class, 'store']);
-    Route::put('/submenu/{id}', [SubmenuController::class, 'update']);
-    Route::delete('/submenu/{id}', [SubmenuController::class, 'destroy']);
-
+    Route::resource('submenu', SubmenuController::class);
 
     //FAQ
     Route::resource('faq', FAQController::class);

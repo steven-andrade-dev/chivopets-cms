@@ -1,19 +1,31 @@
 <script setup lang="ts">
 import Navbar from "../../components/Navbar.vue"
 import Sidebar from "../../components/Sidebar.vue"
-import { useRoute, useRouter } from "vue-router"
-import { ref, onMounted } from "vue"
+import { useRoute} from "vue-router"
+import { ref, onMounted , computed} from "vue"
 import { httpRequest } from "../../utils/global-request"
 import Swal from "sweetalert2"
+import Breadcrumb from "@/components/Breadcrumb.vue"
+
+const breadcrumbItems = ref([
+  { label: "Menú", href: "/menu" },
+  { label: "Submenús", href: "/edit-submenu" }
+])
 
 const route = useRoute()
-const router = useRouter()
 const menuId = route.params.id
 
-const data = ref<any[]>([])
-const locales = ref<any[]>([]) 
+const data = ref([])
+const locales = ref([]) 
 const selectedSubmenu = ref<any | null>(null)
 const showModal = ref(false)
+
+
+const modalTitle = computed(() => {
+  return selectedSubmenu.value && selectedSubmenu.value.id
+    ? 'Editar Submenú'
+    : 'Agregar Submenú'
+})
 
 const getSubmenus = async () => {
   try {
@@ -38,6 +50,11 @@ const getLocales = async () => {
   } catch (error) {
     console.error("Error cargando idiomas:", error)
   }
+}
+
+const getLocaleName = (id: string | number) => {
+  const locale = locales.value.find(l => l.id === id)
+  return locale ? locale.name : '—'
 }
 
 const openModal = (submenu: any) => {
@@ -114,6 +131,7 @@ onMounted(() => {
       <div id="content">
         <Navbar />
         <div class="container-fluid">
+            <Breadcrumb :items="breadcrumbItems" />
           <h1>Submenús del menú #{{ menuId }}</h1>
 
           <div class="mb-3">
@@ -138,7 +156,7 @@ onMounted(() => {
                 <td>{{ submenu.name }}</td>
                 <td>{{ submenu.url }}</td>
                 <td>
-                  {{ locales.find(l => l.id === submenu.id_locale)?.name || '—' }}
+                  {{ getLocaleName(submenu.id_locale) }}
                 </td>
                 <td>
                   <button class="btn btn-primary btn-sm" @click="openModal(submenu)">Editar</button>
@@ -154,7 +172,7 @@ onMounted(() => {
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">{{ selectedSubmenu?.id ? "Editar Submenú" : "Agregar Submenú" }}</h5>
+                <h5 class="modal-title">{{ modalTitle }}</h5>
               <button type="button" class="close" @click="closeModal">
                 <span>&times;</span>
               </button>
@@ -202,21 +220,3 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-.modal {
-  display: block;
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow-y: auto;
-}
-.modal-dialog {
-  margin-top: 10%;
-}
-body.modal-open {
-  overflow: hidden;
-}
-.modal-content {
-  border-radius: 1rem;
-  border: none;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-</style>

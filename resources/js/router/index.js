@@ -12,6 +12,7 @@ import Rol from '../views/Rol.vue';
 import Menu from '../views/Menu.vue';
 import NotFound from '../views/NotFound.vue';
 import EditQuestion from '../views/Questions/Edit-question.vue';
+import Log from '../views/Log/index.vue';
 const routes = [
     {
         path: '/',
@@ -77,6 +78,11 @@ const routes = [
         path: '/edit-question/:id',
         name: 'edit-question',
         component: EditQuestion,
+    },
+    {
+        path: '/logs',
+        name: 'logs',
+        component: Log,
     },
     {
         path: '/:pathMatch(.*)*',

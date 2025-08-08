@@ -1,0 +1,60 @@
+pre code {
+    background-color: #272822;
+    color: #f8f8f2 !important;
+    border-radius: 0.3rem;
+    padding: 4px 5px 5px;
+}
+
+pre code {
+  white-space: inherit;
+}
+
+pre {
+  background-color: #272822;
+  color: #f8f8f2;
+  padding: 5px;
+  border-radius: 0.3em;
+}
+
+.modal {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+}
+
+.btncancel{
+  border:#aaa
+}
+
+.modal-dialog {
+  margin-top: 10%;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal-content {
+  background: #ffffff;
+  color: #171616;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+input.form-control {
+  background-color: #ffffff;
+  color: #171616;
+}
+
+input::placeholder {
+  color: #aaa;
+}

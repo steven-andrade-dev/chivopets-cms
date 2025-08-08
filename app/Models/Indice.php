@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActions;
 
 class Indice extends Model
 {
+    use LogsActions;
+
     protected $table = 'indice';
     protected $fillable = [
         'document_id', 'action', 'model', 'id_entry',

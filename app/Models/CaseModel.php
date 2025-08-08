@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActions;
 
 class CaseModel extends Model
 {
+    use LogsActions;
+
     protected $table = 'case';
     protected $fillable = [
         'image', 'image_author', 'author', 'area', 'name', 'introduction',

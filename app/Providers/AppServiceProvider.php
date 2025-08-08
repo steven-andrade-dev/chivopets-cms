@@ -21,6 +21,8 @@ use App\Interfaces\FAQRepositoryInterface;
 use App\Repositories\FAQRepository;
 use App\Interfaces\SubmenuRepositoryInterface;
 use App\Repositories\SubmenuRepository;
+use App\Interfaces\LogRepositoryInterface;
+use App\Repositories\LogRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(MenuRepositoryInterface::class, MenuRepository::class);
         $this->app->bind(FAQRepositoryInterface::class, FAQRepository::class);
         $this->app->bind(SubmenuRepositoryInterface::class, SubmenuRepository::class);
+        $this->app->bind(LogRepositoryInterface::class, LogRepository::class);
     }
 
     /**

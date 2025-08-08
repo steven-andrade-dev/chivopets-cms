@@ -8,12 +8,19 @@ import { QuillEditor } from "@vueup/vue-quill";
 import Quill from "quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import CarruselItem from "../../components/Content/CarruselItem.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const contenidoHtml = ref('');
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
 const content = ref([]);
+
+const breadcrumbItems = ref([
+  { label: "Secciones", href: "/sections" },
+  { label: "Contenido", href: `/content/` },
+  { label: "Editor de contenido", href: "/edit-content" },
+]);
 
 const SizeStyle = Quill.import("attributors/style/size");
 SizeStyle.whitelist = [
@@ -74,8 +81,10 @@ const getContentById = async () => {
             method: "GET",
         });
         content.value = response.data;
+        breadcrumbItems.value[1].href = `/content/${response.data.id_section}`
+
         contenidoHtml.value = response.data.bloque_principal;
-        
+
         // Asegurar que carruselItems existe
         if (!content.value.carruselItems) {
             content.value.carruselItems = [];
@@ -129,6 +138,7 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
+                    <Breadcrumb :items="breadcrumbItems" />
                     <div class="container">
                         <div class="card m-3">
                             <div class="card-header">
@@ -192,11 +202,11 @@ onMounted(() => {
                                                 <button class="ql-link"></button>
                                                 <button class="ql-clean"></button>
                                             </div>
-                                            <quill-editor ref="editorRef" 
-                                            theme="snow" 
+                                            <quill-editor ref="editorRef"
+                                            theme="snow"
                                             toolbar="#custom-toolbar"
                                             contentType="html"
-                                            :global-options="globalOptions" 
+                                            :global-options="globalOptions"
                                             v-model:content="contenidoHtml" />
                                             <div class="help-text">
                                                 El HTML se generará
@@ -215,12 +225,12 @@ onMounted(() => {
                                         </div>
                                         <div class="form-group">
                                             <label for="type_carrusel">Edición de contenido del carrusel</label>
-                                            <CarruselItem 
-                                                :items="content.carruselItems || []" 
+                                            <CarruselItem
+                                                :items="content.carruselItems || []"
                                                 :type_carrusel="content.type_carrusel"
-                                                @update:items="content.carruselItems = $event" 
+                                                @update:items="content.carruselItems = $event"
                                             />
-                                            
+
                                         </div>
                                     </div>
 
@@ -237,7 +247,7 @@ onMounted(() => {
 
 
 
-                                       
+
                                             <div class="form-group">
                                                 <label for="image">URL de Imagen</label>
                                                 <input type="url" id="image"
@@ -251,7 +261,7 @@ onMounted(() => {
                                                     <option value="2">Inglés</option>
                                                 </select>
                                             </div>
-                                        
+
 
                                     </div>
 

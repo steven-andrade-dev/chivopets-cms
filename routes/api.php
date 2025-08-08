@@ -12,6 +12,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\LogController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +30,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     //Auth
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // LOGS
+    Route::resource('/logs', LogController::class);
 
    //SECTIONS
     Route::get('/sections', [SectionsController::class, 'show']);

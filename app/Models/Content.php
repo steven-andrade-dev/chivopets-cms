@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActions;
 
 class Content extends Model
 {
+    use LogsActions;
+
     protected $table = 'contents';
     protected $fillable = [
         'title', 'bloque_principal','bloque_secundario', 'image', 'subtitle', 'url', 'id_section',

@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActions;
 
 class ContentCarousel extends Model
 {
+    use LogsActions;
+
     public $timestamps = false;
-    
+
     protected $fillable = [
         'id_content', 'id_carousel'
     ];

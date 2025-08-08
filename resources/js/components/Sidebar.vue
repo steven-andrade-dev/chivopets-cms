@@ -70,7 +70,7 @@
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="/sections">
+            <a class="nav-link" href="/logs">
                 <i class="fas fa-fw fa-user"></i>
                 <span>Log de actividades</span></a>
         </li>

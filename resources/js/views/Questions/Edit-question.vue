@@ -8,6 +8,12 @@ import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
+const breadcrumbItems = ref([
+  { label: "Preguntas", href: "/questions" },
+  { label: "Editar Pregunta", href: "/edit-question" },
+]);
 const router = useRouter();
 const route = useRoute();
 const id = route.params.id;
@@ -19,7 +25,7 @@ const question = ref({
 });
 
     const getQuestion = async () => {
-        
+
         const response = await httpRequest({
             url: `/faq/${id}`,
             method: 'GET',
@@ -68,16 +74,17 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container">
+            <Breadcrumb :items="breadcrumbItems" />
         <div class="card">
             <div class="card-header">
                 <h1 class="card-title">Editar Pregunta</h1>
             </div>
             <div class="card-content">
-               
+
                     <div class="form-group">
                         <label for="question" class="label">Pregunta</label>
-                        <textarea 
-                            id="question" 
+                        <textarea
+                            id="question"
                             class="textarea textarea-question"
                             placeholder="Escribe tu pregunta aquí..."
                             v-model="question.name"
@@ -86,8 +93,8 @@ onMounted(() => {
 
                     <div class="form-group">
                         <label for="answer" class="label">Respuesta</label>
-                        <quill-editor ref="editorRef" 
-                            theme="snow" 
+                        <quill-editor ref="editorRef"
+                            theme="snow"
                             contentType="html"
                             v-model:content="question.answer" />
                     </div>
@@ -106,7 +113,7 @@ onMounted(() => {
                             Cancelar
                         </button>
                     </div>
-                
+
             </div>
         </div>
     </div>
@@ -238,13 +245,13 @@ onMounted(() => {
     .container {
         padding: 0 10px;
     }
-    
+
     .card-header,
     .card-content {
         padding-left: 16px;
         padding-right: 16px;
     }
-    
+
     .button-group {
         flex-direction: column;
     }

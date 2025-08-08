@@ -18,7 +18,7 @@ const content = ref([]);
 
 const breadcrumbItems = ref([
   { label: "Secciones", href: "/sections" },
-  { label: "Contenido", href: `/content/${id}` },
+  { label: "Contenido", href: `/content/` },
   { label: "Editor de contenido", href: "/edit-content" },
 ]);
 
@@ -81,6 +81,8 @@ const getContentById = async () => {
             method: "GET",
         });
         content.value = response.data;
+        breadcrumbItems.value[1].href = `/content/${response.data.id_section}`
+
         contenidoHtml.value = response.data.bloque_principal;
 
         // Asegurar que carruselItems existe

@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import { httpRequest } from '../../utils/global-request' 
 import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 
 const props = defineProps({
@@ -35,6 +38,9 @@ const closeModal = () => {
   document.body.classList.remove('modal-open')
 }
 
+const goToSubmenu = (menuId) => {
+  router.push({ name: 'edit-submenu', params: { id: menuId } })
+}
 
 // Crear
 const createMenu = async () => {
@@ -130,7 +136,7 @@ const saveMenu = async () => {
           <button class="btn btn-primary btn-sm" @click="openModal(menu)">Editar</button>
         </td>
         <td>
-          <button class="btn btn-secondary btn-sm" @click="openSubmenuModal(menu)">Submenus</button>
+          <button class="btn btn-secondary btn-sm" @click="goToSubmenu(menu.id)">Submenús</button>
         </td>
       </tr>
     </tbody>

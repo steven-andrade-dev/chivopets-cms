@@ -8,11 +8,17 @@ use App\Helpers\ResponseMessages;
 
 class SubmenuController extends BaseController
 {
-    public function show(SubmenuService $submenuService)
-    {
-       $submenu = $submenuService->getSubmenu();
-       return $this->sendResponse($submenu, ResponseMessages::successList(), 200);
+ public function show($id, SubmenuService $submenuService)
+{
+    $submenu = $submenuService->getSubmenu($id);
+
+    if (!$submenu) {
+        return $this->sendError('Submenús no encontrados', [], 404);
     }
+
+    return $this->sendResponse($submenu, ResponseMessages::successList(), 200);
+}
+
 
     public function store(Request $request, SubmenuService $submenuService)
     {

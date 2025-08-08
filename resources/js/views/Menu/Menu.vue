@@ -1,9 +1,9 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import { httpRequest } from '../utils/global-request'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Menu/TableMenu.vue'
+import TableData from '../../components/Menu/TableMenu.vue'
 
 const menu = ref([])
 
@@ -14,6 +14,7 @@ const getMenu = async () => {
       method: 'GET',
     })
     menu.value = response.data
+
   } catch (err) {
     console.error(err)
   }

@@ -8,29 +8,31 @@ use App\Helpers\ResponseMessages;
 
 class RolController extends BaseController
 {
-    public function show(RolService $rolService)
+    public function __construct(private RolService $rolService) {}
+
+        public function show()
     {
-       $rol = $rolService->getRol();
+       $rol = $this->rolService->getRol();
        return $this->sendResponse($rol, ResponseMessages::successList(), 200);
     }
 
-    public function add(Request $request, RolService $rolService)
+    public function add(Request $request)
     {
         $data = $request->all();
-        $rol = $rolService->createRol($data);
+        $rol = $this->rolService->createRol($data);
         return $this->sendResponse($rol, ResponseMessages::successCreate(), 201);
     }
 
-    public function update(Request $request, $id, RolService $rolService)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
-        $rol = $rolService->updateRol($id, $data);
+        $rol = $this->rolService->updateRol($id, $data);
         return $this->sendResponse($rol, ResponseMessages::successUpdate(), 200);
     }
 
-    public function destroy($id, RolService $rolService)
+    public function destroy($id)
     {
-        $rolService->deleteRol($id);
+        $this->rolService->deleteRol($id);
         return $this->sendResponse([], ResponseMessages::successDelete(), 200);
     }
 }

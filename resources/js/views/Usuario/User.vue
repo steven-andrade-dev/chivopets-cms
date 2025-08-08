@@ -1,41 +1,47 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import { httpRequest } from '../utils/global-request'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Menu/TableMenu.vue'
+import TableData from './Component/TableUsuarios.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-const menu = ref([])
+const users = ref([])
 
-const getMenu = async () => {
+const getUsers = async () => {
   try {
     const response = await httpRequest({
-      url: '/menulocale',
+      url: '/users',
       method: 'GET',
     })
-    menu.value = response.data
+    users.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
-const locales = ref([])
+const roles = ref([])
 
-const getLocales = async () => {
+const getRoles = async () => {
   try {
     const response = await httpRequest({
-      url: '/locales',
+      url: '/rol',
       method: 'GET',
     })
-    locales.value = response.data
+    roles.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
 
 onMounted(() => {
-  getMenu()
-  getLocales()
+  getUsers()
+  getRoles()
 })
+
+const breadcrumbItems = ref([
+  { label: "Usuarios", href: "/user" }
+]);
+
 
 </script>
 
@@ -47,8 +53,9 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Menu</h1>
-                    <TableData :data="menu" :locales="locales" @refresh="getMenu" />
+                    <Breadcrumb :items="breadcrumbItems" />
+                    <h1>Usuarios</h1>
+                    <TableData :data="users" :roles="roles" @refresh="getUsers" />
                 </div>
 
             </div>

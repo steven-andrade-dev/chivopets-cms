@@ -8,29 +8,31 @@ use App\Helpers\ResponseMessages;
 
 class LocaleController extends BaseController
 {
-    public function show(LocaleService $localeService)
+    public function __construct(private LocaleService $localeService) {}
+
+    public function show()
     {
-       $locale = $localeService->getLocale();
+       $locale = $this->localeService->getLocale();
        return $this->sendResponse($locale, ResponseMessages::successList(), 200);
     }
 
-    public function add(Request $request, LocaleService $localeService)
+    public function add(Request $request)
     {
         $data = $request->all();
-        $locale = $localeService->createLocale($data);
+        $locale = $this->localeService->createLocale($data);
         return $this->sendResponse($locale, ResponseMessages::successCreate(), 201);
     }
 
-    public function update(Request $request, $id, LocaleService $localeService)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
-        $locale = $localeService->updateLocale($id, $data);
+        $locale = $this->localeService->updateLocale($id, $data);
         return $this->sendResponse($locale, ResponseMessages::successUpdate(), 200);
     }
 
-    public function destroy($id, LocaleService $localeService)
+    public function destroy($id)
     {
-        $localeService->deleteLocale($id);
+        $this->localeService->deleteLocale($id);
         return $this->sendResponse([], ResponseMessages::successDelete(), 200);
     }
 }

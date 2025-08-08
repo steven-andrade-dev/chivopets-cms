@@ -8,9 +8,9 @@ class SubmenuService
 {
     public function __construct(private SubmenuRepositoryInterface $repo) {}
 
-    public function getSubmenu()
+    public function getSubmenu($id)
     {
-        return $this->repo->get_all_submenu();
+        return $this->repo->get_all_submenu($id);
     }
 
     public function createSubmenu(array $data)

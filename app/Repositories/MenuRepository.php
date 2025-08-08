@@ -13,10 +13,16 @@ class MenuRepository implements MenuRepositoryInterface
         return Menu::with('submenus')->get()->map(fn($menu) => MenuDTO::fromModel($menu));
     }
 
-    public function get_menu_with_locale()
+     public function get_menu_with_locale()
     {
-        return Menu::with('locale')->get();
+        $menus = Menu::withCount('submenus')->get();
+        foreach ($menus as $menu) {
+            $menu->can_delete = $menu->submenus_count === 0;
+        }
+
+        return $menus;
     }
+
 
      public function get_menu_by_id($id)
     {

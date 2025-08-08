@@ -5,11 +5,12 @@ import Content from '../views/Content/Content.vue';
 import Questions from '../views/Questions/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
 import Tips from '../views/Tips.vue';
-import Language from '../views/lenguage.vue';
+import Language from '../views/Lenguage/lenguage.vue';
 import EditContent from '../views/Content/EditContent.vue';
-import User from '../views/User.vue';
-import Rol from '../views/Rol.vue';
-import Menu from '../views/Menu.vue';
+import EditSubmenu from '../views/Menu/EditSubmenu.vue';
+import User from '../views/Usuario/User.vue';
+import Rol from '../views/Usuario/Rol.vue';
+import Menu from '../views/Menu/Menu.vue';
 import NotFound from '../views/NotFound.vue';
 import EditQuestion from '../views/Questions/Edit-question.vue';
 import Log from '../views/Log/index.vue';
@@ -69,6 +70,12 @@ const routes = [
         name: 'tips',
         component: Tips,
     },
+     {
+        path: '/edit-submenu/:id',
+        name: 'edit-submenu',
+        component: EditSubmenu,
+    },
+
     {
         path: '/edit-content/:id',
         name: 'edit-content',

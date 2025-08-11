@@ -2,15 +2,17 @@
 
 namespace App\Repositories;
 use App\Interfaces\SubmenuRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Submenu; 
+use App\DTO\SubmenuDTO;
 
 class SubmenuRepository implements SubmenuRepositoryInterface
 {
-    public function get_all_submenu()
-    {
-        return Submenu::all();
-    }
+   public function get_all_submenu($id)
+{
+    return Submenu::where('id_menu', $id)->get()->map(fn($submenu) => SubmenuDTO::fromModel($submenu));
+}
+
+
 
     public function get_submenu_by_id($id)
     {

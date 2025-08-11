@@ -1,48 +1,32 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import { httpRequest } from '../utils/global-request'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Usuario/TableUsuarios.vue'
+import TableData from './Component/TableRol.vue'
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
-const users = ref([])
+const breadcrumbItems = ref([
+  { label: "Roles", href: "/rol" }
+]);
 
-const getUsers = async () => {
-  try {
-    const response = await httpRequest({
-      url: '/users',
-      method: 'GET',
-    })
-    users.value = response.data
-  } catch (err) {
-    console.error(err)
-  }
-}
-const roles = ref([])
+const rol = ref([])
 
-const getRoles = async () => {
+const getRol = async () => {
   try {
     const response = await httpRequest({
       url: '/rol',
       method: 'GET',
     })
-    roles.value = response.data
+    rol.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
 
 onMounted(() => {
-  getUsers()
-  getRoles()
+  getRol()
 })
-
-const breadcrumbItems = ref([
-  { label: "Usuarios", href: "/user" }
-]);
-
-
 </script>
 
 
@@ -54,8 +38,8 @@ const breadcrumbItems = ref([
                 <Navbar />
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
-                    <h1>Usuarios</h1>
-                    <TableData :data="users" :roles="roles" @refresh="getUsers" />
+                    <h1>Roles</h1>
+                    <TableData :data="rol" @refresh="getRol" />
                 </div>
 
             </div>

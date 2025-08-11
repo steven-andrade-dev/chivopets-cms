@@ -1,26 +1,31 @@
 <script setup>
-import Sidebar from '../components/Sidebar.vue'
-import Navbar from '../components/Navbar.vue'
-import { httpRequest } from '../utils/global-request'
+import Sidebar from '../../components/Sidebar.vue'
+import Navbar from '../../components/Navbar.vue'
+import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from '../components/Usuario/TableRol.vue'
+import TableData from './Components/TableLenguage.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-const rol = ref([])
+const breadcrumbItems = ref([
+  { label: "Idioma", href: "/lenguage" }
+]);
 
-const getRol = async () => {
+const locales = ref([])
+
+const getLocales = async () => {
   try {
     const response = await httpRequest({
-      url: '/rol',
+      url: '/locales',
       method: 'GET',
     })
-    rol.value = response.data
+    locales.value = response.data
   } catch (err) {
     console.error(err)
   }
 }
 
 onMounted(() => {
-  getRol()
+  getLocales()
 })
 </script>
 
@@ -32,8 +37,9 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
-                    <h1>Roles</h1>
-                    <TableData :data="rol" @refresh="getRol" />
+                    <Breadcrumb :items="breadcrumbItems" />
+                    <h1>Idioma</h1>
+                    <TableData :data="locales" @refresh="getLocales" />
                 </div>
 
             </div>

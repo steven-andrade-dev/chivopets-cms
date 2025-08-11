@@ -9,35 +9,38 @@ use App\Helpers\ResponseMessages;
 
 class MenuController extends BaseController
 {
-    public function getAllMenu(MenuService $menuService)
+    public function __construct(private MenuService $menuService) {}
+
+
+    public function getAllMenu()
     {
-       $menuList = $menuService->getMenu();
+       $menuList = $this->menuService->getMenu();
        return $this->sendResponse($menuList, ResponseMessages::successList(), 200);
     }
 
-     public function show(MenuService $menuService)
+     public function show()
     {
-       $menu = $menuService->getMenuWithLocale();
+       $menu = $this->menuService->getMenuWithLocale();
        return $this->sendResponse($menu, ResponseMessages::successList(), 200);
     }
 
-    public function store(Request $request, MenuService $menuService)
+    public function store(Request $request)
     {
         $data = $request->all();
-        $menu = $menuService->createMenu($data);
+        $menu = $this->menuService->createMenu($data);
         return $this->sendResponse($menu, ResponseMessages::successCreate(), 201);
     }
 
-    public function update(Request $request, $id, MenuService $menuService)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
-        $menu = $menuService->updateMenu($id, $data);
+        $menu = $this->menuService->updateMenu($id, $data);
         return $this->sendResponse($menu, ResponseMessages::successUpdate(), 200);
     }
 
-    public function destroy($id, MenuService $menuService)
+    public function destroy($id)
     {
-        $menuService->deleteMenu($id);
+        $this->menuService->deleteMenu($id);
         return $this->sendResponse([], ResponseMessages::successDelete(), 200);
     }
 }

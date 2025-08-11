@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\GalleryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,6 +76,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //FAQ
     Route::resource('faq', FAQController::class);
+
+    //GALERY
+    Route::post('/gallery/upload', [GalleryController::class, 'upload']);
+    Route::get('/gallery', [GalleryController::class, 'list']);
 });
 
 Route::prefix('astro/menun')->group(function () {

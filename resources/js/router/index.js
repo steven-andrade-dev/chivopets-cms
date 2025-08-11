@@ -14,6 +14,8 @@ import Menu from '../views/Menu/Menu.vue';
 import NotFound from '../views/NotFound.vue';
 import EditQuestion from '../views/Questions/Edit-question.vue';
 import Log from '../views/Log/index.vue';
+import Gallery from '../views/Gallery/index.vue';
+
 const routes = [
     {
         path: '/',
@@ -90,6 +92,11 @@ const routes = [
         path: '/logs',
         name: 'logs',
         component: Log,
+    },
+    {
+        path: '/gallery',
+        name: 'gallery',
+        component: Gallery,
     },
     {
         path: '/:pathMatch(.*)*',

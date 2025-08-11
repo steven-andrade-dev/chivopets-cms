@@ -75,6 +75,13 @@
                 <span>Log de actividades</span></a>
         </li>
 
+        <!-- Nav Item - Gallery -->
+        <li class="nav-item">
+            <a class="nav-link" href="/gallery">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Galeria</span></a>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 

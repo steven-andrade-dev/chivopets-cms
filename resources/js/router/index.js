@@ -16,6 +16,7 @@ import EditQuestion from '../views/Questions/Edit-question.vue';
 import Log from '../views/Log/index.vue';
 import EditCases from '../views/Cases/Components/EditCases.vue';
 import CreateCase from '../views/Cases/Components/CreateCases.vue';
+import Gallery from '../views/Gallery/index.vue';
 
 const routes = [
     {
@@ -103,6 +104,11 @@ const routes = [
         path: '/logs',
         name: 'logs',
         component: Log,
+    },
+    {
+        path: '/gallery',
+        name: 'gallery',
+        component: Gallery,
     },
     {
         path: '/:pathMatch(.*)*',

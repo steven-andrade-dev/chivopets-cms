@@ -1,9 +1,15 @@
 <script setup>
 import Sidebar from '../../components/Sidebar.vue'
 import Navbar from '../../components/Navbar.vue'
-import TableData from '../../components/TableData.vue'
-import { ref, onMounted } from 'vue'
 import { httpRequest } from '../../utils/global-request'
+import { ref, onMounted } from 'vue'
+import TableData from './Components/TableCases.vue'
+import Breadcrumb from "@/components/Breadcrumb.vue";
+
+
+const breadcrumbItems = ref([
+  { label: "Casos", href: "/cases" }
+]);
 const cases = ref([])
 
 const getCases = async () => {
@@ -17,6 +23,7 @@ const getCases = async () => {
     console.error(err)
   }
 }
+
 onMounted(() => {
   getCases()
 })
@@ -28,12 +35,10 @@ onMounted(() => {
             <div id="content">
                 <Navbar />
                 <div class="container-fluid">
+                    <Breadcrumb :items="breadcrumbItems" />
                     <h1>Casos</h1>
                     <TableData :data="cases" />
-
-
                 </div>
-
             </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">

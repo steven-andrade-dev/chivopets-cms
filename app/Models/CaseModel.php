@@ -12,11 +12,19 @@ class CaseModel extends Model
     protected $table = 'case';
     protected $fillable = [
         'image', 'image_author', 'author', 'area', 'name', 'introduction',
-        'date', 'text_button', 'published_at', 'created_by_id', 'updated_by_id', 'locale'
+        'date', 'text_button', 'created_at', 'updated_at', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'
     ];
 
-    public function description()
+
+    public function locale()
     {
-        return $this->hasMany(DescriptionCase::class, 'id', 'id_descrition');
+        return $this->belongsTo(Locale::class, 'id_locale');
     }
+
+    public function descriptionCases()
+    {
+        return $this->hasMany(DescriptionCase::class, 'id_case');
+    }
+    
+
 }

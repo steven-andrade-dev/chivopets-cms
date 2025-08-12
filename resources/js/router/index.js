@@ -14,6 +14,9 @@ import Menu from '../views/Menu/Menu.vue';
 import NotFound from '../views/NotFound.vue';
 import EditQuestion from '../views/Questions/Edit-question.vue';
 import Log from '../views/Log/index.vue';
+import EditCases from '../views/Cases/Components/EditCases.vue';
+import CreateCase from '../views/Cases/Components/CreateCases.vue';
+
 const routes = [
     {
         path: '/',
@@ -23,6 +26,16 @@ const routes = [
         path: '/lenguage',
         name: 'lenguage',
         component: Language,
+    },
+    {
+        path: '/create-case',
+        name: 'create-case',
+        component: CreateCase,
+    },
+    {
+        path: '/edit-case/:id',
+        name: 'edit-case',
+        component: EditCases,
     },
     {
         path: '/login',

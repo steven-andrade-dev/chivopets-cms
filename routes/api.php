@@ -41,9 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/content/{id?}', [ContentController::class, 'show']);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
     Route::put('/contenido/update', [ContentController::class, 'update']);
+
     //CASES
-    Route::get('/cases', [CasesController::class, 'get']);
-    Route::post('/create-case', [CasesController::class, 'createCase']);
+    Route::resource('cases', CasesController::class);
 
     // LOCALES
     Route::get('/locales', [LocaleController::class, 'show']);

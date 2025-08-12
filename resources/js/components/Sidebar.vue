@@ -30,7 +30,7 @@
                     <a class="collapse-item" href="/content">Contenido</a>
                     <a class="collapse-item" href="/questions">Preguntas</a>
                     <a class="collapse-item" href="/cases">Casos</a>
-                    <a class="collapse-item" href="/tips">Tips</a>
+                    <a class="collapse-item" href="/home">Tips</a>
                 </div>
             </div>
         </li>

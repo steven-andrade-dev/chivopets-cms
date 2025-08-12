@@ -15,6 +15,7 @@
         "bootstrap": "^5.3.7",
         "sweetalert2": "^11.22.2",
         "vue": "^3.5.18",
-        "vue-router": "^4.5.1"
+        "vue-router": "^4.5.1",
+        "vuedraggable": "^4.1.0"
     }
 }

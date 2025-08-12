@@ -109,6 +109,7 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->string('etiqueta');
+            $table->integer('order');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();

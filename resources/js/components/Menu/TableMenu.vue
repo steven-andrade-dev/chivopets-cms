@@ -147,43 +147,17 @@ const saveMenu = async () => {
     </template>
     <template #body>
         <form>
-            <div class="form-group mb-4 position-relative">
-                <label class="form-label">Nombre</label>
-                <div class="input-group">
-                <span class="input-group-text bg-dark text-white border-0">
-                    <i class="bi bi-person-fill"></i>
-                </span>
-                <input v-model="selectedmenu.name" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="" />
-                </div>
-            </div>
+            <InputComponent label="Nombre" v-model="selectedmenu.name" placeholder="Ingrese el nombre" />
+            <InputComponent label="URL" v-model="selectedmenu.url" placeholder="Ingrese la URL" />
 
-            <div class="form-group mb-4 position-relative">
-                <label class="form-label">url</label>
-                <div class="input-group">
-                <span class="input-group-text bg-dark text-white border-0">
-                    <i class="bi bi-code-slash"></i>
-                </span>
-                <input v-model="selectedmenu.url" type="text" class="form-control form-control-lg rounded-end border-0 shadow-sm" placeholder="" />
-                </div>
-            </div>
-            <div class="form-group mb-4 position-relative">
-                <label class="form-label">Idioma</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-dark text-white border-0">
-                    <i class="bi bi-translate"></i>
-                    </span>
-                        <select
-                        v-model="selectedmenu.id_locale"
-                        class="form-select form-select-lg rounded-end border-0 shadow-sm"
-                        required
-                        >
-                        <option disabled value="">🌐 Selecciona un idioma</option>
-                        <option v-for="locale in locales" :key="locale.id" :value="locale.id">
-                            {{ locale.name }}
-                        </option>
-                        </select>
-                </div>
-            </div>
+            <SelectComponent
+                label="Idioma"
+                icon="bi bi-translate"
+                v-model="selectedmenu.id_locale"
+                :options="locales"
+                placeholder="🌐 Selecciona un idioma"
+                required
+            />
         </form>
     </template>
     <template #footer>

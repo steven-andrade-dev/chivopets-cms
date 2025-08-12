@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import App from './components/App.vue';
 import router from './router';
+import InputComponent from './components/InputComponent.vue'
+import SelectComponent from './components/SelectComponent.vue'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
@@ -14,5 +16,8 @@ import '../css/sb-admin-2.min.css';
 import '../css/font/all.min.css';
 
 const app = createApp(App);
+
+app.component('InputComponent', InputComponent)
+app.component('SelectComponent', SelectComponent)
 
 app.use(router).mount('#app');

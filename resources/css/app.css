@@ -49,12 +49,3 @@ body.modal-open {
 .modal-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-input.form-control {
-  background-color: #ffffff;
-  color: #171616;
-}
-
-input::placeholder {
-  color: #aaa;
-}

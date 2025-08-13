@@ -14,6 +14,7 @@ use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\DescriptionCasesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,6 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //CASES
     Route::resource('cases', CasesController::class);
+
+    //DESCRPTION CASES
+    Route::resource('description-cases', DescriptionCasesController::class);
+    Route::post('/description-cases/reorder', [DescriptionCasesController::class, 'reorder']);
 
     // LOCALES
     Route::get('/locales', [LocaleController::class, 'show']);

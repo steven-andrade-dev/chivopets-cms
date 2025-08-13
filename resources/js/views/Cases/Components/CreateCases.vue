@@ -2,50 +2,90 @@
 import Sidebar from '../../../components/Sidebar.vue'
 import Navbar from '../../../components/Navbar.vue'
 import { httpRequest } from '../../../utils/global-request'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import Breadcrumb from "@/components/Breadcrumb.vue"
-import { QuillEditor } from "@vueup/vue-quill";
-import Quill from "quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import { QuillEditor } from "@vueup/vue-quill"
+import Quill from "quill"
+import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
 const breadcrumbItems = ref([
-
   { label: "Casos", href: "/cases" },
   { label: "Crear Caso", href: "/create-case" }
-]);
+])
 
-const SizeStyle = Quill.import("attributors/style/size");
-SizeStyle.whitelist = [
-    "12px","14px","16px","18px","24px","32px","48px","53px",
-];
+// Campos del formulario
+const titulo        = ref('')
+const imagenPrincipal = ref(null)     
+const imagenAutor   = ref(null)       
+const nombreAutor   = ref('')
+const area          = ref('')
+const introduccion  = ref('')
+const contenidoHtml = ref('')        
+const idLocale      = ref(1)         
 
-Quill.register(SizeStyle, true);
+// Config Quill
+const SizeStyle = Quill.import("attributors/style/size")
+SizeStyle.whitelist = ["12px","14px","16px","18px","24px","32px","48px","53px"]
+Quill.register(SizeStyle, true)
 
 const globalOptions = {
-    debug: "",
-    modules: {
-        toolbar: "#custom-toolbar",
-        history: {
-            delay: 2000,
-            maxStack: 500,
-            userOnly: true,
-        },
-        clipboard: {
-            matchVisual: false,
-        },
-        keyboard: {
-            bindings: {},
-        },
-        syntax: true,
-        },
-    formats: [
-        "size","color","bold","italic","underline","strike","blockquote","code-block","list","bullet","link","image",
-        "video",
-    ],
-    theme: "snow",
-};
-// set default globalOptions prop
-QuillEditor.props.globalOptions.default = () => globalOptions;
+  modules: { toolbar: "#custom-toolbar" },
+  formats: ["size","color","bold","italic","underline","strike","blockquote","code-block","list","bullet","link","image","video"],
+  theme: "snow",
+}
+QuillEditor.props.globalOptions.default = () => globalOptions
+
+// Guardar caso + descripción
+const guardarCaso = async () => {
+  try {
+    const payloadCase = {
+      name: titulo.value,               
+      image: imagenPrincipal.value,     
+      image_author: imagenAutor.value,  
+      author: nombreAutor.value,
+      area: area.value,
+      introduction: introduccion.value,
+      id_locale: 1,
+      date: date.now(),
+      text_button:'Descargar Informe'
+    }
+
+    const resCase = await httpRequest({
+      url: '/cases',
+      method: 'POST',
+      data: payloadCase
+    })
+
+    const newCase = resCase.data?.data ?? resCase.data
+    if (!newCase?.id) {
+      alert('No se pudo crear el caso.')
+      return
+    }
+
+    // 2) Crear la descripción principal en description_case (si hay contenido)
+    const html = (contenidoHtml.value || '').trim()
+    if (html.length > 0) {
+      const payloadDesc = {
+        id_case: newCase.id,
+        etiqueta: 'Principal',
+        description: html,
+        order: 0,
+        id_locale: newCase.id_locale ?? idLocale.value
+      }
+
+      await httpRequest({
+        url: '/description-cases',
+        method: 'POST',
+        data: payloadDesc
+      })
+    }
+
+    alert('Caso creado correctamente')
+  } catch (error) {
+    console.error('Error al guardar caso', error)
+    alert('Error al guardar el caso')
+  }
+}
 </script>
 
 <template>
@@ -63,33 +103,36 @@ QuillEditor.props.globalOptions.default = () => globalOptions;
                 <h3 class="card-title mb-0">Crear Caso</h3>
               </div>
               <div class="card-body">
-                <form>
+                <form @submit.prevent="guardarCaso">
                   <div class="form-group">
                     <label class="form-label fw-bold">Título</label>
-                    <input type="text" class="form-control" placeholder="Ingrese el título" />
+                    <input v-model="titulo" type="text" class="form-control" placeholder="Ingrese el título" />
                   </div>
+
                   <div class="form-group">
                     <label class="form-label">Imagen principal</label>
-                    <input type="file" class="form-control" />
+                    <input v-model="imagenPrincipal" type="text" class="form-control" placeholder="Ingrese la url de la imagen" />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Imagen del autor</label>
-                    <input type="file" class="form-control" />
+                    <input v-model="imagenAutor" type="text" class="form-control" placeholder="Ingrese la url de la imagen" />
                   </div>
+
                   <div class="form-group">
                     <label class="form-label">Nombre del autor</label>
-                    <input type="text" class="form-control" placeholder="Ingrese el autor" />
+                    <input v-model="nombreAutor" type="text" class="form-control" placeholder="Ingrese el autor" />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Área</label>
-                    <input type="text" class="form-control" placeholder="Ingrese el área" />
+                    <input v-model="area" type="text" class="form-control" placeholder="Ingrese el área" />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Introducción</label>
-                    <textarea class="form-control" rows="3" placeholder="Escriba la introducción"></textarea>
+                    <textarea v-model="introduccion" class="form-control" rows="3" placeholder="Escriba la introducción"></textarea>
                   </div>
+
                   <div class="form-group">
-                    <label for="description" class="form-label">Bloque Principal</label>
+                    <label class="form-label">Bloque Principal</label>
                     <div id="custom-toolbar">
                       <select class="ql-size">
                         <option value="12px">12 px</option>
@@ -110,8 +153,7 @@ QuillEditor.props.globalOptions.default = () => globalOptions;
                       <button class="ql-link"></button>
                       <button class="ql-clean"></button>
                     </div>
-                    <quill-editor
-                      ref="editorRef"
+                    <QuillEditor
                       theme="snow"
                       toolbar="#custom-toolbar"
                       contentType="html"
@@ -119,6 +161,7 @@ QuillEditor.props.globalOptions.default = () => globalOptions;
                       v-model:content="contenidoHtml"
                     />
                   </div>
+
                   <div class="actions mt-3">
                     <button type="submit" class="btn btn-primary">Guardar</button>
                   </div>
@@ -142,26 +185,9 @@ QuillEditor.props.globalOptions.default = () => globalOptions;
 </template>
 
 <style scoped>
-.card {
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.card-header {
-  background: #f8f9fa;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 1rem;
-}
-.form-group {
-  margin-bottom: 1rem;
-}
-input, textarea {
-  background-color: white !important;
-}
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
+.card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+.card-header { background: #f8f9fa; border-bottom: 1px solid #e5e7eb; padding: 1rem; }
+.form-group { margin-bottom: 1rem; }
+input, textarea { background-color: white !important; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; }
 </style>
-
-

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 use App\Services\SectionService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\BaseController;
+use App\Helpers\ResponseMessages;
 
-class SectionsController extends Controller
+class SectionsController extends BaseController
 {
-    public function show(SectionService $sectionService)
+    public function __construct(private SectionService $sectionService) {}
+
+
+    public function index(Request $request)
     {
-       $sections = $sectionService->getSection();
-       return response()->json([
-        'data' => $sections
-       ]);
+       $sections = $this->sectionService->getSection($request, 10);
+       return $this->sendResponse($sections, ResponseMessages::successList(), 200);
     }
-    
+
 }

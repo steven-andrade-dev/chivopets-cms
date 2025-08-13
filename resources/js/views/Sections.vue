@@ -7,14 +7,17 @@ import TableData from '../components/TableData.vue'
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const sections = ref([])
+const idLanguage = ref(1)
+const pagination = ref({});
 
-const getSections = async () => {
+const getSections = async (page = 1) => {
   try {
     const response = await httpRequest({
-      url: '/sections',
+      url: `/sections?idLanguage=${idLanguage.value}&page=${page}`,
       method: 'GET',
     })
-    sections.value = response.data
+    sections.value = response.data.data
+    pagination.value = response.data;
     sections.value.son = 'content'
   } catch (err) {
     console.error(err)
@@ -40,8 +43,23 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <select class="form-select" id="idLanguage" v-model="idLanguage" @change="getSections">
+                                <option value="1">Español</option>
+                                <option value="2">Ingles</option>
+                            </select>
+                        </div>
+                    </div>
                     <TableData :data="sections" />
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <PaginationComponent
+                                :pagination="pagination"
+                                @page-change="getSections"
+                            />
+                        </div>
+                    </div>
 
                 </div>
 

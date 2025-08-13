@@ -36,7 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/logs', LogController::class);
 
    //SECTIONS
-    Route::get('/sections', [SectionsController::class, 'show']);
+    // Route::get('/sections', [SectionsController::class, 'show']);
+    Route::resource('sections', SectionsController::class);
 
     // CONTENT
     Route::get('/content/{id?}', [ContentController::class, 'show']);

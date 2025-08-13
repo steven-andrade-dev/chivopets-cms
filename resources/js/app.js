@@ -3,6 +3,8 @@ import App from './components/App.vue';
 import router from './router';
 import InputComponent from './components/InputComponent.vue'
 import SelectComponent from './components/SelectComponent.vue'
+import PaginationComponent from './components/Pagination.vue'
+import LanguageComponent from './components/LanguageSelect.vue'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
@@ -19,5 +21,7 @@ const app = createApp(App);
 
 app.component('InputComponent', InputComponent)
 app.component('SelectComponent', SelectComponent)
+app.component('PaginationComponent', PaginationComponent)
+app.component('LanguageSelect', LanguageComponent)
 
 app.use(router).mount('#app');

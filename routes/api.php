@@ -37,7 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/logs', LogController::class);
 
    //SECTIONS
-    Route::get('/sections', [SectionsController::class, 'show']);
+    // Route::get('/sections', [SectionsController::class, 'show']);
+    Route::resource('sections', SectionsController::class);
 
     // CONTENT
     Route::get('/content/{id?}', [ContentController::class, 'show']);
@@ -71,10 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // MENU
     Route::get('/menulocale', [MenuController::class, 'show']);
-    Route::get('/menu', [MenuController::class, 'getAllMenu']);
-    Route::post('/menu', [MenuController::class, 'store']);
-    Route::put('/menu/{id}', [MenuController::class, 'update']);
-    Route::delete('/menu/{id}', [MenuController::class, 'destroy']);
+    Route::resource('menu', MenuController::class);
 
     //SUBMENU
     Route::resource('submenu', SubmenuController::class);

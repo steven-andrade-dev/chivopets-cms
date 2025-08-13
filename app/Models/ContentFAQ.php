@@ -16,7 +16,7 @@ class ContentFAQ extends Model
 
     public function faq()
     {
-        return $this->belongsTo(FAQ::class, 'id_carousel');
+        return $this->belongsTo(FAQ::class, 'id_faq');
     }
 
     public function content()

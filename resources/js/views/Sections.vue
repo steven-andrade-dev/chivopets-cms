@@ -7,7 +7,7 @@ import TableData from '../components/TableData.vue'
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const sections = ref([])
-
+const EditButton = ref('Editar')
 const getSections = async () => {
   try {
     const response = await httpRequest({
@@ -40,7 +40,7 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
-                    <TableData :data="sections" />
+                    <TableData :data="sections" EditButton="Ver contenido" />
 
 
                 </div>
@@ -56,4 +56,3 @@ onMounted(() => {
         </div>
     </div>
 </template>
-<

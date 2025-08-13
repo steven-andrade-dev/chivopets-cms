@@ -1,91 +1,88 @@
-<script setup>
-import Sidebar from '../../../components/Sidebar.vue'
-import Navbar from '../../../components/Navbar.vue'
-import { httpRequest } from '../../../utils/global-request'
-import { ref } from 'vue'
+<script setup lang="ts">
+import Navbar from "../../../components/Navbar.vue"
+import Sidebar from "../../../components/Sidebar.vue"
 import Breadcrumb from "@/components/Breadcrumb.vue"
+
+import { ref, onMounted } from "vue"
+import { httpRequest } from "../../../utils/global-request"
+import Swal from "sweetalert2"
+
 import { QuillEditor } from "@vueup/vue-quill"
-import Quill from "quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
+/* Breadcrumb */
 const breadcrumbItems = ref([
   { label: "Casos", href: "/cases" },
   { label: "Crear Caso", href: "/create-case" }
 ])
 
-// Campos del formulario
-const titulo        = ref('')
-const imagenPrincipal = ref(null)     
-const imagenAutor   = ref(null)       
-const nombreAutor   = ref('')
-const area          = ref('')
-const introduccion  = ref('')
-const contenidoHtml = ref('')        
-const idLocale      = ref(1)         
-
-// Config Quill
-const SizeStyle = Quill.import("attributors/style/size")
-SizeStyle.whitelist = ["12px","14px","16px","18px","24px","32px","48px","53px"]
-Quill.register(SizeStyle, true)
-
-const globalOptions = {
-  modules: { toolbar: "#custom-toolbar" },
-  formats: ["size","color","bold","italic","underline","strike","blockquote","code-block","list","bullet","link","image","video"],
-  theme: "snow",
-}
-QuillEditor.props.globalOptions.default = () => globalOptions
-
-// Guardar caso + descripción
-const guardarCaso = async () => {
+/* Locales */
+const locales = ref<any[]>([])
+const getLocales = async () => {
   try {
-    const payloadCase = {
-      name: titulo.value,               
-      image: imagenPrincipal.value,     
-      image_author: imagenAutor.value,  
-      author: nombreAutor.value,
-      area: area.value,
-      introduction: introduccion.value,
-      id_locale: 1,
-      date: date.now(),
-      text_button:'Descargar Informe'
-    }
-
-    const resCase = await httpRequest({
-      url: '/cases',
-      method: 'POST',
-      data: payloadCase
-    })
-
-    const newCase = resCase.data?.data ?? resCase.data
-    if (!newCase?.id) {
-      alert('No se pudo crear el caso.')
-      return
-    }
-
-    // 2) Crear la descripción principal en description_case (si hay contenido)
-    const html = (contenidoHtml.value || '').trim()
-    if (html.length > 0) {
-      const payloadDesc = {
-        id_case: newCase.id,
-        etiqueta: 'Principal',
-        description: html,
-        order: 0,
-        id_locale: newCase.id_locale ?? idLocale.value
-      }
-
-      await httpRequest({
-        url: '/description-cases',
-        method: 'POST',
-        data: payloadDesc
-      })
-    }
-
-    alert('Caso creado correctamente')
-  } catch (error) {
-    console.error('Error al guardar caso', error)
-    alert('Error al guardar el caso')
+    const res = await httpRequest({ url: "/locales", method: "GET" })
+    locales.value = res.data?.data ?? res.data ?? []
+  } catch (e) {
+    console.error("Error cargando idiomas:", e)
   }
 }
+
+const today = new Date().toISOString().slice(0, 10) 
+const form = ref({
+  name: "",            
+  image: "",           
+  image_author: "",    
+  author: "",          
+  area: "",           
+  introduction: "",   
+  id_locale: "",       
+  date: today,         
+  text_button: "Descargar Informe",
+  contenidoHtml: ""    
+})
+
+const saveCase = async () => {
+  try {
+    const { name, image, image_author, author, area, introduction, id_locale, date, text_button } = form.value
+    const payloadCase = { name, image, image_author, author, area, introduction, id_locale, date, text_button }
+
+    const resCase = await httpRequest({ url: "/cases", method: "POST", data: payloadCase })
+    const created = resCase?.data?.data ?? resCase?.data
+
+    if (!created?.id) throw new Error("No se recibió el ID del caso creado.")
+
+    const html = String(form.value.contenidoHtml || "").trim()
+    if (html.length > 0) {
+      const payloadDesc = {
+        id_case: created.id,
+        etiqueta: "Principal",
+        description: html,
+        order: 0,
+        id_locale: created.id_locale ?? id_locale
+      }
+      await httpRequest({ url: "/description-cases", method: "POST", data: payloadDesc })
+    }
+
+    await Swal.fire({ title: "Listo", text: "Caso creado correctamente.", icon: "success" })
+    form.value = {
+      ...form.value,
+      name: "",
+      image: "",
+      image_author: "",
+      author: "",
+      area: "",
+      introduction: "",
+      contenidoHtml: ""
+    }
+  } catch (error: any) {
+    console.error("Error al guardar caso:", error)
+    Swal.fire({ title: "Error", text: error?.message ?? "No se pudo guardar el caso.", icon: "error" })
+  }
+}
+
+onMounted(() => {
+  getLocales()
+})
 </script>
 
 <template>
@@ -102,67 +99,69 @@ const guardarCaso = async () => {
               <div class="card-header">
                 <h3 class="card-title mb-0">Crear Caso</h3>
               </div>
+
               <div class="card-body">
-                <form @submit.prevent="guardarCaso">
+                <form @submit.prevent="saveCase">
                   <div class="form-group">
                     <label class="form-label fw-bold">Título</label>
-                    <input v-model="titulo" type="text" class="form-control" placeholder="Ingrese el título" />
+                    <input v-model="form.name" type="text" class="form-control" placeholder="Ingrese el título" />
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label">Imagen principal</label>
-                    <input v-model="imagenPrincipal" type="text" class="form-control" placeholder="Ingrese la url de la imagen" />
+                    <label class="form-label">Imagen principal (URL)</label>
+                    <input v-model="form.image" type="text" class="form-control" placeholder="https://..." />
                   </div>
+
                   <div class="form-group">
-                    <label class="form-label">Imagen del autor</label>
-                    <input v-model="imagenAutor" type="text" class="form-control" placeholder="Ingrese la url de la imagen" />
+                    <label class="form-label">Imagen del autor (URL)</label>
+                    <input v-model="form.image_author" type="text" class="form-control" placeholder="https://..." />
                   </div>
 
                   <div class="form-group">
                     <label class="form-label">Nombre del autor</label>
-                    <input v-model="nombreAutor" type="text" class="form-control" placeholder="Ingrese el autor" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Área</label>
-                    <input v-model="area" type="text" class="form-control" placeholder="Ingrese el área" />
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Introducción</label>
-                    <textarea v-model="introduccion" class="form-control" rows="3" placeholder="Escriba la introducción"></textarea>
+                    <input v-model="form.author" type="text" class="form-control" placeholder="Ingrese el autor" />
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label">Bloque Principal</label>
-                    <div id="custom-toolbar">
-                      <select class="ql-size">
-                        <option value="12px">12 px</option>
-                        <option value="14px">14 px</option>
-                        <option value="16px">16 px</option>
-                        <option value="18px">18 px</option>
-                        <option value="24px">24 px</option>
-                        <option value="32px">32 px</option>
-                        <option value="48px">48 px</option>
-                        <option value="53px">53 px</option>
-                      </select>
-                      <button class="ql-bold"></button>
-                      <button class="ql-italic"></button>
-                      <button class="ql-underline"></button>
-                      <select class="ql-color"></select>
-                      <button class="ql-list" value="ordered"></button>
-                      <button class="ql-list" value="bullet"></button>
-                      <button class="ql-link"></button>
-                      <button class="ql-clean"></button>
+                    <label class="form-label">Área</label>
+                    <input v-model="form.area" type="text" class="form-control" placeholder="Ingrese el área" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Introducción</label>
+                    <textarea v-model="form.introduction" class="form-control" rows="3" placeholder="Escriba la introducción" />
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label">Idioma</label>
+                        <select v-model="form.id_locale" class="form-select">
+                          <option disabled value="">🌐 Selecciona un idioma</option>
+                          <option v-for="loc in locales" :key="loc.id" :value="loc.id">
+                            {{ loc.name }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label">Fecha</label>
+                        <input v-model="form.date" type="date" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label fw-bold">Bloque Principal</label>
                     <QuillEditor
                       theme="snow"
-                      toolbar="#custom-toolbar"
                       contentType="html"
-                      :global-options="globalOptions"
-                      v-model:content="contenidoHtml"
+                      v-model:content="form.contenidoHtml"
                     />
                   </div>
 
-                  <div class="actions mt-3">
+                  <div class="mt-3">
                     <button type="submit" class="btn btn-primary">Guardar</button>
                   </div>
                 </form>
@@ -183,11 +182,3 @@ const guardarCaso = async () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
-.card-header { background: #f8f9fa; border-bottom: 1px solid #e5e7eb; padding: 1rem; }
-.form-group { margin-bottom: 1rem; }
-input, textarea { background-color: white !important; }
-.actions { display: flex; justify-content: flex-end; gap: 10px; }
-</style>

@@ -43,14 +43,11 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <select class="form-select" id="idLanguage" v-model="idLanguage" @change="getSections">
-                                <option value="1">Español</option>
-                                <option value="2">Ingles</option>
-                            </select>
-                        </div>
-                    </div>
+                    <LanguageSelect
+                        v-model="idLanguage"
+                        id="idLanguage"
+                        @change="getSections"
+                    />
                     <TableData :data="sections" />
                     <div class="row">
                         <div class="col-md-12">

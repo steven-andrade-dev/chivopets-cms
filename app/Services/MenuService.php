@@ -2,15 +2,15 @@
 
 namespace App\Services;
 use App\Interfaces\MenuRepositoryInterface;
-
+use Illuminate\Http\Request;
 
 class MenuService
 {
     public function __construct(private MenuRepositoryInterface $repo) {}
 
-    public function getMenu()
+    public function getMenu(Request $request)
     {
-        return $this->repo->get_all_menu();
+        return $this->repo->get_all_menu($request);
     }
 
     public function getMenuWithLocale()

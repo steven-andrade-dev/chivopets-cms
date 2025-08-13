@@ -5,12 +5,13 @@ namespace App\Repositories;
 use App\Interfaces\MenuRepositoryInterface;
 use App\Models\Menu;
 use App\DTO\MenuDTO;
+use Illuminate\Http\Request;
 
 class MenuRepository implements MenuRepositoryInterface
 {
-    public function get_all_menu()
+    public function get_all_menu(Request $request)
     {
-        return Menu::with('submenus')->get()->map(fn($menu) => MenuDTO::fromModel($menu));
+        return Menu::with('submenus')->where('id_locale', $request->idLanguage)->get()->map(fn($menu) => MenuDTO::fromModel($menu));
     }
 
      public function get_menu_with_locale()

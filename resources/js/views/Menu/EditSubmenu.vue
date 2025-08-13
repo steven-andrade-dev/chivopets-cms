@@ -16,7 +16,7 @@ const route = useRoute()
 const menuId = route.params.id
 
 const data = ref([])
-const locales = ref([]) 
+const locales = ref([])
 const selectedSubmenu = ref<any | null>(null)
 const showModal = ref(false)
 
@@ -50,11 +50,6 @@ const getLocales = async () => {
   } catch (error) {
     console.error("Error cargando idiomas:", error)
   }
-}
-
-const getLocaleName = (id: string | number) => {
-  const locale = locales.value.find(l => l.id === id)
-  return locale ? locale.name : '—'
 }
 
 const openModal = (submenu: any) => {
@@ -140,30 +135,28 @@ onMounted(() => {
             </button>
           </div>
 
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>URL</th>
-                <th>Idioma</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="submenu in data" :key="submenu.id">
-                <td>{{ submenu.id }}</td>
-                <td>{{ submenu.name }}</td>
-                <td>{{ submenu.url }}</td>
-                <td>
-                  {{ getLocaleName(submenu.id_locale) }}
-                </td>
-                <td>
-                  <button class="btn btn-primary btn-sm" @click="openModal(submenu)">Editar</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>URL</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="submenu in data" :key="submenu.id">
+                    <td>{{ submenu.id }}</td>
+                    <td>{{ submenu.name }}</td>
+                    <td>{{ submenu.url }}</td>
+                    <td>
+                      <button class="btn btn-primary btn-sm" @click="openModal(submenu)">Editar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
         </div>
       </div>
 

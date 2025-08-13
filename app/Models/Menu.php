@@ -10,7 +10,7 @@ class Menu extends Model
     use LogsActions;
 
     protected $table = 'menu';
-    protected $fillable = ['name', 'url', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'];
+    protected $fillable = ['name', 'url', 'type', 'status', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'];
 
     public function submenus()
     {

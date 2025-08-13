@@ -46,7 +46,7 @@ onMounted(() => {
                     <LanguageSelect
                         v-model="idLanguage"
                         id="idLanguage"
-                        @change="getSections"
+                        @change="getSections(1)"
                     />
                     <TableData :data="sections" />
                     <div class="row">

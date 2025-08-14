@@ -55,11 +55,11 @@ return new class extends Migration
         Schema::create('carrusel_items', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('subtitle');
-            $table->string('image');
-            $table->string('href');
-            $table->string('introduction');
-            $table->string('description');
+            $table->string('subtitle')->nullable();
+            $table->string('image')->nullable();
+            $table->string('href')->nullable();
+            $table->string('introduction')->nullable();
+            $table->text('description')->nullable();
             $table->decimal('value', 10, 2)->nullable();
             $table->string('title_info_aditional')->nullable();
             $table->timestamps();

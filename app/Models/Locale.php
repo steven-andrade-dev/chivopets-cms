@@ -25,4 +25,9 @@ class Locale extends Model
     {
         return $this->hasMany(Submenu::class, 'id_locale');
     }
+
+    public function cases()
+    {
+        return $this->hasMany(CaseModel::class, 'id_locale');
+    }
 }

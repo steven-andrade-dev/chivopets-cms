@@ -14,6 +14,7 @@ use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\DescriptionCasesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,9 +44,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/content/{id?}', [ContentController::class, 'show']);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
     Route::put('/contenido/update', [ContentController::class, 'update']);
+
     //CASES
-    Route::get('/cases', [CasesController::class, 'get']);
-    Route::post('/create-case', [CasesController::class, 'createCase']);
+    Route::resource('cases', CasesController::class);
+
+    //DESCRPTION CASES
+    Route::resource('description-cases', DescriptionCasesController::class);
+    Route::post('/description-cases/reorder', [DescriptionCasesController::class, 'reorder']);
 
     // LOCALES
     Route::get('/locales', [LocaleController::class, 'show']);
@@ -80,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/gallery', [GalleryController::class, 'list']);
 });
 
-Route::prefix('astro/menun')->group(function () {
+Route::prefix('astro/menu')->group(function () {
     Route::get('/locale', [MenuController::class, 'show']);
-    Route::get('/getAllMenun', [MenuController::class, 'getAllMenu']);
+    Route::get('/getAllMenu', [MenuController::class, 'getAllMenu']);
 });

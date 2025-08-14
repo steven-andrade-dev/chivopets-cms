@@ -47,6 +47,7 @@ onMounted(() => {
                         v-model="idLanguage"
                         id="idLanguage"
                         @change="getSections(1)"
+
                     />
                     <TableData :data="sections" />
                     <div class="row">

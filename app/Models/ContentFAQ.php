@@ -9,7 +9,7 @@ use App\Traits\LogsActions;
 class ContentFAQ extends Model
 {
     use HasFactory, LogsActions;
-
+    public $timestamps = false;
     protected $fillable = [
         'id_content', 'id_faq'
     ];

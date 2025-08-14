@@ -237,7 +237,7 @@ onMounted(() => {
                                         <div class="form-group">
                                             <label for="name">FAQ</label>
                                            
-                                                <FAQItems :faq="content.faq || []" @addNewFAQ="addNewFAQ" />
+                                                <FAQItems :faq="content.faq || []" :id_content="id" @addNewFAQ="addNewFAQ" />
                                             
                                         </div>
                                     </div>

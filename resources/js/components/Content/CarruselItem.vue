@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
-
+import Swal from 'sweetalert2';
 const props = defineProps({
     items: {
         type: Array,
@@ -36,8 +36,33 @@ const updateItem = (index, field, value) => {
 
 // Función para eliminar un item
 const deleteItem = (index) => {
-    localItems.value.splice(index, 1);
-    emit('update:items', localItems.value);
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Eliminar el item
+            
+            localItems.value.splice(index, 1);
+            emit('update:items', localItems.value);
+            
+            // Mostrar confirmación de éxito
+            Swal.fire({
+                title: '¡Eliminado!',
+                text: 'El elemento ha sido eliminado correctamente',
+                icon: 'success',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Aceptar',
+                timer: 2000,
+                timerProgressBar: true
+            });
+        }
+    });
 };
 
 // Función para agregar un nuevo item

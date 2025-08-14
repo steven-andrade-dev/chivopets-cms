@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SubMenuTablaSeeder::class,
             RolTableSeeder::class,
             UserTableSeeder::class,
+            CarruselTableSeeder::class,
         ]);
     }
 }

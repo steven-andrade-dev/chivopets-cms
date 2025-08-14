@@ -25,6 +25,7 @@ class ContentTableSeeder extends Seeder
                 'published_at'      => now(),
             ],
             [
+                // id - 2
                 'title'             => 'Cuidamos con amor la salud de tu mascota',
                 'bloque_principal'  => '<p style="text-align:center;"><meta charset="utf-8"><span style="color:hsl(218, 10%, 53%);"><span style="white-space:pre-wrap;">El primer hospital veterinario público de El Salvador...</span></span></p>',
                 'bloque_secundario' => null,
@@ -45,7 +46,7 @@ class ContentTableSeeder extends Seeder
                 'image'             => null,
                 'subtitle'          => null,
                 'url'               => 'Ver todos los servicios',
-                'type_carrusel'     => null,
+                'type_carrusel'     => 2,
                 'created_by_id'     => 1,
                 'updated_by_id'     => 2,
                 'id_section'        => 1,

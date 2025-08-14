@@ -61,7 +61,7 @@ const updateImagePreview = (event, previewId) => {
     const input = event.target;
     const preview = document.getElementById(previewId);
     const file = input.files?.[0];
-    
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -86,17 +86,17 @@ const updateImagePreview = (event, previewId) => {
         <div v-if="localItems.length == 0">
             <p>Esta seccion no cuenta con un carrusel</p>
         </div>
-        
+
         <div class="accordion" id="carouselAccordion">
             <div v-for="(item, index) in localItems" :key="item.id || index" class="accordion-item">
                 <h2 class="accordion-header" :id="`heading-${index}`">
-                    <button 
-                        class="accordion-button" 
+                    <button
+                        class="accordion-button"
                         :class="{ collapsed: true }"
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        :data-bs-target="`#collapse-${index}`" 
-                        :aria-expanded="false" 
+                        type="button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="`#collapse-${index}`"
+                        :aria-expanded="false"
                         :aria-controls="`collapse-${index}`">
                         <div class="d-flex justify-content-between align-items-center w-100 me-3">
                             <span class="card-number">Entrada {{ index + 1 }}</span>
@@ -104,32 +104,32 @@ const updateImagePreview = (event, previewId) => {
                         </div>
                     </button>
                 </h2>
-                
-                <div 
-                    :id="`collapse-${index}`" 
-                    class="accordion-collapse collapse" 
+
+                <div
+                    :id="`collapse-${index}`"
+                    class="accordion-collapse collapse"
                     :class="{ show: false }"
-                    :aria-labelledby="`heading-${index}`" 
+                    :aria-labelledby="`heading-${index}`"
                     data-bs-parent="#carouselAccordion">
-                    
+
                     <div class="accordion-body">
                         <!-- Botón de eliminar -->
-                        <div class="d-flex justify-content-end mb-3">
+                        <!-- <div class="d-flex justify-content-end mb-3">
                             <button type="button" class="btn btn-danger btn-sm" @click="deleteItem(index)">
                                 <i class="fas fa-trash me-1"></i>
                                 Eliminar
                             </button>
-                        </div>
+                        </div> -->
 
                         <!-- Información básica -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`title-${index}`" class="form-label">Título</label>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         class="form-control"
-                                        :id="`title-${index}`" 
+                                        :id="`title-${index}`"
                                         :value="item.title"
                                         @input="updateItem(index, 'title', $event.target.value)"
                                         placeholder="Título de la entrada">
@@ -138,10 +138,10 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`subtitle-${index}`" class="form-label">Subtítulo</label>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         class="form-control"
-                                        :id="`subtitle-${index}`" 
+                                        :id="`subtitle-${index}`"
                                         :value="item.subtitle"
                                         @input="updateItem(index, 'subtitle', $event.target.value)"
                                         placeholder="Subtítulo opcional">
@@ -154,9 +154,9 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`description-${index}`" class="form-label">Descripción</label>
-                                    <textarea 
+                                    <textarea
                                         class="form-control"
-                                        :id="`description-${index}`" 
+                                        :id="`description-${index}`"
                                         :value="item.description"
                                         @input="updateItem(index, 'description', $event.target.value)"
                                         placeholder="Descripción de la entrada"
@@ -166,9 +166,9 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`introduction-${index}`" class="form-label">Introducción</label>
-                                    <textarea 
+                                    <textarea
                                         class="form-control"
-                                        :id="`introduction-${index}`" 
+                                        :id="`introduction-${index}`"
                                         :value="item.introduction"
                                         @input="updateItem(index, 'introduction', $event.target.value)"
                                         placeholder="Introducción de la entrada"
@@ -180,10 +180,10 @@ const updateImagePreview = (event, previewId) => {
                         <!-- Imagen -->
                         <div class="mb-3">
                             <label :for="`image-${index}`" class="form-label">URL de Imagen</label>
-                            <input 
-                                type="url" 
+                            <input
+                                type="url"
                                 class="form-control"
-                                :id="`image-${index}`" 
+                                :id="`image-${index}`"
                                 :value="item.image"
                                 @input="updateItem(index, 'image', $event.target.value)"
                                 @change="updateImagePreview($event, `preview-${index}`)"
@@ -202,10 +202,10 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`title_info_adicional-${index}`" class="form-label">Información adicional</label>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         class="form-control"
-                                        :id="`title_info_adicional-${index}`" 
+                                        :id="`title_info_adicional-${index}`"
                                         :value="item.title_info_aditional"
                                         @input="updateItem(index, 'title_info_aditional', $event.target.value)"
                                         placeholder="Título de la información adicional">
@@ -214,10 +214,10 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`value-${index}`" class="form-label">Valor numérico</label>
-                                    <input 
-                                        type="number" 
+                                    <input
+                                        type="number"
                                         class="form-control"
-                                        :id="`value-${index}`" 
+                                        :id="`value-${index}`"
                                         :value="item.value"
                                         @input="updateItem(index, 'value', $event.target.value)"
                                         placeholder="Valor numérico">
@@ -230,9 +230,9 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`id_locale-${index}`" class="form-label">Idioma</label>
-                                    <select 
+                                    <select
                                         class="form-select"
-                                        :id="`id_locale-${index}`" 
+                                        :id="`id_locale-${index}`"
                                         :value="item.id_locale"
                                         @input="updateItem(index, 'id_locale', $event.target.value)">
                                         <option value="1">Español</option>
@@ -243,10 +243,10 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`href-${index}`" class="form-label">URL</label>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         class="form-control"
-                                        :id="`href-${index}`" 
+                                        :id="`href-${index}`"
                                         :value="item.href"
                                         @input="updateItem(index, 'href', $event.target.value)"
                                         placeholder="URL">
@@ -316,11 +316,11 @@ const updateImagePreview = (event, previewId) => {
     .item-title {
         max-width: 150px;
     }
-    
+
     .accordion-button {
         padding: 0.75rem;
     }
-    
+
     .accordion-body {
         padding: 1rem;
     }
@@ -362,12 +362,12 @@ const updateImagePreview = (event, previewId) => {
     .accordion-button {
         font-size: 0.875rem;
     }
-    
+
     .card-number {
         font-size: 10px;
         padding: 2px 8px;
     }
-    
+
     .item-title {
         max-width: 120px;
         font-size: 0.875rem;

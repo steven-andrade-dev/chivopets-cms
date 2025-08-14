@@ -1,24 +1,41 @@
 <script setup lang="ts">
-import Navbar from "../../../components/Navbar.vue"
-import Sidebar from "../../../components/Sidebar.vue"
+import Navbar from "@/components/Navbar.vue"
+import Sidebar from "@/components/Sidebar.vue"
 import Breadcrumb from "@/components/Breadcrumb.vue"
 
-import { ref, onMounted } from "vue"
-import { httpRequest } from "../../../utils/global-request"
+import { reactive, ref, onMounted } from "vue"
+import { httpRequest } from "@/utils/global-request"
 import Swal from "sweetalert2"
 
 import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 
-/* Breadcrumb */
-const breadcrumbItems = ref([
+import InputComponent from "@/components/InputComponent.vue"
+import SelectComponent from "@/components/SelectComponent.vue"
+
+/* breadcrumb estático: no necesita ref */
+const breadcrumbItems = [
   { label: "Casos", href: "/cases" },
   { label: "Crear Caso", href: "/create-case" }
-])
+]
 
-/* Locales */
-const locales = ref<any[]>([])
-const getLocales = async () => {
+const createDefaultForm = () => ({
+  name: "",
+  image: "",
+  image_author: "",
+  author: "",
+  area: "",
+  introduction: "",
+  id_locale: "",            
+  text_button: "Descargar Informe",
+  contenidoHtml: ""
+})
+const form = reactive(createDefaultForm())
+
+/* locales sin tipos extra (TS infiere lo básico) */
+const locales = ref<Array<{ id: number | string; name: string }>>([])
+
+const loadLocales = async () => {
   try {
     const res = await httpRequest({ url: "/locales", method: "GET" })
     locales.value = res.data?.data ?? res.data ?? []
@@ -27,62 +44,47 @@ const getLocales = async () => {
   }
 }
 
-const today = new Date().toISOString().slice(0, 10) 
-const form = ref({
-  name: "",            
-  image: "",           
-  image_author: "",    
-  author: "",          
-  area: "",           
-  introduction: "",   
-  id_locale: "",       
-  date: today,         
-  text_button: "Descargar Informe",
-  contenidoHtml: ""    
-})
-
 const saveCase = async () => {
   try {
-    const { name, image, image_author, author, area, introduction, id_locale, date, text_button } = form.value
-    const payloadCase = { name, image, image_author, author, area, introduction, id_locale, date, text_button }
+    const date = new Date().toISOString().slice(0, 10)
+    // "" -> null; "3" -> 3; 3 -> 3
+    const idLocale = form.id_locale === "" ? null : Number(form.id_locale)
 
-    const resCase = await httpRequest({ url: "/cases", method: "POST", data: payloadCase })
+    const { contenidoHtml, ...rest } = form as any
+    // 1) crear caso
+    const resCase = await httpRequest({
+      url: "/cases",
+      method: "POST",
+      data: { ...rest, id_locale: idLocale, date }
+    })
     const created = resCase?.data?.data ?? resCase?.data
-
     if (!created?.id) throw new Error("No se recibió el ID del caso creado.")
 
-    const html = String(form.value.contenidoHtml || "").trim()
-    if (html.length > 0) {
-      const payloadDesc = {
-        id_case: created.id,
-        etiqueta: "Principal",
-        description: html,
-        order: 0,
-        id_locale: created.id_locale ?? id_locale
-      }
-      await httpRequest({ url: "/description-cases", method: "POST", data: payloadDesc })
+    // 2) bloque principal (opcional)
+    const html = String(contenidoHtml || "").trim()
+    if (html) {
+      await httpRequest({
+        url: "/description-cases",
+        method: "POST",
+        data: {
+          id_case: created.id,
+          etiqueta: "Principal",
+          description: html,
+          order: 0,
+          id_locale: created.id_locale ?? idLocale
+        }
+      })
     }
 
-    await Swal.fire({ title: "Listo", text: "Caso creado correctamente.", icon: "success" })
-    form.value = {
-      ...form.value,
-      name: "",
-      image: "",
-      image_author: "",
-      author: "",
-      area: "",
-      introduction: "",
-      contenidoHtml: ""
-    }
+    await Swal.fire({ icon: "success", title: "Listo", text: "Caso creado correctamente.", timer: 1600, showConfirmButton: false })
+    Object.assign(form, createDefaultForm())
   } catch (error: any) {
     console.error("Error al guardar caso:", error)
-    Swal.fire({ title: "Error", text: error?.message ?? "No se pudo guardar el caso.", icon: "error" })
+    Swal.fire({ icon: "error", title: "Error", text: error?.response?.data?.message ?? error?.message ?? "No se pudo guardar el caso." })
   }
 }
 
-onMounted(() => {
-  getLocales()
-})
+onMounted(loadLocales)
 </script>
 
 <template>
@@ -102,63 +104,32 @@ onMounted(() => {
 
               <div class="card-body">
                 <form @submit.prevent="saveCase">
-                  <div class="form-group">
-                    <label class="form-label fw-bold">Título</label>
-                    <input v-model="form.name" type="text" class="form-control" placeholder="Ingrese el título" />
-                  </div>
+                  <div class="grid gap-3">
+                    <InputComponent label="Título" v-model="form.name" placeholder="Ingrese el título" />
+                    <InputComponent label="Imagen principal (URL)" v-model="form.image" placeholder="https://..." />
+                    <InputComponent label="Imagen del autor (URL)" v-model="form.image_author" placeholder="https://..." />
+                    <InputComponent label="Nombre del autor" v-model="form.author" placeholder="Ingrese el autor" />
+                    <InputComponent label="Área" v-model="form.area" placeholder="Ingrese el área" />
 
-                  <div class="form-group">
-                    <label class="form-label">Imagen principal (URL)</label>
-                    <input v-model="form.image" type="text" class="form-control" placeholder="https://..." />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Imagen del autor (URL)</label>
-                    <input v-model="form.image_author" type="text" class="form-control" placeholder="https://..." />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Nombre del autor</label>
-                    <input v-model="form.author" type="text" class="form-control" placeholder="Ingrese el autor" />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Área</label>
-                    <input v-model="form.area" type="text" class="form-control" placeholder="Ingrese el área" />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Introducción</label>
-                    <textarea v-model="form.introduction" class="form-control" rows="3" placeholder="Escriba la introducción" />
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="form-label">Idioma</label>
-                        <select v-model="form.id_locale" class="form-select">
-                          <option disabled value="">🌐 Selecciona un idioma</option>
-                          <option v-for="loc in locales" :key="loc.id" :value="loc.id">
-                            {{ loc.name }}
-                          </option>
-                        </select>
-                      </div>
+                    <div class="form-group">
+                      <label class="form-label fw-bold">Introducción</label>
+                      <textarea v-model="form.introduction" class="form-control" rows="3" placeholder="Escriba la introducción" />
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="form-label">Fecha</label>
-                        <input v-model="form.date" type="date" class="form-control" />
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="form-group">
-                    <label class="form-label fw-bold">Bloque Principal</label>
-                    <QuillEditor
-                      theme="snow"
-                      contentType="html"
-                      v-model:content="form.contenidoHtml"
+                    <!-- Usa tu SelectComponent con { id, name } -->
+                    <SelectComponent
+                      label="Idioma"
+                      icon="bi bi-translate"
+                      v-model="form.id_locale"
+                      :options="locales"
+                      placeholder="🌐 Selecciona un idioma"
+                      required
                     />
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <label class="form-label fw-bold">Bloque Principal</label>
+                    <QuillEditor theme="snow" contentType="html" v-model:content="form.contenidoHtml" class="ql-box" />
                   </div>
 
                   <div class="mt-3">
@@ -182,3 +153,7 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.ql-box :deep(.ql-editor) { min-height: 160px; }
+</style>

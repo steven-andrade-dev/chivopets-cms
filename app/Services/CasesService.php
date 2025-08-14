@@ -2,14 +2,16 @@
 
 namespace App\Services;
 use App\Interfaces\CasesRepositoryInterface;
+use Illuminate\Http\Request;
+
 
 class CasesService
 {
     public function __construct(private CasesRepositoryInterface $repo) {}
     
-    public function getAllCases()
+    public function getAllCases(Request $request, $page)
     {
-        return $this->repo->get_all_cases();
+        return $this->repo->get_all_cases($request ,$page);
     }
 
     public function getCaseById(int $id)

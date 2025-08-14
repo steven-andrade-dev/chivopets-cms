@@ -85,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/gallery', [GalleryController::class, 'list']);
 });
 
-Route::prefix('astro/menun')->group(function () {
+Route::prefix('astro/menu')->group(function () {
     Route::get('/locale', [MenuController::class, 'show']);
-    Route::get('/getAllMenun', [MenuController::class, 'getAllMenu']);
+    Route::get('/getAllMenu', [MenuController::class, 'getAllMenu']);
 });

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\CasesService;
 use App\Http\Requests\CreateCaseRequest;
 use App\Helpers\ResponseMessages;
 use App\Http\Controllers\BaseController;
+use Illuminate\Http\Request;
 
 
 
@@ -14,9 +14,9 @@ class CasesController extends BaseController
 {
     public function __construct(private CasesService $casesService) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $cases = $this->casesService->getAllCases();
+        $cases = $this->casesService->getAllCases($request,10);
         return $this->sendResponse($cases, ResponseMessages::successList(), 200);
     }
 

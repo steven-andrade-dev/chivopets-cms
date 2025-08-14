@@ -12,7 +12,7 @@ class CaseModel extends Model
     protected $table = 'case';
     protected $fillable = [
         'image', 'image_author', 'author', 'area', 'name', 'introduction',
-        'date', 'text_button', 'created_at', 'updated_at', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'
+         'text_button', 'created_at', 'updated_at', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'
     ];
 
 

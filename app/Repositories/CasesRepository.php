@@ -4,11 +4,14 @@ namespace App\Repositories;
 
 use App\Interfaces\CasesRepositoryInterface;
 use App\Models\CaseModel;
+use Illuminate\Http\Request;
+
 class CasesRepository implements CasesRepositoryInterface
+
 {
-    public function get_all_cases()
+    public function get_all_cases(Request $request, $page)
     {
-       $cases = CaseModel::all();
+       $cases = CaseModel::where('id_locale', $request->idLanguage)->paginate($page);
        return $cases;
     }
 

@@ -94,7 +94,6 @@ return new class extends Migration
             $table->string('area');
             $table->string('name');
             $table->string('introduction');
-            $table->datetime('date');
             $table->string('text_button');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
@@ -107,8 +106,7 @@ return new class extends Migration
 
         Schema::create('description_case', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->string('etiqueta');
+            $table->text('description');
             $table->integer('order');
             $table->timestamps();
             $table->datetime('published_at')->nullable();

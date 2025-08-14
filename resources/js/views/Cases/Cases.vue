@@ -46,7 +46,7 @@ onMounted(() => {
           <LanguageSelect
                         v-model="idLanguage"
                         id="idLanguage"
-                        @change="getCases"
+                        @change="getCases(1)"
                     />
           <TableData :data="cases" />
 
@@ -54,7 +54,7 @@ onMounted(() => {
             <div class="col-md-12">
               <PaginationComponent
                 :pagination="pagination"
-                @page-change="getCases"  
+                @page-change="getCases(1)"  
               />
             </div>
           </div>

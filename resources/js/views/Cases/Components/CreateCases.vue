@@ -13,7 +13,6 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import InputComponent from "@/components/InputComponent.vue"
 import SelectComponent from "@/components/SelectComponent.vue"
 
-/* breadcrumb estático: no necesita ref */
 const breadcrumbItems = [
   { label: "Casos", href: "/cases" },
   { label: "Crear Caso", href: "/create-case" }
@@ -27,12 +26,10 @@ const createDefaultForm = () => ({
   area: "",
   introduction: "",
   id_locale: "",            
-  text_button: "Descargar Informe",
+  text_button: "",
   contenidoHtml: ""
 })
 const form = reactive(createDefaultForm())
-
-/* locales sin tipos extra (TS infiere lo básico) */
 const locales = ref<Array<{ id: number | string; name: string }>>([])
 
 const loadLocales = async () => {
@@ -46,21 +43,16 @@ const loadLocales = async () => {
 
 const saveCase = async () => {
   try {
-    const date = new Date().toISOString().slice(0, 10)
-    // "" -> null; "3" -> 3; 3 -> 3
-    const idLocale = form.id_locale === "" ? null : Number(form.id_locale)
-
+    const idLocale = form.id_locale == Number(form.id_locale)
     const { contenidoHtml, ...rest } = form as any
-    // 1) crear caso
     const resCase = await httpRequest({
       url: "/cases",
       method: "POST",
-      data: { ...rest, id_locale: idLocale, date }
+      data: { ...rest, id_locale: idLocale }
     })
     const created = resCase?.data?.data ?? resCase?.data
     if (!created?.id) throw new Error("No se recibió el ID del caso creado.")
 
-    // 2) bloque principal (opcional)
     const html = String(contenidoHtml || "").trim()
     if (html) {
       await httpRequest({
@@ -110,6 +102,7 @@ onMounted(loadLocales)
                     <InputComponent label="Imagen del autor (URL)" v-model="form.image_author" placeholder="https://..." />
                     <InputComponent label="Nombre del autor" v-model="form.author" placeholder="Ingrese el autor" />
                     <InputComponent label="Área" v-model="form.area" placeholder="Ingrese el área" />
+                    <InputComponent label="Texto Boton" v-model="form.text_button" placeholder="Texto boton" />
 
                     <div class="form-group">
                       <label class="form-label fw-bold">Introducción</label>
@@ -129,7 +122,7 @@ onMounted(loadLocales)
 
                   <div class="form-group mt-3">
                     <label class="form-label fw-bold">Bloque Principal</label>
-                    <QuillEditor theme="snow" contentType="html" v-model:content="form.contenidoHtml" class="ql-box" />
+                    <QuillEditor theme="snow" contentType="html" v-model:content="form.contenidoHtml"/>
                   </div>
 
                   <div class="mt-3">
@@ -153,7 +146,3 @@ onMounted(loadLocales)
     </div>
   </div>
 </template>
-
-<style scoped>
-.ql-box :deep(.ql-editor) { min-height: 160px; }
-</style>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from '../../../components/Sidebar.vue'
 import Navbar from '../../../components/Navbar.vue'
@@ -19,30 +19,27 @@ const data = ref({})
 const descriptionList = ref([])
 const showDescModal = ref(false)
 const editingIndex = ref(-1)
-const form = ref({ id: null, description: '', id_locale: null, id_case: caseId })
+const form = ref({ description: '', id_locale: '', id_case: caseId })
 
 const breadcrumbItems = ref([
   { label: 'Casos', href: '/cases' },
   { label: 'Editar Caso', href: `/edit-case/${caseId}` }
 ])
 
-/* =========================
-   Helpers de orden
-========================= */
 const normalizeOrders = () => {
-  descriptionList.value
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || (a.id ?? 0) - (b.id ?? 0))
-    .forEach((d, i) => { d.order = i })
+  descriptionList.value.sort((a, b) => (a.order - b.order) || (a.id - b.id))
+  for (let i = 0; i < descriptionList.value.length; i++) {
+    descriptionList.value[i].order = i
+  }
 }
+
 
 const persistOrder = async () => {
   try {
     await httpRequest({
-      url: `/description-cases/reorder`,
+      url: '/description-cases/reorder',
       method: 'POST',
-      data: {
-        orders: descriptionList.value.map(d => ({ id: d.id, order: d.order }))
-      }
+      data: { orders: descriptionList.value.map(d => ({ id: d.id, order: d.order })) }
     })
   } catch (e) {
     console.error('Error actualizando orden:', e)
@@ -51,24 +48,29 @@ const persistOrder = async () => {
 }
 
 const computeNextOrder = () => {
-  const max = descriptionList.value.reduce((acc, d) => Number.isFinite(d.order) ? Math.max(acc, d.order) : acc, -1)
+  let max = -1
+  for (let i = 0; i < descriptionList.value.length; i++) {
+    const v = descriptionList.value[i].order
+    if (typeof v === 'number' && v > max) max = v
+  }
   return max + 1
 }
 
+/* ===== Cargar caso (sin ?. ni ??) ===== */
 const getCase = async () => {
   try {
-    const res = await httpRequest({ url: `/cases/${caseId}`, method: 'GET' })
-    const payload = res.data?.data ?? res.data ?? {}
+    const res = await httpRequest({ url: '/cases/' + caseId, method: 'GET' })
+    const payload = res.data && typeof res.data === 'object' && 'data' in res.data ? res.data.data : res.data
     data.value = payload
-    descriptionList.value = (payload?.description_cases ?? [])
-      .map(d => ({
-        id: d.id,
-        description: d.description || '',
-        order: Number.isFinite(d.order) ? d.order : 0,
-        id_locale: d.id_locale ?? payload.id_locale ?? null,
-        id_case: d.id_case ?? caseId
-      }))
-    normalizeOrders() 
+    const arr = payload && payload.description_cases ? payload.description_cases : []
+    descriptionList.value = arr.map(d => ({
+      id: d.id,
+      description: d.description,
+      order: typeof d.order === 'number' ? d.order : 0,
+      id_locale: d.id_locale,
+      id_case: d.id_case ? d.id_case : caseId
+    }))
+    normalizeOrders()
   } catch (e) {
     console.error('Error cargando caso:', e)
     Swal.fire('Error', 'No se pudo cargar el caso', 'error')
@@ -78,7 +80,7 @@ const getCase = async () => {
 const saveCase = async () => {
   try {
     await httpRequest({
-      url: `/cases/${caseId}`,
+      url: '/cases/' + caseId,
       method: 'PUT',
       data: {
         image: data.value.image,
@@ -99,7 +101,7 @@ const saveCase = async () => {
 }
 
 const deleteCase = async () => {
-  const res = await Swal.fire({
+  const r = await Swal.fire({
     title: '¿Eliminar este caso?',
     text: 'Esta acción no se puede deshacer.',
     icon: 'warning',
@@ -107,9 +109,9 @@ const deleteCase = async () => {
     confirmButtonText: 'Eliminar',
     cancelButtonText: 'Cancelar'
   })
-  if (!res.isConfirmed) return
+  if (!r.isConfirmed) return
   try {
-    await httpRequest({ url: `/cases/${caseId}`, method: 'DELETE' })
+    await httpRequest({ url: '/cases/' + caseId, method: 'DELETE' })
     Swal.fire({ icon: 'success', title: 'Eliminado', text: 'Caso eliminado correctamente', timer: 1500, showConfirmButton: false })
   } catch (e) {
     console.error('Error eliminando caso:', e)
@@ -117,74 +119,69 @@ const deleteCase = async () => {
   }
 }
 
+/* ===== Modal descripción (sin defaults) ===== */
 const openDesc = (index = -1) => {
   editingIndex.value = index
   if (index === -1) {
     form.value = {
-      id: null,
       description: '',
-      id_locale: data.value.id_locale ?? 1,
+      id_locale: String(data.value.id_locale),
       id_case: caseId
     }
   } else {
     const d = descriptionList.value[index]
     form.value = {
-      id: d.id,
       description: d.description,
-      id_locale: d.id_locale ?? data.value.id_locale ?? 1,
+      id_locale: String(d.id_locale),
       id_case: caseId
     }
   }
   showDescModal.value = true
-  document.body.classList.add('modal-open') // bloquea scroll de fondo
-  nextTick()
+  document.body.classList.add('modal-open')
 }
+
 
 const closeDesc = () => {
   showDescModal.value = false
   document.body.classList.remove('modal-open')
 }
 
+/* ===== Crear/Actualizar descripción (pocas vars) ===== */
 const saveDesc = async () => {
   try {
-    if (!form.value.id) {
-      // crear
-      const nextOrder = computeNextOrder()
+    if (editingIndex.value === -1) {
       const res = await httpRequest({
-        url: `/description-cases`,
+        url: '/description-cases',
         method: 'POST',
         data: {
-          id_case: caseId,
-          description: form.value.description || '',
-          order: nextOrder,
-          id_locale: form.value.id_locale ?? data.value.id_locale ?? 1
+          id_case: form.value.id_case,
+          description: form.value.description,
+          order: descriptionList.value.length, 
+          id_locale: form.value.id_locale
         }
       })
-      const created = res.data?.data ?? res.data
+      const created = (res.data && res.data.data) ? res.data.data : res.data
       descriptionList.value.push({
-        id: created?.id ?? Date.now(),
-        description: created?.description ?? form.value.description,
-        order: created?.order ?? nextOrder,
-        id_locale: created?.id_locale ?? form.value.id_locale ?? null,
-        id_case: created?.id_case ?? caseId
+        id: created.id,
+        description: created.description,
+        order: created.order,
+        id_locale: created.id_locale,
+        id_case: created.id_case
       })
-      normalizeOrders()
-      await persistOrder()
       Swal.fire({ icon: 'success', title: 'Agregado', text: 'Descripción creada', timer: 1200, showConfirmButton: false })
     } else {
-      // actualizar
-      const idx = editingIndex.value
-      const d = descriptionList.value[idx]
+      // EDITAR
+      const target = descriptionList.value[editingIndex.value]
       await httpRequest({
-        url: `/description-cases/${form.value.id}`,
+        url: '/description-cases/' + target.id,
         method: 'PUT',
         data: {
-          description: form.value.description || '',
-          id_locale: form.value.id_locale ?? d.id_locale
+          description: form.value.description,
+          id_locale: form.value.id_locale
         }
       })
-      d.description = form.value.description || ''
-      d.id_locale = form.value.id_locale ?? d.id_locale
+      target.description = form.value.description
+      target.id_locale = form.value.id_locale
       Swal.fire({ icon: 'success', title: 'Actualizado', text: 'Descripción actualizada', timer: 1200, showConfirmButton: false })
     }
     closeDesc()
@@ -194,8 +191,9 @@ const saveDesc = async () => {
   }
 }
 
+/* ===== Eliminar descripción ===== */
 const deleteDescription = async (id) => {
-  const res = await Swal.fire({
+  const r = await Swal.fire({
     title: '¿Eliminar esta descripción?',
     text: 'Esta acción no se puede deshacer.',
     icon: 'warning',
@@ -203,10 +201,10 @@ const deleteDescription = async (id) => {
     confirmButtonText: 'Eliminar',
     cancelButtonText: 'Cancelar'
   })
-  if (!res.isConfirmed) return
+  if (!r.isConfirmed) return
 
   try {
-    await httpRequest({ url: `/description-cases/${id}`, method: 'DELETE' })
+    await httpRequest({ url: '/description-cases/' + id, method: 'DELETE' })
     descriptionList.value = descriptionList.value.filter(d => d.id !== id)
     normalizeOrders()
     await persistOrder()
@@ -217,12 +215,9 @@ const deleteDescription = async (id) => {
   }
 }
 
-/* =========================
-   Drag & drop reorder
-========================= */
+/* ===== Drag & drop ===== */
 const onDragEnd = async () => {
-  // reasigna 0..n-1 según el orden visual y persiste
-  descriptionList.value.forEach((d, i) => { d.order = i })
+  for (let i = 0; i < descriptionList.value.length; i++) descriptionList.value[i].order = i
   await persistOrder()
 }
 
@@ -278,7 +273,6 @@ onMounted(getCase)
                         <template #item="{ element, index }">
                           <div class="list-group-item" @dblclick="openDesc(index)">
                             <div class="d-flex w-100 justify-content-between align-items-center">
-                              <!-- ícono handle; NO mostramos el número de order -->
                               <span class="drag-handle" title="Arrastrar" aria-label="Arrastrar">☰</span>
                               <div class="flex-grow-1 ms-2 me-auto text-truncate">
                                 <small class="text-muted">Descripción #{{ index + 1 }}</small>
@@ -312,9 +306,10 @@ onMounted(getCase)
 
           <!-- MODAL -->
           <ModalComponent :show="showDescModal" @close="closeDesc">
-            <template #title>
-              {{ form.id ? 'Editar descripción' : 'Agregar descripción' }}
-            </template>
+           <template #title>
+            {{ editingIndex !== -1 ? 'Editar descripción' : 'Agregar descripción' }}
+          </template>
+
 
             <template #body>
               <div class="mb-3">
@@ -354,17 +349,13 @@ onMounted(getCase)
 .card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
 .card-header { background: #f8f9fa; border-bottom: 1px solid #e5e7eb; padding: 1rem; }
 .actions { display: flex; justify-content: flex-end; gap: 10px; }
-
 .list-group { border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
 .list-group-item { padding: 10px; background: #f9fafb; margin-bottom: 8px; border-radius: 8px; cursor: default; }
 .drag-handle { cursor: grab; user-select: none; font-weight: 600; opacity: .6; }
 .drag-ghost { opacity: .5; }
-
 .desc-scroll { max-height: 420px; overflow-y: auto; padding-right: 6px; }
 .preview { max-height: 72px; overflow: hidden; }
-
 .sticky-header { position: sticky; top: 0; background: #fff; z-index: 1; padding: 6px 0; }
-
 .modal-editor-scroll { max-height: 55vh; overflow-y: auto; }
 .editor-box { background: #fff; }
 </style>

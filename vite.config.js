@@ -4,7 +4,7 @@ import laravel from 'laravel-vite-plugin'
 
 export default defineConfig({
     server: {
-        host: '0.0.0.0', // escucha dentro del contenedor
+        host: '0.0.0.0', 
         port: parseInt(process.env.VITE_PORT) || 5174,
         strictPort: true,
         hmr: {

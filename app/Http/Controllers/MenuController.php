@@ -12,9 +12,9 @@ class MenuController extends BaseController
     public function __construct(private MenuService $menuService) {}
 
 
-    public function getAllMenu()
+    public function index(Request $request)
     {
-       $menuList = $this->menuService->getMenu();
+       $menuList = $this->menuService->getMenu($request);
        return $this->sendResponse($menuList, ResponseMessages::successList(), 200);
     }
 

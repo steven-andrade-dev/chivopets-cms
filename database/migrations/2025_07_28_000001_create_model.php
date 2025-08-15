@@ -55,11 +55,11 @@ return new class extends Migration
         Schema::create('carrusel_items', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('subtitle');
-            $table->string('image');
-            $table->string('href');
-            $table->string('introduction');
-            $table->string('description');
+            $table->string('subtitle')->nullable();
+            $table->string('image')->nullable();
+            $table->string('href')->nullable();
+            $table->string('introduction')->nullable();
+            $table->text('description')->nullable();
             $table->decimal('value', 10, 2)->nullable();
             $table->string('title_info_aditional')->nullable();
             $table->timestamps();
@@ -83,7 +83,7 @@ return new class extends Migration
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
 
-           
+
         });
 
         Schema::create('case', function (Blueprint $table) {
@@ -124,6 +124,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
+            $table->boolean('status')->default(true); // true = visible, false = oculto
+            $table->integer('type'); // 1 = header, 2 = footer, 3 - boton
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
@@ -138,6 +140,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_menu');
             $table->string('name');
             $table->string('url');
+            $table->boolean('status')->default(true); // true = visible, false = oculto
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();

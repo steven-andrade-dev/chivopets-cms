@@ -200,6 +200,7 @@ const saveItem = async (index) => {
                 <h2 class="accordion-header" :id="`heading-${index}`">
                     <button class="accordion-button" :class="{ collapsed: true }" type="button"
                         data-bs-toggle="collapse" :data-bs-target="`#collapse-${index}`" :aria-expanded="false"
+
                         :aria-controls="`collapse-${index}`">
                         <div class="d-flex justify-content-between align-items-center w-100 me-3">
                             <span class="card-number">Entrada {{ index + 1 }}</span>
@@ -208,24 +209,28 @@ const saveItem = async (index) => {
                     </button>
                 </h2>
 
+
                 <div :id="`collapse-${index}`" class="accordion-collapse collapse" :class="{ show: false }"
                     :aria-labelledby="`heading-${index}`" data-bs-parent="#carouselAccordion">
 
+
                     <div class="accordion-body">
                         <!-- Botón de eliminar -->
-                        <div class="d-flex justify-content-end mb-3">
+                        <!-- <div class="d-flex justify-content-end mb-3">
                             <button type="button" class="btn btn-danger btn-sm" @click="deleteItem(index)">
                                 <i class="fas fa-trash me-1"></i>
                                 Eliminar
                             </button>
-                        </div>
+                        </div> -->
 
                         <!-- Información básica -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`title-${index}`" class="form-label">Título</label>
+
                                     <input type="text" class="form-control" :id="`title-${index}`" :value="item.title"
+
                                         @input="updateItem(index, 'title', $event.target.value)"
                                         placeholder="Título de la entrada">
                                 </div>
@@ -234,6 +239,7 @@ const saveItem = async (index) => {
                                 <div class="mb-3">
                                     <label :for="`subtitle-${index}`" class="form-label">Subtítulo</label>
                                     <input type="text" class="form-control" :id="`subtitle-${index}`"
+
                                         :value="item.subtitle"
                                         @input="updateItem(index, 'subtitle', $event.target.value)"
                                         placeholder="Subtítulo opcional">
@@ -247,6 +253,7 @@ const saveItem = async (index) => {
                                 <div class="mb-3">
                                     <label :for="`description-${index}`" class="form-label">Descripción</label>
                                     <textarea class="form-control" :id="`description-${index}`"
+
                                         :value="item.description"
                                         @input="updateItem(index, 'description', $event.target.value)"
                                         placeholder="Descripción de la entrada" rows="3"></textarea>
@@ -255,7 +262,9 @@ const saveItem = async (index) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`introduction-${index}`" class="form-label">Introducción</label>
+
                                     <textarea class="form-control" :id="`introduction-${index}`"
+
                                         :value="item.introduction"
                                         @input="updateItem(index, 'introduction', $event.target.value)"
                                         placeholder="Introducción de la entrada" rows="3"></textarea>
@@ -266,7 +275,10 @@ const saveItem = async (index) => {
                         <!-- Imagen -->
                         <div class="mb-3">
                             <label :for="`image-${index}`" class="form-label">URL de Imagen</label>
+
                             <input type="url" class="form-control" :id="`image-${index}`" :value="item.image"
+
+
                                 @input="updateItem(index, 'image', $event.target.value)"
                                 @change="updateImagePreview($event, `preview-${index}`)"
                                 placeholder="https://ejemplo.com/imagen.jpg">
@@ -283,9 +295,11 @@ const saveItem = async (index) => {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
+
                                     <label :for="`title_info_adicional-${index}`" class="form-label">Información
                                         adicional</label>
                                     <input type="text" class="form-control" :id="`title_info_adicional-${index}`"
+
                                         :value="item.title_info_aditional"
                                         @input="updateItem(index, 'title_info_aditional', $event.target.value)"
                                         placeholder="Título de la información adicional">
@@ -294,7 +308,9 @@ const saveItem = async (index) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`value-${index}`" class="form-label">Valor numérico</label>
+
                                     <input type="number" class="form-control" :id="`value-${index}`" :value="item.value"
+
                                         @input="updateItem(index, 'value', $event.target.value)"
                                         placeholder="Valor numérico">
                                 </div>
@@ -306,7 +322,9 @@ const saveItem = async (index) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`id_locale-${index}`" class="form-label">Idioma</label>
+
                                     <select class="form-select" :id="`id_locale-${index}`" :value="item.id_locale"
+
                                         @input="updateItem(index, 'id_locale', $event.target.value)">
                                         <option value="1">Español</option>
                                         <option value="2">Inglés</option>
@@ -316,8 +334,10 @@ const saveItem = async (index) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`href-${index}`" class="form-label">URL</label>
+
                                     <input type="text" class="form-control" :id="`href-${index}`" :value="item.href"
                                         @input="updateItem(index, 'href', $event.target.value)" placeholder="URL">
+
                                 </div>
                             </div>
                             <div class="col-md-12" v-if="item.verification">

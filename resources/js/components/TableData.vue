@@ -14,6 +14,10 @@ const props = defineProps({
     hasDelete: {
         type: Boolean,
         default: false
+    },
+    EditButton: {
+        type: String,
+        default: 'Editar'
     }
 })
 
@@ -39,7 +43,7 @@ const requestDelete = (id) => {
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ section.name }}</td>
                                 <td>
-                                    <button class="btn btn-primary me-2" @click="redirect(section.id)">Editar</button>
+                                    <button class="btn btn-primary me-2" @click="redirect(section.id)">{{ props.EditButton }}</button>
                                     <button v-if="hasDelete" class="btn btn-danger" @click="requestDelete(section.id)">Eliminar</button>
                                 </td>
                             </tr>

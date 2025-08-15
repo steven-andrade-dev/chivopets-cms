@@ -23,6 +23,12 @@ use App\Interfaces\SubmenuRepositoryInterface;
 use App\Repositories\SubmenuRepository;
 use App\Interfaces\LogRepositoryInterface;
 use App\Repositories\LogRepository;
+use App\Interfaces\Content_FAQRepositoryInterface;
+use App\Repositories\Content_FAQRepository;
+use App\Interfaces\ContentCarrouselRepositoryInterface;
+use App\Repositories\ContentCarrouselRepository;
+use App\Interfaces\CarrouselRepositoryInterface;
+use App\Repositories\CarrouselRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +47,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FAQRepositoryInterface::class, FAQRepository::class);
         $this->app->bind(SubmenuRepositoryInterface::class, SubmenuRepository::class);
         $this->app->bind(LogRepositoryInterface::class, LogRepository::class);
+        $this->app->bind(Content_FAQRepositoryInterface::class, Content_FAQRepository::class);
+        $this->app->bind(ContentCarrouselRepositoryInterface::class, ContentCarrouselRepository::class);
+        $this->app->bind(CarrouselRepositoryInterface::class, CarrouselRepository::class);
     }
 
     /**

@@ -9,14 +9,14 @@ use App\Traits\LogsActions;
 class ContentFAQ extends Model
 {
     use HasFactory, LogsActions;
-
+    public $timestamps = false;
     protected $fillable = [
         'id_content', 'id_faq'
     ];
 
     public function faq()
     {
-        return $this->belongsTo(FAQ::class, 'id_carousel');
+        return $this->belongsTo(FAQ::class, 'id_faq');
     }
 
     public function content()

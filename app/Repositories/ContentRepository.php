@@ -20,8 +20,8 @@ class ContentRepository implements ContentRepositoryInterface
 
     public function get_content_by_id($id)
     {
-        $content = Content::with('contentCarousel.carruselItem')->find($id);
-        
+        $content = Content::with(['contentCarousel.carruselItem', 'contentFAQs.faq'])->find($id);
+       
         return $content ? ContentDTO::fromModel($content) : null;
         //return $content;
     }

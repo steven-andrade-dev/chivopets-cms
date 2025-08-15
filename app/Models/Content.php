@@ -21,9 +21,9 @@ class Content extends Model
         return $this->belongsTo(Section::class, 'id_section');
     }
 
-    public function faqs()
+    public function contentFAQs()
     {
-        return $this->hasMany(FAQ::class, 'id_content');
+        return $this->hasMany(ContentFAQ::class, 'id_content');
     }
 
     public function contentCarousel()

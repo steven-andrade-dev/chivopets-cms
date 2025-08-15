@@ -32,7 +32,7 @@ class Content_FaqController extends BaseController
     public function store(Request $request)
     {
         $id = $this->content_faqService->saveContent_FAQ($request->all());
-        return $this->sendResponse($id, ResponseMessages::successList(), 200);
+        return $this->sendResponse($id, ResponseMessages::successCreate(), 200);
     }
 
     /**
@@ -66,7 +66,7 @@ class Content_FaqController extends BaseController
     {
         $deleted = $this->content_faqService->deleteContent_FAQ($id);
         if ($deleted) {
-            return $this->sendResponse([], ResponseMessages::successCreate(), 200);
+            return $this->sendResponse([], ResponseMessages::successDelete(), 200);
         } else {
             return $this->sendError('Error', ResponseMessages::errorNotFound(), 400);
         }

@@ -9,7 +9,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 const sections = ref([])
 
 const EditButton = ref('Editar')
-const getSections = async () => {
+
 
 const idLanguage = ref(1)
 const pagination = ref({});
@@ -49,8 +49,6 @@ onMounted(() => {
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
 
-                    <TableData :data="sections" EditButton="Ver contenido" />
-
                     <LanguageSelect
                         v-model="idLanguage"
                         id="idLanguage"
@@ -58,7 +56,9 @@ onMounted(() => {
 
 
                     />
-                    <TableData :data="sections" />
+                    <TableData :data="sections" EditButton="Ver contenido" />
+
+                  
                     <div class="row">
                         <div class="col-md-12">
                             <PaginationComponent

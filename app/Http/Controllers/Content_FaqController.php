@@ -66,9 +66,9 @@ class Content_FaqController extends BaseController
     {
         $deleted = $this->content_faqService->deleteContent_FAQ($id);
         if ($deleted) {
-            return $this->sendResponse([], 'Pregunta FAQ eliminada exitosamente', 200);
+            return $this->sendResponse([], ResponseMessages::successCreate(), 200);
         } else {
-            return $this->sendError('Error', 'No se pudo eliminar la pregunta FAQ', 400);
+            return $this->sendError('Error', ResponseMessages::errorNotFound(), 400);
         }
     }
 }

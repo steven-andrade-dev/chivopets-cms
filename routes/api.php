@@ -15,6 +15,9 @@ use App\Http\Controllers\FAQController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\DescriptionCasesController;
+use App\Http\Controllers\Content_FaqController;
+use App\Http\Controllers\ContentCarrouselController;
+use App\Http\Controllers\CarrouselController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -79,7 +82,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //FAQ
     Route::resource('faq', FAQController::class);
-
+    //CONTENT_FAQ
+    Route::resource('content_faq', Content_FaqController::class);
+    //CONTENT_CAROUSEL
+    Route::resource('content_carousel', ContentCarrouselController::class);
+    //CAROUSEL
+    Route::resource('carousel', CarrouselController::class);
     //GALERY
     Route::post('/gallery/upload', [GalleryController::class, 'upload']);
     Route::get('/gallery', [GalleryController::class, 'list']);

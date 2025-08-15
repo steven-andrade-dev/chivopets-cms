@@ -7,8 +7,17 @@ import ModalComponent from '@/components/ModalComponent.vue'
 
 const router = useRouter()
 
+const tipoOpciones = [
+  { id: 1, name: "Menú" },
+  { id: 2, name: "Footer" },
+  { id: 3, name: "Botón" },
+]
 
 const props = defineProps({
+  tipoOpciones: {
+    type: Array,
+    required: true
+  },
   data: {
     type: Array,
     required: true
@@ -149,7 +158,14 @@ const saveMenu = async () => {
         <form>
             <InputComponent label="Nombre" v-model="selectedmenu.name" placeholder="Ingrese el nombre" />
             <InputComponent label="URL" v-model="selectedmenu.url" placeholder="Ingrese la URL" />
-
+            <SelectComponent
+                label="Tipo"
+                icon="bi bi-ui-checks"
+                v-model="selectedmenu.type"
+                :options="tipoOpciones"
+                placeholder="Selecciona: Menú / Footer / Botón"
+                required
+              />
             <SelectComponent
                 label="Idioma"
                 icon="bi bi-translate"

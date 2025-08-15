@@ -1,6 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue';
-
+import Swal from 'sweetalert2';
+import { required, trim, string, number, validate } from '@/utils/validate-form';
+import { httpRequest } from '../../utils/global-request';
 const props = defineProps({
     items: {
         type: Array,
@@ -11,9 +13,12 @@ const props = defineProps({
         type: Number,
         required: true,
         default: 1
+    },
+    id_content: {
+        type: String,
+        required: true
     }
 });
-
 const emit = defineEmits(['update:items']);
 
 // Crear una copia reactiva de los items
@@ -36,10 +41,73 @@ const updateItem = (index, field, value) => {
 
 // Función para eliminar un item
 const deleteItem = (index) => {
-    localItems.value.splice(index, 1);
-    emit('update:items', localItems.value);
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            // Eliminar el item
+            const response = await httpRequest({
+                url: `/carousel/${localItems.value[index].id}`,
+                method: 'DELETE',
+            });
+            if(response.success){
+                localItems.value.splice(index, 1);
+                emit('update:items', localItems.value);
+                Swal.fire({
+                    title: '¡Eliminado!',
+                    text: 'El elemento ha sido eliminado correctamente',
+                    icon: 'success',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: 'Aceptar',
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+            }
+            // Mostrar confirmación de éxito
+        }
+    });
 };
 
+const carruselSchema = {
+    href: {
+        rules: [required(), string()],
+        transforms: [trim()]
+    },
+    title: {
+        rules: [required(), string()],
+        transforms: [trim()]
+    },
+    subtitle: {
+        rules: [required(), string()],
+        transforms: [trim()]
+    },
+    description: {
+        rules: [required(), string()],
+        transforms: [trim()]
+    },
+    image: {
+        rules: [required(), string()],
+        transforms: [trim()]
+    },
+    title_info_aditional: {
+        rules: [required(), string()],
+        transforms: [trim()]
+    },
+    value: {
+        rules: [required(), number()],
+        transforms: [trim()]
+    },
+    id_locale: {
+        rules: [required(), number()],
+        transforms: [trim()]
+    }
+}
 // Función para agregar un nuevo item
 const addNewItem = () => {
     const newItem = {
@@ -51,9 +119,9 @@ const addNewItem = () => {
         title_info_aditional: '',
         value: '',
         id_locale: "1",
+        verification: true,
     };
     localItems.value.push(newItem);
-    emit('update:items', localItems.value);
 };
 
 // Función para actualizar vista previa de imagen
@@ -64,7 +132,7 @@ const updateImagePreview = (event, previewId) => {
 
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             preview.innerHTML = `<img src="${e.target.result}" alt="Preview" class="img-fluid rounded">`;
         };
         reader.readAsDataURL(file);
@@ -79,6 +147,46 @@ const updateImagePreview = (event, previewId) => {
         `;
     }
 };
+
+const saveItem = async (index) => {
+   
+   const { valid} = validate(localItems.value[index], carruselSchema);
+   if(valid){
+    const response = await httpRequest({
+                 url: `/carousel`,
+                 method: 'POST',
+                 data: {
+                    ...localItems.value[index],
+                    id_content: props.id_content
+                 }
+    });
+    if(response.success){
+        Swal.fire({
+            title: '¡Guardado!',
+            text: 'El elemento ha sido guardado correctamente',
+            icon: 'success',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Aceptar',
+            timer: 2000,
+            timerProgressBar: true
+        });
+        localItems.value[index].verification = false;
+        localItems.value[index].id = response.data.id;
+    }else{
+        Swal.fire({
+            title: '¡Error!',
+            text: 'El elemento no ha sido guardado correctamente',
+            icon: 'error',
+        });
+    }
+    }else{
+       Swal.fire({
+            title: '¡Error!',
+            text: 'Hay campos que no son válidos o vacios',
+            icon: 'error',
+        });
+   }
+}
 </script>
 
 <template>
@@ -90,13 +198,9 @@ const updateImagePreview = (event, previewId) => {
         <div class="accordion" id="carouselAccordion">
             <div v-for="(item, index) in localItems" :key="item.id || index" class="accordion-item">
                 <h2 class="accordion-header" :id="`heading-${index}`">
-                    <button
-                        class="accordion-button"
-                        :class="{ collapsed: true }"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        :data-bs-target="`#collapse-${index}`"
-                        :aria-expanded="false"
+                    <button class="accordion-button" :class="{ collapsed: true }" type="button"
+                        data-bs-toggle="collapse" :data-bs-target="`#collapse-${index}`" :aria-expanded="false"
+
                         :aria-controls="`collapse-${index}`">
                         <div class="d-flex justify-content-between align-items-center w-100 me-3">
                             <span class="card-number">Entrada {{ index + 1 }}</span>
@@ -105,12 +209,10 @@ const updateImagePreview = (event, previewId) => {
                     </button>
                 </h2>
 
-                <div
-                    :id="`collapse-${index}`"
-                    class="accordion-collapse collapse"
-                    :class="{ show: false }"
-                    :aria-labelledby="`heading-${index}`"
-                    data-bs-parent="#carouselAccordion">
+
+                <div :id="`collapse-${index}`" class="accordion-collapse collapse" :class="{ show: false }"
+                    :aria-labelledby="`heading-${index}`" data-bs-parent="#carouselAccordion">
+
 
                     <div class="accordion-body">
                         <!-- Botón de eliminar -->
@@ -126,11 +228,9 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`title-${index}`" class="form-label">Título</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        :id="`title-${index}`"
-                                        :value="item.title"
+
+                                    <input type="text" class="form-control" :id="`title-${index}`" :value="item.title"
+
                                         @input="updateItem(index, 'title', $event.target.value)"
                                         placeholder="Título de la entrada">
                                 </div>
@@ -138,10 +238,8 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`subtitle-${index}`" class="form-label">Subtítulo</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        :id="`subtitle-${index}`"
+                                    <input type="text" class="form-control" :id="`subtitle-${index}`"
+
                                         :value="item.subtitle"
                                         @input="updateItem(index, 'subtitle', $event.target.value)"
                                         placeholder="Subtítulo opcional">
@@ -154,25 +252,22 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`description-${index}`" class="form-label">Descripción</label>
-                                    <textarea
-                                        class="form-control"
-                                        :id="`description-${index}`"
+                                    <textarea class="form-control" :id="`description-${index}`"
+
                                         :value="item.description"
                                         @input="updateItem(index, 'description', $event.target.value)"
-                                        placeholder="Descripción de la entrada"
-                                        rows="3"></textarea>
+                                        placeholder="Descripción de la entrada" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`introduction-${index}`" class="form-label">Introducción</label>
-                                    <textarea
-                                        class="form-control"
-                                        :id="`introduction-${index}`"
+
+                                    <textarea class="form-control" :id="`introduction-${index}`"
+
                                         :value="item.introduction"
                                         @input="updateItem(index, 'introduction', $event.target.value)"
-                                        placeholder="Introducción de la entrada"
-                                        rows="3"></textarea>
+                                        placeholder="Introducción de la entrada" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -180,11 +275,10 @@ const updateImagePreview = (event, previewId) => {
                         <!-- Imagen -->
                         <div class="mb-3">
                             <label :for="`image-${index}`" class="form-label">URL de Imagen</label>
-                            <input
-                                type="url"
-                                class="form-control"
-                                :id="`image-${index}`"
-                                :value="item.image"
+
+                            <input type="url" class="form-control" :id="`image-${index}`" :value="item.image"
+
+
                                 @input="updateItem(index, 'image', $event.target.value)"
                                 @change="updateImagePreview($event, `preview-${index}`)"
                                 placeholder="https://ejemplo.com/imagen.jpg">
@@ -201,11 +295,11 @@ const updateImagePreview = (event, previewId) => {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label :for="`title_info_adicional-${index}`" class="form-label">Información adicional</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        :id="`title_info_adicional-${index}`"
+
+                                    <label :for="`title_info_adicional-${index}`" class="form-label">Información
+                                        adicional</label>
+                                    <input type="text" class="form-control" :id="`title_info_adicional-${index}`"
+
                                         :value="item.title_info_aditional"
                                         @input="updateItem(index, 'title_info_aditional', $event.target.value)"
                                         placeholder="Título de la información adicional">
@@ -214,11 +308,9 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`value-${index}`" class="form-label">Valor numérico</label>
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        :id="`value-${index}`"
-                                        :value="item.value"
+
+                                    <input type="number" class="form-control" :id="`value-${index}`" :value="item.value"
+
                                         @input="updateItem(index, 'value', $event.target.value)"
                                         placeholder="Valor numérico">
                                 </div>
@@ -230,10 +322,9 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`id_locale-${index}`" class="form-label">Idioma</label>
-                                    <select
-                                        class="form-select"
-                                        :id="`id_locale-${index}`"
-                                        :value="item.id_locale"
+
+                                    <select class="form-select" :id="`id_locale-${index}`" :value="item.id_locale"
+
                                         @input="updateItem(index, 'id_locale', $event.target.value)">
                                         <option value="1">Español</option>
                                         <option value="2">Inglés</option>
@@ -243,14 +334,17 @@ const updateImagePreview = (event, previewId) => {
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label :for="`href-${index}`" class="form-label">URL</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        :id="`href-${index}`"
-                                        :value="item.href"
-                                        @input="updateItem(index, 'href', $event.target.value)"
-                                        placeholder="URL">
+
+                                    <input type="text" class="form-control" :id="`href-${index}`" :value="item.href"
+                                        @input="updateItem(index, 'href', $event.target.value)" placeholder="URL">
+
                                 </div>
+                            </div>
+                            <div class="col-md-12" v-if="item.verification">
+                                <button type="button" class="btn btn-success" @click="saveItem(index)">
+                                    <i class="fas fa-plus me-2"></i>
+                                    Guardar
+                                </button>
                             </div>
                         </div>
                     </div>

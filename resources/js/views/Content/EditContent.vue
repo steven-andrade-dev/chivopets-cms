@@ -9,6 +9,7 @@ import Quill from "quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import CarruselItem from "../../components/Content/CarruselItem.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import FAQItems from "../../components/Content/FAQItems.vue";
 
 const contenidoHtml = ref('');
 const route = useRoute();
@@ -17,9 +18,9 @@ const id = route.params.id;
 const content = ref([]);
 
 const breadcrumbItems = ref([
-  { label: "Secciones", href: "/sections" },
-  { label: "Contenido", href: `/content/` },
-  { label: "Editor de contenido", href: "/edit-content" },
+    { label: "Secciones", href: "/sections" },
+    { label: "Contenido", href: `/content/` },
+    { label: "Editor de contenido", href: "/edit-content" },
 ]);
 
 const SizeStyle = Quill.import("attributors/style/size");
@@ -106,25 +107,27 @@ const guardarContent = async () => {
         image: content.value.image,
         id_locale: content.value.id_locale,
     }
-   try {
-    const response = await httpRequest({
-        url: '/contenido/update',
-        method: 'PUT',
-        data: data
-    });
-    if(response.success){
-       alert(response.msg);
-    }else{
-        alert(response.msg);
+    try {
+        const response = await httpRequest({
+            url: '/contenido/update',
+            method: 'PUT',
+            data: data
+        });
+        if (response.success) {
+            alert(response.msg);
+        } else {
+            alert(response.msg);
+        }
+    } catch (err) {
+        alert("Error al guardar el contenido");
     }
-   }catch(err){
-    alert("Error al guardar el contenido");
-   }
 }
 
 const regresar = () => {
     router.go(-1);
 }
+
+
 
 onMounted(() => {
     getContentById();
@@ -202,35 +205,38 @@ onMounted(() => {
                                                 <button class="ql-link"></button>
                                                 <button class="ql-clean"></button>
                                             </div>
-                                            <quill-editor ref="editorRef"
-                                            theme="snow"
-                                            toolbar="#custom-toolbar"
-                                            contentType="html"
-                                            :global-options="globalOptions"
-                                            v-model:content="contenidoHtml" />
+                                            <quill-editor ref="editorRef" theme="snow" toolbar="#custom-toolbar"
+                                                contentType="html" :global-options="globalOptions"
+                                                v-model:content="contenidoHtml" />
                                             <div class="help-text">
                                                 El HTML se generará
                                                 automáticamente
                                             </div>
                                             <div style="margin-top:20px;">
                                                 <label>Vista previa HTML:</label>
-                                            <div v-html="contenidoHtml" style="border:1px solid #eee;padding:12px;"></div>
+                                                <div v-html="contenidoHtml" style="border:1px solid #eee;padding:12px;">
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="url">Texto del Botón</label>
                                             <input type="text" id="url" placeholder="Texto del botón de acción"
-                                            v-model="content.url" />
+                                                v-model="content.url" />
                                         </div>
                                         <div class="form-group">
                                             <label for="type_carrusel">Edición de contenido del carrusel</label>
-                                            <CarruselItem
-                                                :items="content.carruselItems || []"
+                                            <CarruselItem :items="content.carruselItems || []"
                                                 :type_carrusel="content.type_carrusel"
-                                                @update:items="content.carruselItems = $event"
-                                            />
+                                                :id_content="id"
+                                                @update:items="content.carruselItems = $event" />
 
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">FAQ</label>
+                                           
+                                                <FAQItems :faq="content.faq || []" :id_content="id"  />
+                                            
                                         </div>
                                     </div>
 
@@ -248,19 +254,18 @@ onMounted(() => {
 
 
 
-                                            <div class="form-group">
-                                                <label for="image">URL de Imagen</label>
-                                                <input type="url" id="image"
-                                                    placeholder="https://ejemplo.com/imagen.jpg"
-                                                    v-model="content.image" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="locale">Idioma</label>
-                                                <select id="locale" class="form-select" v-model="content.id_locale">
-                                                    <option value="1">Español</option>
-                                                    <option value="2">Inglés</option>
-                                                </select>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="image">URL de Imagen</label>
+                                            <input type="url" id="image" placeholder="https://ejemplo.com/imagen.jpg"
+                                                v-model="content.image" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="locale">Idioma</label>
+                                            <select id="locale" class="form-select" v-model="content.id_locale">
+                                                <option value="1">Español</option>
+                                                <option value="2">Inglés</option>
+                                            </select>
+                                        </div>
 
 
                                     </div>
@@ -270,7 +275,7 @@ onMounted(() => {
                                             ← Regresar
                                         </button>
                                         <button type="button" class="btn btn-success" @click="guardarContent">
-                                             Guardar
+                                            Guardar
                                         </button>
                                     </div>
                                 </form>

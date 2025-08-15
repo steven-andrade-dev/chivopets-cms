@@ -10,6 +10,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import CarruselItem from "../../components/Content/CarruselItem.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FAQItems from "../../components/Content/FAQItems.vue";
+import Swal from 'sweetalert2';
 
 const contenidoHtml = ref('');
 const route = useRoute();
@@ -114,12 +115,22 @@ const guardarContent = async () => {
             data: data
         });
         if (response.success) {
-            alert(response.msg);
+          Swal.fire({
+            title: 'Contenido actualizado',
+            text: 'El contenido ha sido actualizado correctamente',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          })
         } else {
-            alert(response.msg);
+          Swal.fire({
+            title: 'Error',
+            text: response.msg,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+          })
         }
     } catch (err) {
-        alert("Error al guardar el contenido");
+        console.error(err);
     }
 }
 

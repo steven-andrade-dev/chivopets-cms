@@ -129,6 +129,11 @@ const deleteItem = async (id) => {
     }
 }
 
+const closeModal = () => {
+    showModal.value = false;
+    selectedFAQ.value = null;
+}
+
 // Ejecutar cuando se monta el componente
 onMounted(() => {
     getListFAQ();

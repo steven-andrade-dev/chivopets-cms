@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\Content_FAQRepositoryInterface;
-use App\Models\ContentFAQ;
+use App\Interfaces\ContentCarrouselRepositoryInterface;
+use App\Models\ContentCarrousel;
 
-class Content_FAQRepository implements Content_FAQRepositoryInterface
+class ContentCarrouselRepository implements ContentCarrouselRepositoryInterface
 {
-    public function save_content_faq($validated)
+    public function save_content_carrousel($validated)
     {
-        $content_faq = ContentFAQ::create($validated);
+        $content_faq = ContentCarrousel::create($validated);
         return $content_faq;
     }
 

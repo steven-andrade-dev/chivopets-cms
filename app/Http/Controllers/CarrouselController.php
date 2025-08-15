@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Content_FAQService;
-use App\Http\Controllers\BaseController;
+use App\Services\CarrouselService;
 use App\Helpers\ResponseMessages;
-
-class Content_FaqController extends BaseController
+use App\Http\Controllers\BaseController;
+class CarrouselController extends BaseController
 {
-    public function __construct(public Content_FAQService $content_faqService) {}
+    public function __construct(public CarrouselService $carrouselService) {}
     /**
      * Display a listing of the resource.
      */
@@ -31,7 +30,7 @@ class Content_FaqController extends BaseController
      */
     public function store(Request $request)
     {
-        $id = $this->content_faqService->saveContent_FAQ($request->all());
+        $id = $this->carrouselService->save_carrousel($request);
         return $this->sendResponse($id, ResponseMessages::successList(), 200);
     }
 
@@ -62,13 +61,9 @@ class Content_FaqController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $deleted = $this->content_faqService->deleteContent_FAQ($id);
-        if ($deleted) {
-            return $this->sendResponse([], 'Pregunta FAQ eliminada exitosamente', 200);
-        } else {
-            return $this->sendError('Error', 'No se pudo eliminar la pregunta FAQ', 400);
-        }
+        $this->carrouselService->delete_carrousel($id);
+        return $this->sendResponse(null, ResponseMessages::successList(), 200);
     }
 }

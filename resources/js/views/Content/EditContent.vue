@@ -82,7 +82,6 @@ const getContentById = async () => {
             method: "GET",
         });
         content.value = response.data;
-        console.log(content.value.faq);
         breadcrumbItems.value[1].href = `/content/${response.data.id_section}`
 
         contenidoHtml.value = response.data.bloque_principal;
@@ -128,9 +127,7 @@ const regresar = () => {
     router.go(-1);
 }
 
-const addNewFAQ = () => {
-    console.log("addNewFAQ");
-}
+
 
 onMounted(() => {
     getContentById();
@@ -231,13 +228,14 @@ onMounted(() => {
                                             <label for="type_carrusel">Edición de contenido del carrusel</label>
                                             <CarruselItem :items="content.carruselItems || []"
                                                 :type_carrusel="content.type_carrusel"
+                                                :id_content="id"
                                                 @update:items="content.carruselItems = $event" />
 
                                         </div>
                                         <div class="form-group">
                                             <label for="name">FAQ</label>
                                            
-                                                <FAQItems :faq="content.faq || []" :id_content="id" @addNewFAQ="addNewFAQ" />
+                                                <FAQItems :faq="content.faq || []" :id_content="id"  />
                                             
                                         </div>
                                     </div>

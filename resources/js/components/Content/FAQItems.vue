@@ -10,7 +10,7 @@ const props = defineProps({
         required: true
     },
     id_content: {
-        type: Number,
+        type: String,
         required: false
     }
 });
@@ -89,7 +89,6 @@ const deleteItem = async (id) => {
 
     if (result.isConfirmed) {
         try {
-            // Aquí iría la lógica para eliminar del backend
             const response = await httpRequest({
                  url: `/content_faq/${id}`,
                  method: 'DELETE',

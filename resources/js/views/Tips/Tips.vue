@@ -3,25 +3,25 @@ import Sidebar from '../../components/Sidebar.vue'
 import Navbar from '../../components/Navbar.vue'
 import { httpRequest } from '../../utils/global-request'
 import { ref, onMounted } from 'vue'
-import TableData from './Components/TableCases.vue'
+import TableData from './Components/TableTips.vue'
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 const breadcrumbItems = ref([
-  { label: "Casos", href: "/cases" }
+  { label: "Tips", href: "/tips" }
 ]);
 
-const cases = ref([])           
+const tips = ref([])           
 const pagination = ref({}) 
 
-const getCases = async (page = 1) => {
+const getTips = async (page = 1) => {
   try {
     const idLanguage = localStorage.getItem('idioma');
     const response = await httpRequest({
-      url: `/cases?idLanguage=${idLanguage}&page=${page}`,   
+      url: `/tips?idLanguage=${idLanguage}&page=${page}`,   
       method: 'GET',
     })
 
-    cases.value = response.data.data
+    tips.value = response.data.data
     pagination.value = response.data
 
   } catch (err) {
@@ -30,7 +30,7 @@ const getCases = async (page = 1) => {
 }
 
 onMounted(() => {
-  getCases()
+  getTips()
 })
 </script>
 
@@ -42,14 +42,14 @@ onMounted(() => {
         <Navbar />
         <div class="container-fluid">
           <Breadcrumb :items="breadcrumbItems" />
-          <h1>Casos</h1>
-          <TableData :data="cases" />
+          <h1>Tips</h1>
+          <TableData :data="tips" />
 
           <div class="row">
             <div class="col-md-12">
               <PaginationComponent
                 :pagination="pagination"
-                @page-change="getCases"  
+                @page-change="getTips"
               />
             </div>
           </div>

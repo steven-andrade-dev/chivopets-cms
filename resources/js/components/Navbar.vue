@@ -33,6 +33,39 @@
                 </div>
             </li>
 
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!-- <i class="fas fa-bell fa-fw"></i> -->
+                    <i class="fas fa-globe"></i>
+                    <!-- Counter - Alerts -->
+                    <span class="badge badge-danger badge-counter">{{ textLanguage }}</span>
+                </a>
+                <!-- Dropdown - Alerts -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="alertsDropdown">
+
+                    <a class="dropdown-item d-flex align-items-center" :class="selectIdioma(1) ? 'active' : ''" href="#"
+                    @click="changeIdioma(1)">
+                        <div class="mr-3">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div>
+                            <span class="font-weight-bold">Español</span>
+                        </div>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" :class="selectIdioma(2) ? 'active' : ''" href="#"
+                    @click="changeIdioma(2)">
+                        <div class="mr-3">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div>
+                            <span class="font-weight-bold">Ingles</span>
+                        </div>
+                    </a>
+                </div>
+            </li>
+
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
@@ -74,12 +107,30 @@
 </template>
 
 <script setup>
+     import { ref,computed } from 'vue'
     import { useRouter } from 'vue-router'
     import Swal from 'sweetalert2'
     import { httpRequest } from '../utils/global-request'
 
     // Router
     const router = useRouter()
+    const idiomaActual = ref(localStorage.getItem("idioma"))
+
+    const textLanguage = computed(() => {
+        return idiomaActual.value == 1
+            ? 'ES'
+            : 'EN'
+    })
+
+    const changeIdioma = (idioma) => {
+        idiomaActual.value = idioma
+        localStorage.setItem("idioma", idioma)
+        location.reload()
+    }
+
+    const selectIdioma = (idioma) => {
+        return idioma == idiomaActual.value
+    }
 
     // Métodos
     const logout = async () => {

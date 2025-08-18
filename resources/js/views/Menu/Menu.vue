@@ -11,12 +11,12 @@ const breadcrumbItems = ref([
 ]);
 
 const menu = ref([])
-const idLanguage = ref(1)
 
 const getMenu = async () => {
   try {
+    const idLanguage = localStorage.getItem('idioma');
     const response = await httpRequest({
-      url: `/menu?idLanguage=${idLanguage.value}`,
+      url: `/menu?idLanguage=${idLanguage}`,
       method: 'GET',
     })
     menu.value = response.data
@@ -56,11 +56,6 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Menú</h1>
-                    <LanguageSelect
-                        v-model="idLanguage"
-                        id="idLanguage"
-                        @change="getMenu"
-                    />
                     <TableData :data="menu" :locales="locales" @refresh="getMenu" />
                 </div>
 

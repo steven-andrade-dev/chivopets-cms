@@ -13,17 +13,17 @@ import ModalComponent from '@/components/ModalComponent.vue'
 import Swal from 'sweetalert2'
 
 const route = useRoute()
-const caseId = Number(route.params.id)
+const tipsId = Number(route.params.id)
 
 const data = ref({})
 const descriptionList = ref([])
 const showDescModal = ref(false)
 const editingIndex = ref(-1)
-const form = ref({ description: '', id_locale: '', id_case: caseId })
+const form = ref({ description: '', id_locale: '', id_tips: tipsId })
 
 const breadcrumbItems = ref([
-  { label: 'Casos', href: '/cases' },
-  { label: 'Editar Caso', href: `/edit-case/${caseId}` }
+  { label: 'Tips', href: '/tips' },
+  { label: 'Editar Tip', href: `/edit-tips/${tipsId}` }
 ])
 
 const normalizeOrders = () => {
@@ -37,7 +37,7 @@ const normalizeOrders = () => {
 const persistOrder = async () => {
   try {
     await httpRequest({
-      url: '/description-cases/reorder',
+      url: '/description-tips/reorder',
       method: 'POST',
       data: { orders: descriptionList.value.map(d => ({ id: d.id, order: d.order })) }
     })
@@ -48,13 +48,13 @@ const persistOrder = async () => {
 }
 
 
-/* ===== Cargar caso (sin ?. ni ??) ===== */
-const getCase = async () => {
+/* ===== Cargar tips (sin ?. ni ??) ===== */
+const getTips = async () => {
   try {
-    const res = await httpRequest({ url: '/cases/' + caseId, method: 'GET' })
+    const res = await httpRequest({ url: '/tips/' + tipsId, method: 'GET' })
     const payload = res.data && typeof res.data === 'object' && 'data' in res.data ? res.data.data : res.data
     data.value = payload
-    const arr = payload && payload.description_cases ? payload.description_cases : []
+    const arr = payload && payload.description_tips ? payload.description_tips : []
     descriptionList.value = arr.map(d => ({
       id: d.id,
       description: d.description,
@@ -69,10 +69,10 @@ const getCase = async () => {
   }
 }
 
-const saveCase = async () => {
+const savetip = async () => {
   try {
     await httpRequest({
-      url: '/cases/' + caseId,
+      url: '/tips/' + tipsId,
       method: 'PUT',
       data: {
         image: data.value.image,
@@ -85,16 +85,16 @@ const saveCase = async () => {
         id_locale: data.value.id_locale
       }
     })
-    Swal.fire({ icon: 'success', title: 'Guardado', text: 'Caso actualizado correctamente', timer: 1600, showConfirmButton: false })
+    Swal.fire({ icon: 'success', title: 'Guardado', text: 'Tip actualizado correctamente', timer: 1600, showConfirmButton: false })
   } catch (e) {
-    console.error('Error actualizando caso:', e)
-    Swal.fire('Error', 'No se pudo actualizar el caso', 'error')
+    console.error('Error actualizando tip:', e)
+    Swal.fire('Error', 'No se pudo actualizar el tip', 'error')
   }
 }
 
-const deleteCase = async () => {
+const deleteTip = async () => {
   const r = await Swal.fire({
-    title: '¿Eliminar este caso?',
+    title: '¿Eliminar este tip?',
     text: 'Esta acción no se puede deshacer.',
     icon: 'warning',
     showCancelButton: true,
@@ -103,11 +103,11 @@ const deleteCase = async () => {
   })
   if (!r.isConfirmed) return
   try {
-    await httpRequest({ url: '/cases/' + caseId, method: 'DELETE' })
-    Swal.fire({ icon: 'success', title: 'Eliminado', text: 'Caso eliminado correctamente', timer: 1500, showConfirmButton: false })
+    await httpRequest({ url: '/tips/' + tipsId, method: 'DELETE' })
+    Swal.fire({ icon: 'success', title: 'Eliminado', text: 'Tip eliminado correctamente', timer: 1500, showConfirmButton: false })
   } catch (e) {
-    console.error('Error eliminando caso:', e)
-    Swal.fire('Error', 'No se pudo eliminar el caso', 'error')
+    console.error('Error eliminando tip:', e)
+    Swal.fire('Error', 'No se pudo eliminar el tip', 'error')
   }
 }
 
@@ -118,14 +118,14 @@ const openDesc = (index = -1) => {
     form.value = {
       description: '',
       id_locale: String(data.value.id_locale),
-      id_case: caseId
+      id_tips: tipsId
     }
   } else {
     const d = descriptionList.value[index]
     form.value = {
       description: d.description,
       id_locale: String(d.id_locale),
-      id_case: caseId
+      id_tips: tipsId
     }
   }
   showDescModal.value = true
@@ -143,10 +143,10 @@ const saveDesc = async () => {
   try {
     if (editingIndex.value === -1) {
       const res = await httpRequest({
-        url: '/description-cases',
+        url: '/description-tips',
         method: 'POST',
         data: {
-          id_case: form.value.id_case,
+          id_tips: form.value.id_tips,
           description: form.value.description,
           order: descriptionList.value.length, 
           id_locale: form.value.id_locale
@@ -158,14 +158,15 @@ const saveDesc = async () => {
         description: created.description,
         order: created.order,
         id_locale: created.id_locale,
-        id_case: created.id_case
+        id_tips: created.id_tips
       })
       Swal.fire({ icon: 'success', title: 'Agregado', text: 'Descripción creada', timer: 1200, showConfirmButton: false })
     } else {
+        
       // EDITAR
       const target = descriptionList.value[editingIndex.value]
       await httpRequest({
-        url: '/description-cases/' + target.id,
+        url: '/description-tips/' + target.id,
         method: 'PUT',
         data: {
           description: form.value.description,
@@ -196,7 +197,7 @@ const deleteDescription = async (id) => {
   if (!r.isConfirmed) return
 
   try {
-    await httpRequest({ url: '/description-cases/' + id, method: 'DELETE' })
+    await httpRequest({ url: '/description-tips/' + id, method: 'DELETE' })
     descriptionList.value = descriptionList.value.filter(d => d.id !== id)
     normalizeOrders()
     await persistOrder()
@@ -213,7 +214,7 @@ const onDragEnd = async () => {
   await persistOrder()
 }
 
-onMounted(getCase)
+onMounted(getTips)
 </script>
 
 <template>
@@ -229,7 +230,7 @@ onMounted(getCase)
           <div class="container">
             <div class="card m-3">
               <div class="card-header">
-                <h3 class="card-title mb-0">Editar Caso</h3>
+                <h3 class="card-title mb-0">Editar Tip</h3>
               </div>
 
               <div class="card-body">
@@ -288,8 +289,8 @@ onMounted(getCase)
                   <hr />
 
                   <div class="actions mt-3">
-                    <button type="button" class="btn btn-danger" @click="deleteCase">Eliminar</button>
-                    <button type="button" class="btn btn-primary" @click="saveCase">Guardar</button>
+                    <button type="button" class="btn btn-danger" @click="deleteTip">Eliminar</button>
+                    <button type="button" class="btn btn-primary" @click="savetip">Guardar</button>
                   </div>
                 </form>
               </div>

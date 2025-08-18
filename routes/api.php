@@ -18,6 +18,8 @@ use App\Http\Controllers\DescriptionCasesController;
 use App\Http\Controllers\Content_FaqController;
 use App\Http\Controllers\ContentCarrouselController;
 use App\Http\Controllers\CarrouselController;
+use App\Http\Controllers\TipsController;
+use App\Http\Controllers\DescriptionTipsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,6 +49,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/content/{id?}', [ContentController::class, 'show']);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
     Route::put('/contenido/update', [ContentController::class, 'update']);
+
+    //TIPS
+    Route::resource('tips', TipsController::class);
+
+    //DESCRIPTION TIPS
+    Route::resource('description-tips', DescriptionTipsController::class);
+    Route::post('/description-tips/reorder', [DescriptionTipsController::class, 'reorder']);
+
 
     //CASES
     Route::resource('cases', CasesController::class);

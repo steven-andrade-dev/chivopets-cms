@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { httpRequest } from '../../utils/global-request'
-import Swal from 'sweetalert2'
 import { useRouter } from 'vue-router'
 import ModalComponent from '@/components/ModalComponent.vue'
+import Swal from 'sweetalert2'
 
 const router = useRouter()
 
@@ -56,26 +56,60 @@ const goToSubmenu = (menuId) => {
 const createMenu = async () => {
   try {
     const response = await httpRequest({
-      url: '/menu',
-      method: 'POST',
+      url: "/menu",
+      method: "POST",
       data: selectedmenu.value
-    })
-    emit('refresh')
-    closeModal()
-    return response
-  } catch (err) {
-    console.error(err)
+    });
+
+    // éxito
+    await Swal.fire({
+      icon: "success",
+      title: "Listo",
+      text: "Menú creado correctamente.",
+      timer: 1600,
+      showConfirmButton: false
+    });
+
+    emit("refresh");
+    closeModal();
+
+    if (typeof createDefaultForm === "function" && form) {
+      Object.assign(form, createDefaultForm());
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Error al crear menú:", error);
+    await Swal.fire({
+      icon: "error",
+      title: "Error",
+      text:
+        error?.response?.data?.message ??
+        error?.message ??
+        "No se pudo guardar el menú."
+    });
+    return null;
   }
-}
+};
+
 
 // Editar
 const updateMenu = async () => {
+    const result = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Se actualizarán los datos del menú.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, actualizar',
+    cancelButtonText: 'Cancelar'
+  })
   try {
     const response = await httpRequest({
       url: `/menu/${selectedmenu.value.id}`,
       method: 'PUT',
       data: selectedmenu.value
     })
+    
     emit('refresh')
     closeModal()
     return response

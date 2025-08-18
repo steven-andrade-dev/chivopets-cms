@@ -216,12 +216,12 @@ const saveItem = async (index) => {
 
                     <div class="accordion-body">
                         <!-- Botón de eliminar -->
-                        <!-- <div class="d-flex justify-content-end mb-3">
+                        <div class="d-flex justify-content-end mb-3">
                             <button type="button" class="btn btn-danger btn-sm" @click="deleteItem(index)">
                                 <i class="fas fa-trash me-1"></i>
                                 Eliminar
                             </button>
-                        </div> -->
+                        </div> 
 
                         <!-- Información básica -->
                         <div class="row">

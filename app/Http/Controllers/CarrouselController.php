@@ -31,7 +31,7 @@ class CarrouselController extends BaseController
     public function store(Request $request)
     {
         $id = $this->carrouselService->save_carrousel($request);
-        return $this->sendResponse($id, ResponseMessages::successList(), 200);
+        return $this->sendResponse($id, ResponseMessages::successCreate(), 200);
     }
 
     /**
@@ -64,6 +64,6 @@ class CarrouselController extends BaseController
     public function destroy(string $id)
     {
         $this->carrouselService->delete_carrousel($id);
-        return $this->sendResponse(null, ResponseMessages::successList(), 200);
+        return $this->sendResponse(null, ResponseMessages::successDelete(), 200);
     }
 }

@@ -60,7 +60,7 @@ return new class extends Migration
             $table->string('href')->nullable();
             $table->string('introduction')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('value', 10, 2)->nullable();
+            $table->decimal('value')->nullable();
             $table->string('title_info_aditional')->nullable();
             $table->timestamps();
             $table->datetime('published_at')->nullable();

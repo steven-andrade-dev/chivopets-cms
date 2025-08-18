@@ -40,6 +40,7 @@ class ContentTableSeeder extends Seeder
                 'published_at'      => now(),
             ],
             [
+                // id - 3
                 'title'             => 'Servicios médicos veterinarios',
                 'bloque_principal'  => '<p><meta charset="utf-8"><span style="color:hsl(218, 10%, 53%);">Contamos con atención integral en diversas áreas...</span></p>',
                 'bloque_secundario' => null,
@@ -54,6 +55,7 @@ class ContentTableSeeder extends Seeder
                 'published_at'      => now(),
             ],
             [
+                // id - 4
                 'title'             => 'Más de 3.8 millones de servicios, y aumentando',
                 'bloque_principal'  => '<p style="text-align:center;"><span style="color:hsl(218, 10%, 53%);font-size:14px;">Cada atención representa una historia...</span></p>',
                 'bloque_secundario' => null,
@@ -68,6 +70,7 @@ class ContentTableSeeder extends Seeder
                 'published_at'      => now(),
             ],
             [
+                // id - 5
                 'title'             => 'Satisfacción de nuestros usuarios',
                 'bloque_principal'  => null,
                 'bloque_secundario' => null,

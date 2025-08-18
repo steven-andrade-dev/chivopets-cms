@@ -11,14 +11,14 @@ const sections = ref([])
 const EditButton = ref('Editar')
 
 
-const idLanguage = ref(1)
 const pagination = ref({});
 
 const getSections = async (page = 1) => {
 
   try {
+    const idLanguage = localStorage.getItem('idioma');
     const response = await httpRequest({
-      url: `/sections?idLanguage=${idLanguage.value}&page=${page}`,
+      url: `/sections?idLanguage=${idLanguage}&page=${page}`,
       method: 'GET',
     })
     sections.value = response.data.data
@@ -48,17 +48,9 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
-
-                    <LanguageSelect
-                        v-model="idLanguage"
-                        id="idLanguage"
-                        @change="getSections(1)"
-
-
-                    />
                     <TableData :data="sections" EditButton="Ver contenido" />
 
-                  
+
                     <div class="row">
                         <div class="col-md-12">
                             <PaginationComponent

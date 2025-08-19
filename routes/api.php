@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
    //SECTIONS
     // Route::get('/sections', [SectionsController::class, 'show']);
     Route::resource('sections', SectionsController::class);
+    Route::put('sections/publish/{id}', [SectionsController::class, 'Publish']);
 
     // CONTENT
     Route::get('/content/{id?}', [ContentController::class, 'show']);

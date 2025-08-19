@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Services;
 use App\Interfaces\ContentRepositoryInterface;
 
@@ -17,8 +17,18 @@ class ContentService
         return $this->repo->get_content_by_id($id);
     }
 
-    public function updateContent($validated)
+    public function updateContent($id, $data)
     {
-        return $this->repo->update_content($validated);
+        return $this->repo->update_content($id, $data);
+    }
+
+    public function updateContentPublish($id)
+    {
+        return $this->repo->update_content_publish($id);
+    }
+
+    public function contentUnPublish($id)
+    {
+        return $this->repo->content_unpublish($id);
     }
 }

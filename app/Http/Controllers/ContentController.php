@@ -26,17 +26,30 @@ class ContentController extends BaseController
         ]);
     }
 
-    public function update(StoreSectionRequest $request)
+    public function update(StoreSectionRequest $request, $id)
     {
        try {
-        $content = $this->contentService->updateContent($request->all());
+        $data = $request->all();
+        $content = $this->contentService->updateContent($id, $data);
         return $this->sendResponse("Content updated successfully", ResponseMessages::successList(), 200);
 
        } catch (\Exception $e) {
         return $this->sendError(ResponseMessages::errorEception(),$e->getMessage(), 400);
        }
-       
-      
+
+
+    }
+
+    public function Publish($id)
+    {
+        $content = $this->contentService->updateContentPublish($id);
+        return $this->sendResponse($content, ResponseMessages::successUpdate(), 200);
+    }
+
+    public function unPublish($id)
+    {
+        $content = $this->contentService->contentUnPublish($id);
+        return $this->sendResponse($content, ResponseMessages::successUpdate(), 200);
     }
 
 }

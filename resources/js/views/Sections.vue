@@ -48,7 +48,7 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Secciones</h1>
-                    <TableData :data="sections" EditButton="Ver contenido" />
+                    <TableData :data="sections" @refresh="getSections" />
 
 
                     <div class="row">

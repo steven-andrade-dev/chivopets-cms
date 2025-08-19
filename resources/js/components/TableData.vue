@@ -41,8 +41,12 @@
         }
     })
 
-    const redirect = (id) => {
-        router.push(`/${props.data.son}/${id}`)
+    const redirect = (section) => {
+        if (section.parent && section.parent.id) {
+            router.push(`/${props.data.son}/${section.parent.id}`)
+        } else {
+            router.push(`/${props.data.son}/${section.id}`)
+        }
     }
 
     const requestDelete = (id) => {
@@ -160,13 +164,18 @@
 
                     </td>
                     <td>
-                        <button class="btn btn-warning me-2"
+                        <button class="btn btn-success me-2"
                             v-if="(section.parent && section.parent.name) || section.status == 'Creado'"
                             @click="publishSection(section.id)">
                             {{ props.PublicButton }}  {{ section.parent && section.parent.name ? ' Borrador' : '' }}
                         </button>
-                        <button class="btn btn-primary me-2" v-if="props.hasEdit" @click="openModal(section)">{{ props.EditButton }}</button>
-                        <button class="btn btn-primary me-2" @click="redirect(section.id)">{{ props.DetailButton }}</button>
+                        <button class="btn btn-primary me-2" v-if="props.hasEdit" @click="openModal(section)">
+                            {{ props.EditButton }}
+                        </button>
+                        <button class="btn btn-primary me-2" @click="redirect(section)">
+                            {{ props.DetailButton }}
+                              {{ section.parent && section.parent.name ? ' Borrador' : '' }}
+                        </button>
                         <button v-if="hasDelete" class="btn btn-danger" @click="requestDelete(section.id)">Eliminar</button>
                     </td>
                 </tr>

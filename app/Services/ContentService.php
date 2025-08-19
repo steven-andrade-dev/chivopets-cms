@@ -26,4 +26,9 @@ class ContentService
     {
         return $this->repo->update_content_publish($id);
     }
+
+    public function contentUnPublish($id)
+    {
+        return $this->repo->content_unpublish($id);
+    }
 }

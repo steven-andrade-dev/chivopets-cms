@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('content', ContentController::class);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
     Route::put('content/publish/{id}', [ContentController::class, 'Publish']);
+    Route::get('content/unpublish/{id}', [ContentController::class, 'unPublish']);
 
     //TIPS
     Route::resource('tips', TipsController::class);

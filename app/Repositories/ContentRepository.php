@@ -33,7 +33,7 @@ class ContentRepository implements ContentRepositoryInterface
 
         $content = Content::findOrFail($id);
 
-        if ($content->status == 'Creado') {
+        if ($content->status == 'Creado' || $content->content_id_parent !== null) {
             $content->update($data);
         } else {
 
@@ -58,8 +58,17 @@ class ContentRepository implements ContentRepositoryInterface
             $content->parent->delete();
         }
 
+        $content->content_id_parent = null;
         $content->status = 'Publicado';
         $content->save();
+
+        return $content;
+    }
+
+    public function content_unpublish($id)
+    {
+        $content = Content::findOrFail($id);
+        $content->delete();
 
         return $content;
     }

@@ -14,6 +14,7 @@ class ContentDTO
         public readonly ?string $url,
         public readonly ?string $status,
         public readonly ?int $id_section,
+        public readonly ?int $content_id_parent,
         public readonly ?int $type_carrusel,
         /** @var CarruselItemDTO[] */
         public readonly array $carruselItems = [],
@@ -31,6 +32,7 @@ class ContentDTO
             name: $content->title,
             bloque_principal: $content->bloque_principal,
             bloque_secundario: $content->bloque_secundario,
+            content_id_parent: $content->content_id_parent,
             image: $content->image,
             subtitle: $content->subtitle,
             url: $content->url,

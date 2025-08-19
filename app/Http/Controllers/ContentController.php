@@ -46,4 +46,10 @@ class ContentController extends BaseController
         return $this->sendResponse($content, ResponseMessages::successUpdate(), 200);
     }
 
+    public function unPublish($id)
+    {
+        $content = $this->contentService->contentUnPublish($id);
+        return $this->sendResponse($content, ResponseMessages::successUpdate(), 200);
+    }
+
 }

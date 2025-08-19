@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCaseRequest extends FormRequest
+class CreateTipsRequest extends FormRequest
 {
     public function authorize(): bool
     {

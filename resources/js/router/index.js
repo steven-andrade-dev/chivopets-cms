@@ -4,7 +4,7 @@ import Sections from '../views/Sections.vue';
 import Content from '../views/Content/Content.vue';
 import Questions from '../views/Questions/Questions.vue';
 import Cases from '../views/Cases/Cases.vue';
-import Tips from '../views/Tips.vue';
+import Tips from '../views/Tips/Tips.vue';
 import Language from '../views/Lenguage/lenguage.vue';
 import EditContent from '../views/Content/EditContent.vue';
 import EditSubmenu from '../views/Menu/EditSubmenu.vue';
@@ -14,7 +14,12 @@ import Menu from '../views/Menu/Menu.vue';
 import NotFound from '../views/NotFound.vue';
 import EditQuestion from '../views/Questions/Edit-question.vue';
 import Log from '../views/Log/index.vue';
+import EditCases from '../views/Cases/Components/EditCases.vue';
+import CreateCase from '../views/Cases/Components/CreateCases.vue';
 import Gallery from '../views/Gallery/index.vue';
+import EditTips from '../views/Tips/Components/EditTips.vue';
+import CreateTips from '../views/Tips/Components/CreateTips.vue';
+
 
 const routes = [
     {
@@ -25,6 +30,26 @@ const routes = [
         path: '/lenguage',
         name: 'lenguage',
         component: Language,
+    },
+    {
+        path: '/create-tips',
+        name: 'create-tips',
+        component: CreateTips,
+    },
+    {
+        path: '/edit-tips/:id',
+        name: 'edit-tips',
+        component: EditTips,
+    },
+    {
+        path: '/create-case',
+        name: 'create-case',
+        component: CreateCase,
+    },
+    {
+        path: '/edit-case/:id',
+        name: 'edit-case',
+        component: EditCases,
     },
     {
         path: '/login',

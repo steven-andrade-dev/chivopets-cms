@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\LogsActions;
 
-class CaseModel extends Model
+class TipsModel extends Model
 {
     use LogsActions;
 
-    protected $table = 'case';
+    protected $table = 'tips';
     protected $fillable = [
         'image', 'image_author', 'author', 'area', 'name', 'introduction',
          'text_button', 'created_at', 'updated_at', 'published_at', 'created_by_id', 'updated_by_id', 'id_locale'
@@ -21,9 +21,9 @@ class CaseModel extends Model
         return $this->belongsTo(Locale::class, 'id_locale');
     }
 
-    public function descriptionCases()
+    public function descriptionTips()
     {
-        return $this->hasMany(DescriptionCase::class, 'id_case');
+        return $this->hasMany(DescriptionTips::class, 'id_tips');
     }
     
 

@@ -10,5 +10,18 @@ class DescriptionCase extends Model
     use LogsActions;
 
     protected $table = 'description_case';
-    protected $fillable = ['description', 'etiqueta', 'published_at', 'created_by_id','id_description', 'updated_by_id', 'locale'];
+    protected $fillable = ['description', 'order' , 'created_at','updated_at','published_at','created_by_id', 'updated_by_id', 'id_locale', 'id_case'];
+
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class, 'id_locale');
+    }
+
+    public function caseModel()
+    {
+        return $this->belongsTo(CaseModel::class, 'id_case');
+    }
+
 }
+
+

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->string('locale')->nullable();
         });
 
         Schema::create('sections', function (Blueprint $table) {
@@ -86,6 +85,40 @@ return new class extends Migration
 
         });
 
+
+        Schema::create('tips', function (Blueprint $table) {
+            $table->id();
+            $table->string('image');
+            $table->string('image_author');
+            $table->string('author');
+            $table->string('area');
+            $table->string('name');
+            $table->text('introduction');
+            $table->string('text_button');
+            $table->timestamps();
+            $table->datetime('published_at')->nullable();
+            $table->integer('created_by_id')->nullable();
+            $table->integer('updated_by_id')->nullable();
+            $table->unsignedBigInteger('id_locale');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
+        });
+
+        Schema::create('description_tips', function (Blueprint $table) {
+            $table->id();
+            $table->text('description');
+            $table->integer('order');
+            $table->timestamps();
+            $table->datetime('published_at')->nullable();
+            $table->integer('created_by_id')->nullable();
+            $table->integer('updated_by_id')->nullable();
+            $table->unsignedBigInteger('id_locale');
+            $table->unsignedBigInteger('id_tips');
+
+            $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');
+            $table->foreign('id_tips')->references('id')->on('tips')->onDelete('cascade');
+        });
+
         Schema::create('case', function (Blueprint $table) {
             $table->id();
             $table->string('image');
@@ -93,8 +126,7 @@ return new class extends Migration
             $table->string('author');
             $table->string('area');
             $table->string('name');
-            $table->string('introduction');
-            $table->datetime('date');
+            $table->text('introduction');
             $table->string('text_button');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
@@ -107,8 +139,8 @@ return new class extends Migration
 
         Schema::create('description_case', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->string('etiqueta');
+            $table->text('description');
+            $table->integer('order');
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
@@ -199,5 +231,7 @@ return new class extends Migration
         Schema::dropIfExists('sections');
         Schema::dropIfExists('user');
         Schema::dropIfExists('rol');
+        Schema::dropIfExists('tips');
+        Schema::dropIfExists('description_tips');
     }
 };

@@ -14,9 +14,12 @@ use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\DescriptionCasesController;
 use App\Http\Controllers\Content_FaqController;
-use App\Http\Controllers\Content_CarouselController;
+use App\Http\Controllers\ContentCarrouselController;
 use App\Http\Controllers\CarrouselController;
+use App\Http\Controllers\TipsController;
+use App\Http\Controllers\DescriptionTipsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,9 +50,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/content/{id?}', [ContentController::class, 'show']);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
     Route::put('/contenido/update', [ContentController::class, 'update']);
+
+    //TIPS
+    Route::resource('tips', TipsController::class);
+
+    //DESCRIPTION TIPS
+    Route::resource('description-tips', DescriptionTipsController::class);
+    Route::post('/description-tips/reorder', [DescriptionTipsController::class, 'reorder']);
+
+
     //CASES
-    Route::get('/cases', [CasesController::class, 'get']);
-    Route::post('/create-case', [CasesController::class, 'createCase']);
+    Route::resource('cases', CasesController::class);
+
+    //DESCRPTION CASES
+    Route::resource('description-cases', DescriptionCasesController::class);
+    Route::post('/description-cases/reorder', [DescriptionCasesController::class, 'reorder']);
 
     // LOCALES
     Route::get('/locales', [LocaleController::class, 'show']);
@@ -81,7 +96,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //CONTENT_FAQ
     Route::resource('content_faq', Content_FaqController::class);
     //CONTENT_CAROUSEL
-    Route::resource('content_carousel', Content_CarouselController::class);
+    Route::resource('content_carousel', ContentCarrouselController::class);
     //CAROUSEL
     Route::resource('carousel', CarrouselController::class);
     //GALERY
@@ -89,7 +104,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/gallery', [GalleryController::class, 'list']);
 });
 
-Route::prefix('astro/menun')->group(function () {
+Route::prefix('astro/menu')->group(function () {
     Route::get('/locale', [MenuController::class, 'show']);
-    Route::get('/getAllMenun', [MenuController::class, 'getAllMenu']);
+    Route::get('/getAllMenu', [MenuController::class, 'getAllMenu']);
 });

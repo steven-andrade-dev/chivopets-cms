@@ -88,23 +88,46 @@
 
     const publishSection = async (id) => {
         try {
-            const response = await httpRequest({
-                url: `/sections/publish/${id}`,
-                method: 'PUT'
-            })
-            Swal.fire({
-                title: '¡Actualizado!',
-                text: 'La sección ha sido eliminada correctamente',
-                icon: 'success',
-                confirmButtonColor: '#28a745',
-                confirmButtonText: 'Aceptar',
-                timer: 2000,
-                timerProgressBar: true
+            const result = await Swal.fire({
+                title: '¿Estás seguro de publicar este borrador?',
+                text: `¿Deseas publicar el borrador?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, publicar',
+                cancelButtonText: 'Cancelar'
             });
-            emit('refresh')
-            closeModal()
 
-            return response
+            if (result.isConfirmed) {
+                    const response = await httpRequest({
+                        url: `/sections/publish/${id}`,
+                        method: 'PUT'
+                    })
+                    Swal.fire({
+                        title: '¡Actualizado!',
+                        text: 'La sección ha sido eliminada correctamente',
+                        icon: 'success',
+                        confirmButtonColor: '#28a745',
+                        confirmButtonText: 'Aceptar',
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                    emit('refresh')
+                    closeModal()
+
+                    return response
+            } else {
+                Swal.fire({
+                    title: 'Elemento no publicado',
+                    text: 'La sección no se ha publicado',
+                    icon: 'info',
+                    confirmButtonColor: '#288ca7ff',
+                    confirmButtonText: 'Aceptar',
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+            }
         } catch (err) {
             console.error(err)
         }
@@ -129,7 +152,9 @@
 
                     </td>
                     <td>
-                        <button class="btn btn-warning me-2" v-if="section.parent || section.status == 'Creado'" @click="publishSection(section.id)">{{ props.PublicButton }}</button>
+                        <button class="btn btn-warning me-2" v-if="section.parent || section.status == 'Creado'" @click="publishSection(section.id)">
+                            {{ props.PublicButton }}  {{ section.parent ? ' Borrador' : '' }}
+                        </button>
                         <button class="btn btn-primary me-2" @click="openModal(section)">{{ props.EditButton }}</button>
                         <button class="btn btn-primary me-2" @click="redirect(section.id)">{{ props.DetailButton }}</button>
                         <button v-if="hasDelete" class="btn btn-danger" @click="requestDelete(section.id)">Eliminar</button>

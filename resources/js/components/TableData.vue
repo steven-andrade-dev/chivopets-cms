@@ -15,9 +15,17 @@
             son: String,
             required: true
         },
+        url: {
+            type: String,
+            default: 'sections'
+        },
         hasDelete: {
             type: Boolean,
             default: false
+        },
+        hasEdit: {
+            type: Boolean,
+            default: true
         },
         EditButton: {
             type: String,
@@ -41,11 +49,11 @@
         emit('delete', id)
     }
 
-    const selectedSection = ref({ parent: {} })
+    const selectedItem = ref({ parent: {} })
     const showModal = ref(false)
 
     const openModal = (section) => {
-        selectedSection.value = {
+        selectedItem.value = {
             ...section,
             parent: section.parent ?? {}
         }
@@ -57,16 +65,16 @@
 
     const closeModal = () => {
         showModal.value = false
-        selectedSection.value = null
+        selectedItem.value = null
         document.body.classList.remove('modal-open')
     }
 
-    const updateSection = async () => {
+    const updateItem = async () => {
         try {
             const response = await httpRequest({
-                url: `/sections/${selectedSection.value.id}`,
+                url: `/${props.url}/${selectedItem.value.id}`,
                 method: 'PUT',
-                data: selectedSection.value
+                data: selectedItem.value
             })
             Swal.fire({
                 title: '¡Actualizado!',
@@ -93,7 +101,7 @@
                 text: `¿Deseas publicar el borrador?`,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
+                confirmButtonColor: 'rgba(80, 210, 93, 1)',
                 cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Sí, publicar',
                 cancelButtonText: 'Cancelar'
@@ -101,7 +109,7 @@
 
             if (result.isConfirmed) {
                     const response = await httpRequest({
-                        url: `/sections/publish/${id}`,
+                        url: `/${props.url}/publish/${id}`,
                         method: 'PUT'
                     })
                     Swal.fire({
@@ -148,14 +156,16 @@
                     <td>{{ index + 1 }}</td>
                     <td>{{ section.name }}</td>
                     <td>
-                        {{ section.status }} {{ section.parent ? '/ Borrador' : '' }}
+                        {{ section.status }} {{ section.parent && section.parent.name ? '/ Borrador' : '' }}
 
                     </td>
                     <td>
-                        <button class="btn btn-warning me-2" v-if="section.parent || section.status == 'Creado'" @click="publishSection(section.id)">
-                            {{ props.PublicButton }}  {{ section.parent ? ' Borrador' : '' }}
+                        <button class="btn btn-warning me-2"
+                            v-if="(section.parent && section.parent.name) || section.status == 'Creado'"
+                            @click="publishSection(section.id)">
+                            {{ props.PublicButton }}  {{ section.parent && section.parent.name ? ' Borrador' : '' }}
                         </button>
-                        <button class="btn btn-primary me-2" @click="openModal(section)">{{ props.EditButton }}</button>
+                        <button class="btn btn-primary me-2" v-if="props.hasEdit" @click="openModal(section)">{{ props.EditButton }}</button>
                         <button class="btn btn-primary me-2" @click="redirect(section.id)">{{ props.DetailButton }}</button>
                         <button v-if="hasDelete" class="btn btn-danger" @click="requestDelete(section.id)">Eliminar</button>
                     </td>
@@ -169,19 +179,19 @@
             </template>
             <template #body>
                 <form>
-                    <InputComponent label="Nombre" v-model="selectedSection.name" placeholder="Ingrese el nombre" />
-                    <div v-if="selectedSection.parent.name">
+                    <InputComponent label="Nombre" v-model="selectedItem.name" placeholder="Ingrese el nombre" />
+                    <div v-if="selectedItem.parent.name">
                         <hr>
                         <h3>Borrador</h3>
                         <hr>
-                        <InputComponent label="Nombre" v-model="selectedSection.parent.name" disabled />
+                        <InputComponent label="Nombre" v-model="selectedItem.parent.name" disabled />
                     </div>
                 </form>
             </template>
             <template #footer>
                 <div class="">
                     <button class="btn  me-2" @click="closeModal">Cancelar</button>
-                    <button class="btn btn-primary btn-glow" @click="updateSection">Guardar</button>
+                    <button class="btn btn-primary btn-glow" v-if="!selectedItem.parent.name" @click="updateItem">Guardar</button>
                 </div>
             </template>
         </ModalComponent>

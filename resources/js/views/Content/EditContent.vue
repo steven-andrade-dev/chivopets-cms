@@ -110,7 +110,7 @@ const guardarContent = async () => {
     }
     try {
         const response = await httpRequest({
-            url: '/contenido/update',
+            url: `/content/${id}`,
             method: 'PUT',
             data: data
         });
@@ -245,9 +245,9 @@ onMounted(() => {
                                         </div>
                                         <div class="form-group">
                                             <label for="name">FAQ</label>
-                                           
+
                                                 <FAQItems :faq="content.faq || []" :id_content="id"  />
-                                            
+
                                         </div>
                                     </div>
 

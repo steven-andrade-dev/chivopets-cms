@@ -47,9 +47,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('sections/publish/{id}', [SectionsController::class, 'Publish']);
 
     // CONTENT
-    Route::get('/content/{id?}', [ContentController::class, 'show']);
+    Route::resource('content', ContentController::class);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
-    Route::put('/contenido/update', [ContentController::class, 'update']);
+    Route::put('content/publish/{id}', [ContentController::class, 'Publish']);
 
     //TIPS
     Route::resource('tips', TipsController::class);

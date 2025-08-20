@@ -11,6 +11,9 @@ import { httpRequest } from '../../../utils/global-request'
 import InputComponent from '@/components/InputComponent.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Swal from 'sweetalert2'
+import DescriptionItem from '@/components/DescriptionItem.vue'
+
+
 
 const route = useRoute()
 const tipsId = Number(route.params.id)
@@ -48,11 +51,12 @@ const persistOrder = async () => {
 }
 
 
-/* ===== Cargar tips (sin ?. ni ??) ===== */
+/* ===== Cargar tip con descripciones ===== */
 const getTips = async () => {
   try {
     const res = await httpRequest({ url: '/tips/' + tipsId, method: 'GET' })
     const payload = res.data && typeof res.data === 'object' && 'data' in res.data ? res.data.data : res.data
+    
     data.value = payload
     const arr = payload && payload.description_tips ? payload.description_tips : []
     descriptionList.value = arr.map(d => ({
@@ -60,12 +64,13 @@ const getTips = async () => {
       description: d.description,
       order: typeof d.order === 'number' ? d.order : 0,
       id_locale: d.id_locale,
-      id_case: d.id_case ? d.id_case : caseId
+      id_tips: tipsId   
     }))
+    
     normalizeOrders()
   } catch (e) {
-    console.error('Error cargando caso:', e)
-    Swal.fire('Error', 'No se pudo cargar el caso', 'error')
+    console.error('Error cargando tip:', e)
+    Swal.fire('Error', 'No se pudo cargar el tip', 'error')
   }
 }
 
@@ -152,6 +157,7 @@ const saveDesc = async () => {
           id_locale: form.value.id_locale
         }
       })
+      /* ===== Trae la vista de regreso con lo que se cambio ===== */
       const created = (res.data && res.data.data) ? res.data.data : res.data
       descriptionList.value.push({
         id: created.id,
@@ -233,67 +239,56 @@ onMounted(getTips)
                 <h3 class="card-title mb-0">Editar Tip</h3>
               </div>
 
-              <div class="card-body">
-                <form @submit.prevent>
-                  <InputComponent label="Título" v-model="data.name" placeholder="Ingrese el título" />
-                  <InputComponent label="Imagen principal" v-model="data.image" placeholder="URL de la imagen" />
-                  <InputComponent label="Imagen del autor" v-model="data.image_author" placeholder="URL de la imagen del autor" />
-                  <InputComponent label="Nombre del autor" v-model="data.author" placeholder="Ingrese el autor" />
-                  <InputComponent label="Área" v-model="data.area" placeholder="Ingrese el área" />
-                  <InputComponent label="Introducción" v-model="data.introduction" placeholder="Escriba la introducción" />
+             <div class="card-body">
+                  <div class="inputs">
+                    <InputComponent label="Título" v-model="data.name" placeholder="Ingrese el título" />
+                    <InputComponent label="Imagen principal" v-model="data.image" placeholder="URL de la imagen" />
+                    <InputComponent label="Imagen del autor" v-model="data.image_author" placeholder="URL de la imagen del autor" />
+                    <InputComponent label="Nombre del autor" v-model="data.author" placeholder="Ingrese el autor" />
+                    <InputComponent label="Área" v-model="data.area" placeholder="Ingrese el área" />
+                    <InputComponent label="Introducción" v-model="data.introduction" placeholder="Escriba la introducción" />
 
-                  <!-- DESCRIPCIONES -->
-                  <div class="form-group mt-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2 sticky-header">
-                      <label class="form-label m-0">Bloques de descripciones</label>
-                      <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-success btn-sm" @click="openDesc(-1)">
-                          Agregar descripción
-                        </button>
+                    <!-- DESCRIPCIONES -->
+                    <div class="form-group mt-3">
+                      <div class="d-flex justify-content-between align-items-center mb-2 sticky-header">
+                        <label class="form-label m-0">Bloques de descripciones</label>
+                        <div class="d-flex gap-2">
+                          <button type="button" class="btn btn-success btn-sm" @click="openDesc(-1)">
+                            Agregar descripción
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="desc-scroll">
+                        <draggable
+                          v-model="descriptionList"
+                          item-key="id"
+                          class="list-group"
+                          @end="onDragEnd"
+                          handle=".drag-handle"
+                          :animation="180"
+                          ghost-class="drag-ghost"
+                        >
+                          <template #item="{ element, index }">
+                            <DescriptionItem
+                              :element="element"
+                              :index="index"
+                              @edit="openDesc"
+                              @delete="deleteDescription"
+                            />
+                          </template>
+                        </draggable>
                       </div>
                     </div>
 
-                    <div class="desc-scroll">
-                      <draggable
-                        v-model="descriptionList"
-                        item-key="id"
-                        class="list-group"
-                        @end="onDragEnd"
-                        handle=".drag-handle"
-                        :animation="180"
-                        ghost-class="drag-ghost"
-                      >
-                        <template #item="{ element, index }">
-                          <div class="list-group-item" @dblclick="openDesc(index)">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                              <span class="drag-handle" title="Arrastrar" aria-label="Arrastrar">☰</span>
-                              <div class="flex-grow-1 ms-2 me-auto text-truncate">
-                                <small class="text-muted">Descripción #{{ index + 1 }}</small>
-                              </div>
-                              <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-outline-primary btn-sm" @click="openDesc(index)">
-                                  Editar
-                                </button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteDescription(element.id)">
-                                  Eliminar
-                                </button>
-                              </div>
-                            </div>
-                            <div class="mt-2 text-muted small preview" v-html="element.description"></div>
-                          </div>
-                        </template>
-                      </draggable>
+                    <hr />
+
+                    <div class="actions mt-3">
+                      <button type="button" class="btn btn-danger" @click="deleteTip">Eliminar</button>
+                      <button type="button" class="btn btn-primary" @click="savetip">Guardar</button>
                     </div>
                   </div>
-
-                  <hr />
-
-                  <div class="actions mt-3">
-                    <button type="button" class="btn btn-danger" @click="deleteTip">Eliminar</button>
-                    <button type="button" class="btn btn-primary" @click="savetip">Guardar</button>
-                  </div>
-                </form>
-              </div>
+                </div>
             </div>
           </div>
 
@@ -337,18 +332,3 @@ onMounted(getTips)
     </div>
   </div>
 </template>
-
-<style scoped>
-.card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
-.card-header { background: #f8f9fa; border-bottom: 1px solid #e5e7eb; padding: 1rem; }
-.actions { display: flex; justify-content: flex-end; gap: 10px; }
-.list-group { border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
-.list-group-item { padding: 10px; background: #f9fafb; margin-bottom: 8px; border-radius: 8px; cursor: default; }
-.drag-handle { cursor: grab; user-select: none; font-weight: 600; opacity: .6; }
-.drag-ghost { opacity: .5; }
-.desc-scroll { max-height: 420px; overflow-y: auto; padding-right: 6px; }
-.preview { max-height: 72px; overflow: hidden; }
-.sticky-header { position: sticky; top: 0; background: #fff; z-index: 1; padding: 6px 0; }
-.modal-editor-scroll { max-height: 55vh; overflow-y: auto; }
-.editor-box { background: #fff; }
-</style>

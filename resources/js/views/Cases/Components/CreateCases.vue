@@ -1,38 +1,25 @@
-<script setup lang="ts">
+<script setup>
 import Navbar from "@/components/Navbar.vue"
 import Sidebar from "@/components/Sidebar.vue"
 import Breadcrumb from "@/components/Breadcrumb.vue"
-
-import { reactive, ref, onMounted } from "vue"
+import { ref, onMounted } from "vue"
 import { httpRequest } from "@/utils/global-request"
 import Swal from "sweetalert2"
-
 import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
-
 import InputComponent from "@/components/InputComponent.vue"
 import SelectComponent from "@/components/SelectComponent.vue"
 
-const breadcrumbItems = [
+const breadcrumbItems = ref([
   { label: "Casos", href: "/cases" },
   { label: "Crear Caso", href: "/create-case" }
-]
+])
 
-const createDefaultForm = () => ({
-  name: "",
-  image: "",
-  image_author: "",
-  author: "",
-  area: "",
-  introduction: "",
-  id_locale: "",            
-  text_button: "",
-  contenidoHtml: ""
-})
-const form = reactive(createDefaultForm())
-const locales = ref<Array<{ id: number | string; name: string }>>([])
+const locales = ref([])
+const selectedCase = ref({})
 
-const loadLocales = async () => {
+// cargar idiomas
+const getLocales = async () => {
   try {
     const res = await httpRequest({ url: "/locales", method: "GET" })
     locales.value = res.data?.data ?? res.data ?? []
@@ -41,15 +28,20 @@ const loadLocales = async () => {
   }
 }
 
+const openCreateCase = () => {
+  selectedCase.value = {}
+}
+
+// guardar caso
 const saveCase = async () => {
   try {
-    const idLocale = form.id_locale == Number(form.id_locale)
-    const { contenidoHtml, ...rest } = form as any
+    const { contenidoHtml, ...rest } = selectedCase.value
     const resCase = await httpRequest({
       url: "/cases",
       method: "POST",
-      data: { ...rest, id_locale: idLocale }
+      data: { ...rest, id_locale: selectedCase.value.id_locale }
     })
+
     const created = resCase?.data?.data ?? resCase?.data
     if (!created?.id) throw new Error("No se recibió el ID del caso creado.")
 
@@ -60,23 +52,37 @@ const saveCase = async () => {
         method: "POST",
         data: {
           id_case: created.id,
-          etiqueta: "Principal",
           description: html,
           order: 0,
-          id_locale: created.id_locale ?? idLocale
+          id_locale: created.id_locale ?? selectedCase.value.id_locale
         }
       })
     }
 
-    await Swal.fire({ icon: "success", title: "Listo", text: "Caso creado correctamente.", timer: 1600, showConfirmButton: false })
-    Object.assign(form, createDefaultForm())
-  } catch (error: any) {
+    await Swal.fire({
+      icon: "success",
+      title: "Listo",
+      text: "Caso creado correctamente.",
+      timer: 1600,
+      showConfirmButton: false
+    })
+
+    // reinicia el form para poder crear otro
+    openCreateCase()
+  } catch (error) {
     console.error("Error al guardar caso:", error)
-    Swal.fire({ icon: "error", title: "Error", text: error?.response?.data?.message ?? error?.message ?? "No se pudo guardar el caso." })
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: error?.response?.data?.message ?? error?.message ?? "No se pudo guardar el caso."
+    })
   }
 }
 
-onMounted(loadLocales)
+onMounted(() => {
+  getLocales()
+  openCreateCase() 
+})
 </script>
 
 <template>
@@ -95,25 +101,22 @@ onMounted(loadLocales)
               </div>
 
               <div class="card-body">
-                <form @submit.prevent="saveCase">
                   <div class="grid gap-3">
-                    <InputComponent label="Título" v-model="form.name" placeholder="Ingrese el título" />
-                    <InputComponent label="Imagen principal (URL)" v-model="form.image" placeholder="https://..." />
-                    <InputComponent label="Imagen del autor (URL)" v-model="form.image_author" placeholder="https://..." />
-                    <InputComponent label="Nombre del autor" v-model="form.author" placeholder="Ingrese el autor" />
-                    <InputComponent label="Área" v-model="form.area" placeholder="Ingrese el área" />
-                    <InputComponent label="Texto Boton" v-model="form.text_button" placeholder="Texto boton" />
+                    <InputComponent label="Título" v-model="selectedCase.name" placeholder="Ingrese el título" />
+                    <InputComponent label="Imagen principal (URL)" v-model="selectedCase.image" placeholder="https://..." />
+                    <InputComponent label="Imagen del autor (URL)" v-model="selectedCase.image_author" placeholder="https://..." />
+                    <InputComponent label="Nombre del autor" v-model="selectedCase.author" placeholder="Ingrese el autor" />
+                    <InputComponent label="Área" v-model="selectedCase.area" placeholder="Ingrese el área" />
+                    <InputComponent label="Texto Boton" v-model="selectedCase.text_button" placeholder="Texto boton" />
 
                     <div class="form-group">
-                      <label class="form-label fw-bold">Introducción</label>
-                      <textarea v-model="form.introduction" class="form-control" rows="3" placeholder="Escriba la introducción" />
+                      <InputComponent label="Introducción" v-model="selectedCase.introduction" rows="3" placeholder="Escriba la introducción" />
                     </div>
 
-                    <!-- Usa tu SelectComponent con { id, name } -->
                     <SelectComponent
                       label="Idioma"
                       icon="bi bi-translate"
-                      v-model="form.id_locale"
+                      v-model="selectedCase.id_locale"
                       :options="locales"
                       placeholder="🌐 Selecciona un idioma"
                       required
@@ -122,13 +125,12 @@ onMounted(loadLocales)
 
                   <div class="form-group mt-3">
                     <label class="form-label fw-bold">Bloque Principal</label>
-                    <QuillEditor theme="snow" contentType="html" v-model:content="form.contenidoHtml"/>
+                    <QuillEditor theme="snow" contentType="html" v-model:content="selectedCase.contenidoHtml"/>
                   </div>
 
                   <div class="mt-3">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary" @click="saveCase">Guardar</button>
                   </div>
-                </form>
               </div>
             </div>
           </div>

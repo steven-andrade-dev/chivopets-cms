@@ -7,6 +7,7 @@ import { httpRequest } from "../../utils/global-request"
 import Swal from "sweetalert2"
 import Breadcrumb from "@/components/Breadcrumb.vue"
 
+
 const breadcrumbItems = ref([
   { label: "Menú", href: "/menu" },
   { label: "Submenús", href: "/edit-submenu" }
@@ -38,6 +39,7 @@ const getSubmenus = async () => {
     console.error("Error cargando submenús:", error)
   }
 }
+
 
 // Cargar idiomas
 const getLocales = async () => {

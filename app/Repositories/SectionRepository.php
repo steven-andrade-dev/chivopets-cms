@@ -10,7 +10,7 @@ class SectionRepository implements SectionRepositoryInterface
 {
     public function get_all_section(Request $request, $page)
     {
-        return Section::with('parent')->whereIn('status', ['Creado', 'Publicado'])->where('id_locale', $request->idLanguage)->paginate($page);
+        return Section::with('parent')->whereNotIn('status', ['Borrador'])->where('id_locale', $request->idLanguage)->paginate($page);
     }
 
     public function get_section_by_id($id)
@@ -20,12 +20,9 @@ class SectionRepository implements SectionRepositoryInterface
 
     public function update_section($id, array $data)
     {
-        // $section = Section::findOrFail($id);
-        // $section->update($data);
-
         $section = Section::findOrFail($id);
 
-        if ($section->status == 'Creado') {
+        if ($section->status == 'Creado' || $section->status == 'Archivado' || $section->section_id_parent !== null) {
             $section->update($data);
         } else {
 
@@ -41,7 +38,7 @@ class SectionRepository implements SectionRepositoryInterface
         return $section;
     }
 
-    public function update_section_publish($id)
+    public function update_section_status(String $status,$id)
     {
         $section = Section::findOrFail($id);
 
@@ -50,7 +47,7 @@ class SectionRepository implements SectionRepositoryInterface
             $section->parent->delete();
         }
 
-        $section->status = 'Publicado';
+        $section->status = $status;
         $section->save();
 
 

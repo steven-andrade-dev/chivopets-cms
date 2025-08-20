@@ -117,7 +117,7 @@ const guardarContent = async () => {
         if (response.success) {
           Swal.fire({
             title: 'Contenido actualizado',
-            text: 'El contenido ha sido actualizado correctamente',
+            text: response.msg,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           })
@@ -138,7 +138,7 @@ const regresar = () => {
     router.go(-1);
 }
 
-const descartarCambios = async (id) => {
+const descartarCambios = async (id: int) => {
     try {
          const result = await Swal.fire({
             title: '¿Estás seguro de descartar este borrador?',
@@ -158,7 +158,7 @@ const descartarCambios = async (id) => {
             });
             Swal.fire({
                 title: 'Borrador Descartado',
-                text: 'El contenido de borrador ha sido descartado correctamente',
+                text: response.msg,
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             })

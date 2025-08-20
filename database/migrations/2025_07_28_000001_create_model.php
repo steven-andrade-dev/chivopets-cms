@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
-            $table->enum('status', ['Borrador', 'Creado', 'Publicado'])->default('Creado'); // 1- creado, 2- borrador, 3- publicado
+            $table->enum('status', ['Borrador', 'Creado', 'Publicado', 'Archivado'])->default('Creado');
             $table->integer('section_id_parent')->nullable();
             $table->integer('updated_by_id')->nullable();
             $table->unsignedBigInteger('id_locale');
@@ -46,7 +46,7 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
-            $table->enum('status', ['Borrador', 'Creado', 'Publicado'])->default('Creado'); // 1- creado, 2- borrador, 3- publicado
+            $table->enum('status', ['Borrador', 'Creado', 'Publicado', 'Archivado'])->default('Creado');
             $table->integer('content_id_parent')->nullable();
             $table->unsignedBigInteger('id_locale');
 

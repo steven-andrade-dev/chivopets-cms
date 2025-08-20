@@ -44,12 +44,12 @@ Route::middleware('auth:sanctum')->group(function () {
    //SECTIONS
     // Route::get('/sections', [SectionsController::class, 'show']);
     Route::resource('sections', SectionsController::class);
-    Route::put('sections/publish/{id}', [SectionsController::class, 'Publish']);
+    Route::put('sections/change/{status}/status/{id}', [SectionsController::class, 'changeStatus']);
 
     // CONTENT
     Route::resource('content', ContentController::class);
     Route::get('/content-by-id/{id}', [ContentController::class, 'showById']);
-    Route::put('content/publish/{id}', [ContentController::class, 'Publish']);
+    Route::put('content/change/{status}/status/{id}', [ContentController::class, 'changeStatus']);
     Route::get('content/unpublish/{id}', [ContentController::class, 'unPublish']);
 
     //TIPS

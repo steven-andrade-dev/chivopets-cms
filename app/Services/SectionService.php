@@ -18,8 +18,8 @@ class SectionService
         return $this->repo->update_section($id, $data);
     }
 
-    public function updateSectionPublish($id)
+    public function updateSectionStatus(String $status,$id)
     {
-        return $this->repo->update_section_publish($id);
+        return $this->repo->update_section_status($status,$id);
     }
 }

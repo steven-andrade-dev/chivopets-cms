@@ -110,7 +110,7 @@ onMounted(() => {
           </div>
 
           <h1>Preguntas</h1>
-          <TableData :data="questions" :hasDelete="true" @delete="deleteQuestion" />
+          <TableData :data="questions" :hasDelete="true" :hasEdit="false" DetailButton="Editar" :hasStatus="false" @delete="deleteQuestion" />
 
 
         </div>

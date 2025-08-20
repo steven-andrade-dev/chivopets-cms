@@ -11,6 +11,7 @@ import { httpRequest } from '../../../utils/global-request'
 import InputComponent from '@/components/InputComponent.vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import Swal from 'sweetalert2'
+import DescriptionItem from '@/components/DescriptionItem.vue'
 
 const route = useRoute()
 const caseId = Number(route.params.id)
@@ -33,7 +34,6 @@ const normalizeOrders = () => {
   }
 }
 
-
 const persistOrder = async () => {
   try {
     await httpRequest({
@@ -47,8 +47,6 @@ const persistOrder = async () => {
   }
 }
 
-
-/* ===== Cargar caso (sin ?. ni ??) ===== */
 const getCase = async () => {
   try {
     const res = await httpRequest({ url: '/cases/' + caseId, method: 'GET' })
@@ -111,7 +109,6 @@ const deleteCase = async () => {
   }
 }
 
-/* ===== Modal descripción (sin defaults) ===== */
 const openDesc = (index = -1) => {
   editingIndex.value = index
   if (index === -1) {
@@ -132,13 +129,11 @@ const openDesc = (index = -1) => {
   document.body.classList.add('modal-open')
 }
 
-
 const closeDesc = () => {
   showDescModal.value = false
   document.body.classList.remove('modal-open')
 }
 
-/* ===== Crear/Actualizar descripción (pocas vars) ===== */
 const saveDesc = async () => {
   try {
     if (editingIndex.value === -1) {
@@ -152,6 +147,9 @@ const saveDesc = async () => {
           id_locale: form.value.id_locale
         }
       })
+
+            /* ===== Trae la vista de regreso con lo que se cambio ===== */
+
       const created = (res.data && res.data.data) ? res.data.data : res.data
       descriptionList.value.push({
         id: created.id,
@@ -162,7 +160,6 @@ const saveDesc = async () => {
       })
       Swal.fire({ icon: 'success', title: 'Agregado', text: 'Descripción creada', timer: 1200, showConfirmButton: false })
     } else {
-      // EDITAR
       const target = descriptionList.value[editingIndex.value]
       await httpRequest({
         url: '/description-cases/' + target.id,
@@ -183,7 +180,6 @@ const saveDesc = async () => {
   }
 }
 
-/* ===== Eliminar descripción ===== */
 const deleteDescription = async (id) => {
   const r = await Swal.fire({
     title: '¿Eliminar esta descripción?',
@@ -207,7 +203,6 @@ const deleteDescription = async (id) => {
   }
 }
 
-/* ===== Drag & drop ===== */
 const onDragEnd = async () => {
   for (let i = 0; i < descriptionList.value.length; i++) descriptionList.value[i].order = i
   await persistOrder()
@@ -233,75 +228,61 @@ onMounted(getCase)
               </div>
 
               <div class="card-body">
-                <form @submit.prevent>
-                  <InputComponent label="Título" v-model="data.name" placeholder="Ingrese el título" />
-                  <InputComponent label="Imagen principal" v-model="data.image" placeholder="URL de la imagen" />
-                  <InputComponent label="Imagen del autor" v-model="data.image_author" placeholder="URL de la imagen del autor" />
-                  <InputComponent label="Nombre del autor" v-model="data.author" placeholder="Ingrese el autor" />
-                  <InputComponent label="Área" v-model="data.area" placeholder="Ingrese el área" />
-                  <InputComponent label="Introducción" v-model="data.introduction" placeholder="Escriba la introducción" />
+                <InputComponent label="Título" v-model="data.name" placeholder="Ingrese el título" />
+                <InputComponent label="Imagen principal" v-model="data.image" placeholder="URL de la imagen" />
+                <InputComponent label="Imagen del autor" v-model="data.image_author" placeholder="URL de la imagen del autor" />
+                <InputComponent label="Nombre del autor" v-model="data.author" placeholder="Ingrese el autor" />
+                <InputComponent label="Área" v-model="data.area" placeholder="Ingrese el área" />
+                <InputComponent label="Introducción" v-model="data.introduction" placeholder="Escriba la introducción" />
 
-                  <!-- DESCRIPCIONES -->
-                  <div class="form-group mt-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2 sticky-header">
-                      <label class="form-label m-0">Bloques de descripciones</label>
-                      <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-success btn-sm" @click="openDesc(-1)">
-                          Agregar descripción
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="desc-scroll">
-                      <draggable
-                        v-model="descriptionList"
-                        item-key="id"
-                        class="list-group"
-                        @end="onDragEnd"
-                        handle=".drag-handle"
-                        :animation="180"
-                        ghost-class="drag-ghost"
-                      >
-                        <template #item="{ element, index }">
-                          <div class="list-group-item" @dblclick="openDesc(index)">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                              <span class="drag-handle" title="Arrastrar" aria-label="Arrastrar">☰</span>
-                              <div class="flex-grow-1 ms-2 me-auto text-truncate">
-                                <small class="text-muted">Descripción #{{ index + 1 }}</small>
-                              </div>
-                              <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-outline-primary btn-sm" @click="openDesc(index)">
-                                  Editar
-                                </button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteDescription(element.id)">
-                                  Eliminar
-                                </button>
-                              </div>
-                            </div>
-                            <div class="mt-2 text-muted small preview" v-html="element.description"></div>
-                          </div>
-                        </template>
-                      </draggable>
+                <!-- DESCRIPCIONES -->
+                <div class="form-group mt-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2 sticky-header">
+                    <label class="form-label m-0">Bloques de descripciones</label>
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-success btn-sm" @click="openDesc(-1)">
+                        Agregar descripción
+                      </button>
                     </div>
                   </div>
 
-                  <hr />
-
-                  <div class="actions mt-3">
-                    <button type="button" class="btn btn-danger" @click="deleteCase">Eliminar</button>
-                    <button type="button" class="btn btn-primary" @click="saveCase">Guardar</button>
+                  <div class="desc-scroll">
+                  <draggable
+                      v-model="descriptionList"
+                      item-key="id"
+                      class="list-group"
+                      @end="onDragEnd"
+                      handle=".drag-handle"
+                      :animation="180"
+                      ghost-class="drag-ghost"
+                    >
+                      <template #item="{ element, index }">
+                        <DescriptionItem
+                          :element="element"
+                          :index="index"
+                          @edit="openDesc"
+                          @delete="deleteDescription"
+                        />
+                      </template>
+                    </draggable>
                   </div>
-                </form>
+                </div>
+
+                <hr />
+
+                <div class="actions mt-3">
+                  <button type="button" class="btn btn-danger" @click="deleteCase">Eliminar</button>
+                  <button type="button" class="btn btn-primary" @click="saveCase">Guardar</button>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- MODAL -->
           <ModalComponent :show="showDescModal" @close="closeDesc">
-           <template #title>
-            {{ editingIndex !== -1 ? 'Editar descripción' : 'Agregar descripción' }}
-          </template>
-
+            <template #title>
+              {{ editingIndex !== -1 ? 'Editar descripción' : 'Agregar descripción' }}
+            </template>
 
             <template #body>
               <div class="mb-3">
@@ -337,17 +318,3 @@ onMounted(getCase)
   </div>
 </template>
 
-<style scoped>
-.card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }
-.card-header { background: #f8f9fa; border-bottom: 1px solid #e5e7eb; padding: 1rem; }
-.actions { display: flex; justify-content: flex-end; gap: 10px; }
-.list-group { border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
-.list-group-item { padding: 10px; background: #f9fafb; margin-bottom: 8px; border-radius: 8px; cursor: default; }
-.drag-handle { cursor: grab; user-select: none; font-weight: 600; opacity: .6; }
-.drag-ghost { opacity: .5; }
-.desc-scroll { max-height: 420px; overflow-y: auto; padding-right: 6px; }
-.preview { max-height: 72px; overflow: hidden; }
-.sticky-header { position: sticky; top: 0; background: #fff; z-index: 1; padding: 6px 0; }
-.modal-editor-scroll { max-height: 55vh; overflow-y: auto; }
-.editor-box { background: #fff; }
-</style>

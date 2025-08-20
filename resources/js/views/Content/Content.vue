@@ -44,7 +44,7 @@ onMounted(() => {
                 <div class="container-fluid">
                     <Breadcrumb :items="breadcrumbItems" />
                     <h1>Contenido</h1>
-                    <TableData :data="content" />
+                    <TableData :data="content" DetailButton="Editar" :hasEdit="false" @refresh="getContent" url="content" />
                 </div>
 
             </div>

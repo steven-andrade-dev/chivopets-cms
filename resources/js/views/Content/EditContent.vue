@@ -110,7 +110,7 @@ const guardarContent = async () => {
     }
     try {
         const response = await httpRequest({
-            url: '/contenido/update',
+            url: `/content/${id}`,
             method: 'PUT',
             data: data
         });
@@ -137,6 +137,37 @@ const guardarContent = async () => {
 const regresar = () => {
     router.go(-1);
 }
+
+const descartarCambios = async (id) => {
+    try {
+         const result = await Swal.fire({
+            title: '¿Estás seguro de descartar este borrador?',
+            text: `¿Deseas publicar el borrador?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'rgba(80, 210, 93, 1)',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, descartar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            const response = await httpRequest({
+                url: `/content/unpublish/${id}`,
+                method: "GET",
+            });
+            Swal.fire({
+                title: 'Borrador Descartado',
+                text: 'El contenido de borrador ha sido descartado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            })
+            regresar();
+        }
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 
 
@@ -245,9 +276,9 @@ onMounted(() => {
                                         </div>
                                         <div class="form-group">
                                             <label for="name">FAQ</label>
-                                           
+
                                                 <FAQItems :faq="content.faq || []" :id_content="id"  />
-                                            
+
                                         </div>
                                     </div>
 
@@ -262,9 +293,6 @@ onMounted(() => {
                                             </h3>
                                         </div>
 
-
-
-
                                         <div class="form-group">
                                             <label for="image">URL de Imagen</label>
                                             <input type="url" id="image" placeholder="https://ejemplo.com/imagen.jpg"
@@ -278,7 +306,6 @@ onMounted(() => {
                                             </select>
                                         </div>
 
-
                                     </div>
 
                                     <div class="actions">
@@ -287,6 +314,10 @@ onMounted(() => {
                                         </button>
                                         <button type="button" class="btn btn-success" @click="guardarContent">
                                             Guardar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" v-if="content.content_id_parent !== null"
+                                            @click="descartarCambios(content.id)">
+                                            Descartar Cambios
                                         </button>
                                     </div>
                                 </form>

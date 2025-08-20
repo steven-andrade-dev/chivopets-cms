@@ -12,4 +12,14 @@ class SectionService
     {
         return $this->repo->get_all_section($request, $page);
     }
+
+    public function updateSection($id, array $data)
+    {
+        return $this->repo->update_section($id, $data);
+    }
+
+    public function updateSectionPublish($id)
+    {
+        return $this->repo->update_section_publish($id);
+    }
 }

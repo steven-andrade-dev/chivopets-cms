@@ -73,8 +73,8 @@ const getListFAQ = async () => {
 }
 
 const deleteItem = async (id) => {
-    
-    
+
+
     // Confirmación única
     const result = await Swal.fire({
         title: '¿Estás seguro?',
@@ -99,7 +99,7 @@ const deleteItem = async (id) => {
             if (index !== -1) {
                 localItems.value.splice(index, 1);
             }
-            
+
             // Mensaje de éxito
             Swal.fire({
                 title: '¡Eliminado!',
@@ -145,17 +145,17 @@ onMounted(() => {
         <div v-if="localItems.length == 0">
             <p>Esta seccion no cuenta con un carrusel</p>
         </div>
-        
+
         <div class="accordion" id="faqAccordion">
             <div v-for="(faq, index) in localItems" :key="faq.id || randomId" class="accordion-item">
                 <h2 class="accordion-header" :id="`heading-${randomId}`">
-                    <button 
-                        class="accordion-button" 
+                    <button
+                        class="accordion-button"
                         :class="{ collapsed: true }"
-                        type="button" 
-                        data-bs-toggle="collapse" 
-                        :data-bs-target="`#collapse-${index+randomId}`" 
-                        :aria-expanded="false" 
+                        type="button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="`#collapse-${index+randomId}`"
+                        :aria-expanded="false"
                         :aria-controls="`collapse-${randomId}`">
                         <div class="d-flex justify-content-between align-items-center w-100 me-3">
                             <span class="card-number">Entrada {{ index + 1 }}</span>
@@ -163,13 +163,13 @@ onMounted(() => {
                         </div>
                     </button>
                 </h2>
-                <div 
-                    :id="`collapse-${index+randomId}`" 
-                    class="accordion-collapse collapse" 
+                <div
+                    :id="`collapse-${index+randomId}`"
+                    class="accordion-collapse collapse"
                     :class="{ show: false }"
-                    :aria-labelledby="`heading-${randomId}`" 
+                    :aria-labelledby="`heading-${randomId}`"
                     data-bs-parent="#faqAccordion">
-                    
+
                     <div class="accordion-body">
                         <!-- Botón de eliminar -->
                         <div class="d-flex justify-content-end mb-3">
@@ -195,7 +195,7 @@ onMounted(() => {
                             </div>
                         </div>
 
-                       
+
                     </div>
                 </div>
             </div>
@@ -215,7 +215,7 @@ onMounted(() => {
       Agregar FAQ
     </template>
     <template #body>
-       
+
             <SelectComponent
                 label="FAQ"
                 icon="bi bi-translate"
@@ -224,7 +224,7 @@ onMounted(() => {
                 placeholder="Selecciona una pregunta"
                 required
             />
-        
+
     </template>
     <template #footer>
         <div class="">

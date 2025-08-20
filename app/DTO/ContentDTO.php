@@ -12,10 +12,13 @@ class ContentDTO
         public readonly ?string  $image,
         public readonly ?string $subtitle,
         public readonly ?string $url,
+        public readonly ?string $status,
         public readonly ?int $id_section,
+        public readonly ?int $content_id_parent,
         public readonly ?int $type_carrusel,
         /** @var CarruselItemDTO[] */
         public readonly array $carruselItems = [],
+        public readonly mixed $parent,
         public readonly ?int $id_locale,
         /** @var ContentFAQDTO[] */
         public readonly array $faq = [],
@@ -29,13 +32,16 @@ class ContentDTO
             name: $content->title,
             bloque_principal: $content->bloque_principal,
             bloque_secundario: $content->bloque_secundario,
+            content_id_parent: $content->content_id_parent,
             image: $content->image,
             subtitle: $content->subtitle,
             url: $content->url,
+            status: $content->status,
             id_section: $content->id_section,
             type_carrusel: $content->type_carrusel ?? null,
             carruselItems: $content->contentCarousel->map(fn($item) => CarruselItemDTO::fromModel($item->carruselItem))->all(),
             faq: $content->contentFAQs->map(fn($item) => ContentFAQDTO::fromModel($item->faq, $item->id))->all(),
+            parent: $content->parent ? self::fromModel($content->parent) : (object)[],
             id_locale: $content->id_locale,
         );
     }

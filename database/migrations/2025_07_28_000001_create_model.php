@@ -82,6 +82,8 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
+            $table->enum('status', ['Borrador', 'Creado', 'Publicado', 'Archivado'])->default('Creado');
+            $table->integer('faq_id_parent')->nullable();
             $table->unsignedBigInteger('id_locale');
 
             $table->foreign('id_locale')->references('id')->on('locals')->onDelete('cascade');

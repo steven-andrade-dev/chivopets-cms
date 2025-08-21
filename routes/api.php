@@ -94,6 +94,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //FAQ
     Route::resource('faq', FAQController::class);
+    Route::put('faq/change/{status}/status/{id}', [FAQController::class, 'changeStatus']);
     //CONTENT_FAQ
     Route::resource('content_faq', Content_FaqController::class);
     //CONTENT_CAROUSEL

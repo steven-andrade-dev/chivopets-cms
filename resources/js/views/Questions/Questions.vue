@@ -1,7 +1,7 @@
 <script setup>
 import Sidebar from '../../components/Sidebar.vue'
 import Navbar from '../../components/Navbar.vue'
-import TableData from '../../components/TableData.vue'
+import TableData from '../../components/FAQ/TableData.vue'
 import { ref, onMounted } from 'vue'
 import { httpRequest } from '../../utils/global-request'
 import { QuillEditor } from "@vueup/vue-quill";
@@ -18,13 +18,18 @@ const showModal = ref(false)
 const question = ref("")
 const answer = ref("")
 const locale = ref("")
-const getQuestions = async () => {
+
+const pagination = ref({});
+
+const getQuestions = async (page = 1) => {
   try {
+    const idLanguage = localStorage.getItem('idioma');
     const response = await httpRequest({
-      url: `/faq`,
+      url: `/faq?idLanguage=${idLanguage}&page=${page}`,
       method: 'GET',
     })
-    questions.value = response.data
+    questions.value = response.data.data
+    pagination.value = response.data;
     questions.value.son = 'edit-question'
   } catch (err) {
     console.error(err)
@@ -103,16 +108,23 @@ onMounted(() => {
         <div class="container-fluid">
             <Breadcrumb :items="breadcrumbItems" />
 
-          <div class="mb-3">
-            <button class="btn btn-success" @click="showModal = true">
-              <i class="bi bi-plus"></i> Agregar
-            </button>
-          </div>
+            <div class="mb-3">
+                <button class="btn btn-success" @click="showModal = true">
+                <i class="bi bi-plus"></i> Agregar
+                </button>
+            </div>
 
-          <h1>Preguntas</h1>
-          <TableData :data="questions" :hasDelete="true" :hasEdit="false" DetailButton="Editar" :hasStatus="false" @delete="deleteQuestion" />
+            <h1>Preguntas</h1>
+            <TableData :data="questions" @refresh="getQuestions" :hasDelete="true" :hasEdit="false" DetailButton="Editar" @delete="deleteQuestion" />
 
-
+            <div class="row">
+                <div class="col-md-12">
+                    <PaginationComponent
+                        :pagination="pagination"
+                        @page-change="getQuestions"
+                    />
+                </div>
+            </div>
         </div>
 
       </div>

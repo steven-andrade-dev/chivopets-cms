@@ -17,7 +17,7 @@
         },
         url: {
             type: String,
-            default: 'sections'
+            default: 'faq'
         },
         hasDelete: {
             type: Boolean,
@@ -54,48 +54,6 @@
         emit('delete', id)
     }
 
-    const selectedItem = ref({ parent: {} })
-    const showModal = ref(false)
-
-    const openModal = (section) => {
-
-        selectedItem.value = section.parent?.id
-        ? { ...section.parent, parent: {} }
-        : { ...section, parent: section.parent ?? {} }
-
-        showModal.value = true
-        document.body.classList.add('modal-open')
-    }
-
-    const closeModal = () => {
-        showModal.value = false
-        selectedItem.value = null
-        document.body.classList.remove('modal-open')
-    }
-
-    const updateItem = async () => {
-        try {
-            const response = await httpRequest({
-                url: `/${props.url}/${selectedItem.value.id}`,
-                method: 'PUT',
-                data: selectedItem.value
-            })
-            Swal.fire({
-                title: '¡Actualizado!',
-                text: response.msg,
-                icon: 'success',
-                confirmButtonColor: '#28a745',
-                confirmButtonText: 'Aceptar',
-                timer: 2000,
-                timerProgressBar: true
-            });
-            emit('refresh')
-            closeModal()
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
     const publishSection = async (status,id) => {
         var estado = status == 'Publicado' ? 'publicar' : 'archivar'
         try {
@@ -125,7 +83,6 @@
                         timerProgressBar: true
                     });
                     emit('refresh')
-                    closeModal()
             } else {
                 Swal.fire({
                     title: `Elemento no ${status}`,
@@ -147,7 +104,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
+                    <th scope="col">Pregunta</th>
                     <th scope="col" v-if="hasStatus">Estado</th>
                     <th scope="col">Acciones</th>
                 </tr>
@@ -155,7 +112,7 @@
             <tbody>
                 <tr v-for="(section, index) in data" :key="section.id">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ section.name }}</td>
+                    <td>{{ section.question }}</td>
                     <td v-if="hasStatus">
                         {{ section.status }} {{ section.parent?.name ? '/ Borrador' : '' }}
                     </td>
@@ -171,9 +128,6 @@
                             @click="publishSection('Archivado',section.id)">
                             Archivar  {{ section.parent?.name ? ' Borrador' : '' }}
                         </button>
-                        <button class="btn btn-primary me-2" v-if="props.hasEdit" @click="openModal(section)">
-                            {{ props.EditButton }}  {{ section.parent?.name ? ' Borrador' : '' }}
-                        </button>
                         <button class="btn btn-primary me-2" @click="redirect(section)">
                             {{ props.DetailButton }}
                               {{ section.parent?.name ? ' Borrador' : '' }}
@@ -183,21 +137,4 @@
                 </tr>
             </tbody>
         </table>
-
-        <ModalComponent :show="showModal" @close="showModal = false">
-            <template #title>
-                Editar Sección
-            </template>
-            <template #body>
-                <form>
-                    <InputComponent label="Nombre" v-model="selectedItem.name" placeholder="Ingrese el nombre" />
-                </form>
-            </template>
-            <template #footer>
-                <div class="">
-                    <button class="btn  me-2" @click="closeModal">Cancelar</button>
-                    <button class="btn btn-primary btn-glow" v-if="!selectedItem.parent?.name" @click="updateItem">Guardar</button>
-                </div>
-            </template>
-        </ModalComponent>
 </template>

@@ -10,6 +10,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import CarruselItem from "../../components/Content/CarruselItem.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FAQItems from "../../components/Content/FAQItems.vue";
+import prew from "@/components/preview/prev.vue";
 import Swal from 'sweetalert2';
 
 const contenidoHtml = ref('');
@@ -321,6 +322,12 @@ onMounted(() => {
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                            <hr>
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <prew :content="content"></prew>
+                                </div>
                             </div>
                         </div>
                     </div>

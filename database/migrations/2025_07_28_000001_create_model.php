@@ -46,6 +46,7 @@ return new class extends Migration
             $table->datetime('published_at')->nullable();
             $table->integer('created_by_id')->nullable();
             $table->integer('updated_by_id')->nullable();
+            $table->integer('type_preview')->default(1);
             $table->enum('status', ['Borrador', 'Creado', 'Publicado', 'Archivado'])->default('Creado');
             $table->integer('content_id_parent')->nullable();
             $table->unsignedBigInteger('id_locale');

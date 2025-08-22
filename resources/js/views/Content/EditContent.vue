@@ -32,6 +32,9 @@ SizeStyle.whitelist = [
     "16px",
     "18px",
     "24px",
+    "28px",
+    "30px",
+    "31px",
     "32px",
     "48px",
     "53px",
@@ -229,6 +232,15 @@ onMounted(() => {
                                                     <option value="24px">
                                                         24 px
                                                     </option>
+                                                    <option value="28px">
+                                                        28 px
+                                                    </option>
+                                                    <option value="30px">
+                                                        30 px
+                                                    </option>
+                                                    <option value="31px">
+                                                        31 px
+                                                    </option>
                                                     <option value="32px">
                                                         32 px
                                                     </option>
@@ -324,10 +336,11 @@ onMounted(() => {
                                 </form>
                             </div>
                             <hr>
-                            <div class="row mt-5">
-                                <div class="col-md-12">
-                                    <prew :content="content"></prew>
-                                </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-12 mb-5 shadow-lg p-2">
+                                <h2>Vista previa</h2>
+                                <prew :type="content.type_preview" :content="content"></prew>
                             </div>
                         </div>
                     </div>

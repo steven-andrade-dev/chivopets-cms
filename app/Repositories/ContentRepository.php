@@ -49,7 +49,7 @@ class ContentRepository implements ContentRepositoryInterface
         return $content;
     }
 
-    public function update_content_publish($id)
+    public function update_content_status($status,$id)
     {
         $content = Content::findOrFail($id);
 
@@ -59,7 +59,7 @@ class ContentRepository implements ContentRepositoryInterface
         }
 
         $content->content_id_parent = null;
-        $content->status = 'Publicado';
+        $content->status = $status;
         $content->save();
 
         return $content;

@@ -10,9 +10,9 @@ use App\Helpers\ResponseMessages;
 class FAQController extends BaseController
 {
     public function __construct(private FAQService $faqService) {}
-    public function index()
+    public function index(Request $request)
     {
-        $faq = $this->faqService->get_all_faq();
+        $faq = $this->faqService->get_all_faq($request, 10);
         return $this->sendResponse($faq, ResponseMessages::successList(), 200);
     }
 
@@ -67,5 +67,11 @@ class FAQController extends BaseController
     {
         $this->faqService->delete_faq($id);
         return $this->sendResponse([], ResponseMessages::successDelete(), 200);
+    }
+
+    public function changeStatus($status,$id)
+    {
+        $content = $this->faqService->updateFAQStatus($status, $id);
+        return $this->sendResponse($content, ResponseMessages::successChangeStatus($status), 200);
     }
 }

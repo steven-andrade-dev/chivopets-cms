@@ -10,6 +10,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import CarruselItem from "../../components/Content/CarruselItem.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FAQItems from "../../components/Content/FAQItems.vue";
+import prew from "@/components/preview/prev.vue";
 import Swal from 'sweetalert2';
 
 const contenidoHtml = ref('');
@@ -31,6 +32,9 @@ SizeStyle.whitelist = [
     "16px",
     "18px",
     "24px",
+    "28px",
+    "30px",
+    "31px",
     "32px",
     "48px",
     "53px",
@@ -117,7 +121,7 @@ const guardarContent = async () => {
         if (response.success) {
           Swal.fire({
             title: 'Contenido actualizado',
-            text: 'El contenido ha sido actualizado correctamente',
+            text: response.msg,
             icon: 'success',
             confirmButtonText: 'Aceptar'
           })
@@ -138,7 +142,7 @@ const regresar = () => {
     router.go(-1);
 }
 
-const descartarCambios = async (id) => {
+const descartarCambios = async (id: int) => {
     try {
          const result = await Swal.fire({
             title: '¿Estás seguro de descartar este borrador?',
@@ -158,7 +162,7 @@ const descartarCambios = async (id) => {
             });
             Swal.fire({
                 title: 'Borrador Descartado',
-                text: 'El contenido de borrador ha sido descartado correctamente',
+                text: response.msg,
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             })
@@ -227,6 +231,15 @@ onMounted(() => {
                                                     </option>
                                                     <option value="24px">
                                                         24 px
+                                                    </option>
+                                                    <option value="28px">
+                                                        28 px
+                                                    </option>
+                                                    <option value="30px">
+                                                        30 px
+                                                    </option>
+                                                    <option value="31px">
+                                                        31 px
                                                     </option>
                                                     <option value="32px">
                                                         32 px
@@ -321,6 +334,13 @@ onMounted(() => {
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-12 mb-5 shadow-lg p-2">
+                                <h2>Vista previa</h2>
+                                <prew :type="content.type_preview" :content="content"></prew>
                             </div>
                         </div>
                     </div>

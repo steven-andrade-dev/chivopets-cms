@@ -24,10 +24,10 @@ class SectionsController extends BaseController
         return $this->sendResponse($locale, ResponseMessages::successUpdate(), 200);
     }
 
-    public function Publish($id)
+    public function changeStatus($status,$id)
     {
-        $locale = $this->sectionService->updateSectionPublish($id);
-        return $this->sendResponse($locale, ResponseMessages::successUpdate(), 200);
+        $locale = $this->sectionService->updateSectionStatus($status,$id);
+        return $this->sendResponse($locale, ResponseMessages::successChangeStatus($status), 200);
     }
 
 }

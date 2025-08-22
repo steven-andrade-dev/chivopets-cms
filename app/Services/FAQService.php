@@ -1,16 +1,16 @@
 <?php
- 
+
 namespace App\Services;
 use App\Interfaces\FAQRepositoryInterface;
-
+use Illuminate\Http\Request;
 
 class FAQService
 {
     public function __construct(private FAQRepositoryInterface $repo) {}
 
-    public function get_all_faq()
+    public function get_all_faq(Request $request, $page)
     {
-        return $this->repo->get_all_faq();
+        return $this->repo->get_all_faq($request, $page);
     }
 
     public function get_faq_by_id($id)
@@ -31,5 +31,10 @@ class FAQService
     public function delete_faq($id)
     {
         return $this->repo->delete_faq($id);
+    }
+
+    public function updateFAQStatus($status,$id)
+    {
+        return $this->repo->update_faq_status($status,$id);
     }
 }

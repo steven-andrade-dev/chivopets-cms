@@ -22,9 +22,9 @@ class ContentService
         return $this->repo->update_content($id, $data);
     }
 
-    public function updateContentPublish($id)
+    public function updateContentStatus($status,$id)
     {
-        return $this->repo->update_content_publish($id);
+        return $this->repo->update_content_status($status,$id);
     }
 
     public function contentUnPublish($id)

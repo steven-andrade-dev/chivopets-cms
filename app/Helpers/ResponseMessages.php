@@ -58,4 +58,14 @@ class ResponseMessages
     {
         return 'Sesión cerrada exitosamente';
     }
+
+    public static function successChangeStatus($status): string
+    {
+        return "Registro $status exitosamente";
+    }
+
+    public static function successUnPublish(): string
+    {
+        return 'Registro descartado exitosamente';
+    }
 }

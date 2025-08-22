@@ -15,6 +15,7 @@ class ContentDTO
         public readonly ?string $status,
         public readonly ?int $id_section,
         public readonly ?int $content_id_parent,
+        public readonly ?int $type_preview,
         public readonly ?int $type_carrusel,
         /** @var CarruselItemDTO[] */
         public readonly array $carruselItems = [],
@@ -38,6 +39,7 @@ class ContentDTO
             url: $content->url,
             status: $content->status,
             id_section: $content->id_section,
+            type_preview: $content->type_preview,
             type_carrusel: $content->type_carrusel ?? null,
             carruselItems: $content->contentCarousel->map(fn($item) => CarruselItemDTO::fromModel($item->carruselItem))->all(),
             faq: $content->contentFAQs->map(fn($item) => ContentFAQDTO::fromModel($item->faq, $item->id))->all(),

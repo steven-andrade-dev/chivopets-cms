@@ -143,7 +143,7 @@ onMounted(() => {
 <template>
     <div>
         <div v-if="localItems.length == 0">
-            <p>Esta seccion no cuenta con un carrusel</p>
+            <p>Esta seccion no cuenta con preguntas</p>
         </div>
 
         <div class="accordion" id="faqAccordion">

@@ -11,8 +11,8 @@
 
 <template>
   <section class="position-relative overflow-hidden">
-    <div class="container py-5">
-        <div class="row align-items-center m-4">
+    <div class="container py-2">
+        <div class="row align-items-center m-2">
 
             <!-- Texto -->
             <div class="col-md-12 contenido-externo">

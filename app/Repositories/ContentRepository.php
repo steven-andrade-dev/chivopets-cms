@@ -12,15 +12,15 @@ class ContentRepository implements ContentRepositoryInterface
 {
     public function get_all_content($id)
     {
-        if($id){
-            return Content::with('parent')->where('id_section', $id)->get()->map(fn($content) => ContentDTO::fromModel($content));
-        }
-        return Content::all()->map(fn($content) => ContentDTO::fromModel($content));
+        // if($id){
+            return Content::with('parent')->where('id_section', $id)->paginate(10);
+        // }
+        // return Content::all()->map(fn($content) => ContentDTO::fromModel($content));
     }
 
     public function get_content_by_id($id)
     {
-        $content = Content::with(['contentCarousel.carruselItem', 'contentFAQs.faq'])->find($id);
+        $content = Content::with(['contentCarousel.carruselItem', 'contentFAQs.faq'])->get();
 
         return $content ? ContentDTO::fromModel($content) : null;
         //return $content;

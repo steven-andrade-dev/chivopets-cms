@@ -9,21 +9,17 @@ use App\Helpers\ResponseMessages;
 class ContentController extends BaseController
 {
     public function __construct(private ContentService $contentService) {}
-    public function show(Request $request)
+    public function show(Request $request, $id)
     {
-       $id = $request->id;
-       $contents = $this->contentService->getContent($id);
-       return response()->json([
-        'data' => $contents
-       ]);
+        $contents = $this->contentService->getContent($id);
+        return $this->sendResponse($contents, ResponseMessages::successList(), 200);
     }
+
     public function showById(Request $request)
     {
         $id = $request->id;
         $content = $this->contentService->getContentById($id);
-        return response()->json([
-            'data' => $content
-        ]);
+        return $this->sendResponse($content, ResponseMessages::successList(), 200);
     }
 
     public function update(StoreSectionRequest $request, $id)

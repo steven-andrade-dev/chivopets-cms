@@ -339,7 +339,8 @@ onMounted(() => {
                         </div>
                         <div class="row mt-5">
                             <div class="col-md-12 mb-5 shadow-lg p-2">
-                                <h2>Vista previa</h2>
+                                <h2 class="text-center">Vista previa</h2>
+                                <hr>
                                 <prew :type="content.type_preview" :content="content"></prew>
                             </div>
                         </div>
